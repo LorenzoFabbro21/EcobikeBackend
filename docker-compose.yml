@@ -43,9 +43,9 @@ services:
     image: api-gateway:latest
     container_name: api-gateway
     ports:
-      - "8181:8080"
+      - "8080:8080"
     expose:
-      - "8181"
+      - "8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
@@ -74,6 +74,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5431/user-service
+    ports:
+          - "8081:8081"
     depends_on:
       - postgres-user
       - service-discovery-server

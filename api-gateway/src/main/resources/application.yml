@@ -8,16 +8,16 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/api/v1/dealer**
-            - Path=/api/v1/private**
-        - id: negozio-service
-          uri: lb://negozio-service
-          predicates:
-            - Path=/api/v1/shop**
+            - Path=/api/dealer
+            - Path=/api/private
+        #- id: negozio-service
+        #  uri: lb://negozio-service
+        #  predicates:
+        #    - Path=/api/v1/shop**
         - id: recensione-service
           uri: lb://recensione-service
           predicates:
-            - Path=/api/v1/review**
+            - Path=/api/review**
     kubernetes:
       enabled: false
   application:
