@@ -16,7 +16,7 @@
     <modules>
         <module>user-service</module>
         <module>recensione-service</module>
-        <module>service-discovery.server</module>
+        <module>service-discovery-server</module>
         <module>api-gateway</module>
     </modules>
 
@@ -43,6 +43,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <excludes>
                         <exclude>
