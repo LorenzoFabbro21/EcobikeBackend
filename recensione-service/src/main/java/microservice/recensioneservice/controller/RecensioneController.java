@@ -20,7 +20,7 @@ public class RecensioneController  {
 
     private final RecensioneService reviewService;
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public Recensione postReview(@RequestBody Recensione review) {
         Recensione _review = reviewService.saveReview(new Recensione(review.getText(), review.getScore(), review.getIdUser()));
         return _review;

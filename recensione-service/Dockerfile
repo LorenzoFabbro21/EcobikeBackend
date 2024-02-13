@@ -7,9 +7,8 @@
 # docker build -t api-gateway .
 # docker run -d -p 8080:8080 --name="api-gateway" api-gateway
 
-FROM openjdk:21
+FROM openjdk:21-jdk
 EXPOSE 8082
 COPY target/*.jar app.jar
-
 ENTRYPOINT ["java",  "-jar", "/app.jar"]
 

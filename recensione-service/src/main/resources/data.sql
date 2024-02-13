@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS 'recensione-service';
+CREATE DATABASE IF NOT EXISTS 'recensione-db';

@@ -8,12 +8,11 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/api/dealer
-            - Path=/api/private
-        #- id: negozio-service
-        #  uri: lb://negozio-service
-        #  predicates:
-        #    - Path=/api/v1/shop**
+            - Path=/api/dealer**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/private**
         - id: recensione-service
           uri: lb://recensione-service
           predicates:

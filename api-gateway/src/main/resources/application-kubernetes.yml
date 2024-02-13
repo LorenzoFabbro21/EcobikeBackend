@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    kubernetes:
+      enabled: true
+      reload:
+        enabled: true
+eureka:
+  client:
+    enabled: false

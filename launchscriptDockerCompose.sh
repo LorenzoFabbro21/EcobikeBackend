@@ -1,4 +1,3 @@
-
 cd service-discovery-server
 docker build -t service-discovery-server .
 
