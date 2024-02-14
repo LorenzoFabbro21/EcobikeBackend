@@ -3,12 +3,14 @@ package microservice.userservice.model;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.*;
 
+@Setter
+@Getter
 @Entity
 @Data
 @Table(name = "user")
-@AllArgsConstructor
 @NoArgsConstructor
 public abstract class User {
 
@@ -37,54 +39,6 @@ public abstract class User {
         this.cognome = cognome;
         this.mail = mail;
         this.password = password;
-        this.telefono = telefono;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 
