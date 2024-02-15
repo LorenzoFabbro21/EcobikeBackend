@@ -18,6 +18,7 @@
         <module>recensione-service</module>
         <module>service-discovery-server</module>
         <module>api-gateway</module>
+        <module>shop-service</module>
     </modules>
 
     <properties>

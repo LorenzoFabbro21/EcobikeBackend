@@ -9,4 +9,8 @@ docker build -t user-service .
 
 cd ../recensione-service
 docker build -t recensione-service .
+
+cd ../shop-service
+docker build -t shop-service .
+
 cd ..
