@@ -1,9 +1,16 @@
 package microservice.bookingservice.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
-
+@Setter
+@Getter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "booking")
 public class Booking {
@@ -29,49 +36,6 @@ public class Booking {
         this.idPrivate = idPrivate;
         this.idAnnouncement = idAnnouncement;
         this.startdate = startdate;
-        this.enddate = enddate;
-    }
-
-    public Booking() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getIdPrivate() {
-        return idPrivate;
-    }
-
-    public void setIdPrivate(int idPrivate) {
-        this.idPrivate = idPrivate;
-    }
-
-    public int getIdAnnouncement() {
-        return idAnnouncement;
-    }
-
-    public void setIdAnnouncement(int idAnnouncement) {
-        this.idAnnouncement = idAnnouncement;
-    }
-
-    public Date getStartdate() {
-        return startdate;
-    }
-
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
-    }
-
-    public Date getEnddate() {
-        return enddate;
-    }
-
-    public void setEnddate(Date enddate) {
         this.enddate = enddate;
     }
 }

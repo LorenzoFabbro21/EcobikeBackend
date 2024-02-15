@@ -1,11 +1,11 @@
 spring:
   application:
-    name: booking-service
+    name: appointment-service
   cloud:
     kubernetes:
       enabled: false
 server:
-  port: 8085
+  port: 8086
   forward-headers-strategy: framework
 eureka:
   client:

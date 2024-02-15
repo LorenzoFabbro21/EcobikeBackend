@@ -1,12 +1,18 @@
 package microservice.appointmentservice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
-
+@Setter
+@Getter
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "appointment")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,40 +32,5 @@ public class Appointment {
         this.idUser = idUser;
         this.idAnnouncement = idAnnouncement;
         this.date = date;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-
-    public int getIdAnnouncement() {
-        return idAnnouncement;
-    }
-
-    public void setIdAnnouncement(int idAnnouncement) {
-        this.idAnnouncement = idAnnouncement;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Appointment() {
     }
 }

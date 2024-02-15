@@ -1,6 +1,5 @@
 package microservice.bookingservice.model;
 
-import microservice.gestoreOrdiniservice.model.Order;
 
 import java.util.List;
 

@@ -13,4 +13,10 @@ docker build -t recensione-service .
 cd ../shop-service
 docker build -t shop-service .
 
+cd ../booking-service
+docker build -t booking-service .
+
+cd ../appointment-service
+docker build -t appointment-service .
+
 cd ..

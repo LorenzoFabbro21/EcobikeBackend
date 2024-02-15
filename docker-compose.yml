@@ -31,6 +31,36 @@ services:
       - "5432"
     networks:
       - opnet
+  postgres-booking:
+    container_name: postgres-booking
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=booking_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - booking-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
+  postgres-appointment:
+    container_name: postgres-appointment
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=appointment_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - appointment-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
     ## Mongo Docker Compose Config
   mongo:
     container_name: mongo
@@ -113,9 +143,45 @@ services:
       - service-discovery-server
     networks:
       - opnet
+  booking-service:
+    container_name: booking-service
+    image: booking-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-booking
+      - POSTGRES_DB=booking_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres-booking
+      - service-discovery-server
+    networks:
+      - opnet
+  appointment-service:
+    container_name: appointment-service
+    image: appointment-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-appointment
+      - POSTGRES_DB=appointment_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8086:8086"
+    depends_on:
+      - postgres-appointment
+      - service-discovery-server
+    networks:
+      - opnet
 volumes:
   shop-postgres-data:
   user-postgres-data:
+  booking-postgres-data:
+  appointment-postgres-data:
   mongo-data:
 networks:
   opnet:
