@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -29,13 +30,11 @@ public class PrivateController {
     }
 
     @GetMapping("/{id}")
-    public Private getPrivate(@PathVariable("id") long id) {
+    public Optional<Private> getPrivate(@PathVariable("id") long id) {
         System.out.println("Get Private...");
-        Private userprivate = new Private();
-        if (privateService.getPrivateById(id).isPresent()) {
-            return userprivate;
-        }
-        else return null;
+        Optional<Private> userprivate = Optional.of(new Private());
+        userprivate = privateService.getPrivateById(id);
+        return userprivate;
     }
 
     @GetMapping("")

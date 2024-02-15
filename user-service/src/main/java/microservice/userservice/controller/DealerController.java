@@ -25,7 +25,7 @@ public class DealerController {
     }
 
     @GetMapping("/{id}")
-    public Dealer getDealer(@PathVariable("id") long id) {
+    public Dealer getDealer(@PathVariable long id) {
         System.out.println("Get dealer...");
         Dealer dealer = new Dealer();
         if (dealerService.getDealerById(id).isPresent()) {
