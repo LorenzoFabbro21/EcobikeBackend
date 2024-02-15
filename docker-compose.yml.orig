@@ -2,7 +2,7 @@ version: "3"
 services:
   postgres-user:
     container_name: postgres-user
-    image: "postgres:9.6-alpine"
+    image: "postgres:16.2-alpine"
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=user_db
@@ -10,7 +10,12 @@ services:
       - POSTGRES_PASSWORD=postgres
     restart: unless-stopped
     volumes:
+<<<<<<< HEAD
+      - postgres-data:/var/lib/postgresql/data
+      - ./user-service/src/main/java/resources/createUser.sql:/docker-entrypoint-initdb.d/create_tables.sql
+=======
       - user-postgres-data:/var/lib/postgresql/data
+>>>>>>> shop_service
     ports:
       - "5432"
     networks:
