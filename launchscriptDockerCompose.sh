@@ -16,4 +16,7 @@ docker build -t shop-service .
 cd ../ad-service
 docker build -t ad-service .
 
+cd ../bike-service
+docker build -t bike-service .
+
 cd ..

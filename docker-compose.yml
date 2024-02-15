@@ -48,6 +48,22 @@ services:
       - "5432"
     networks:
       - opnet
+
+  postgres-bike:
+    container_name: postgres-bike
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=bike_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - bike-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
     ## Mongo Docker Compose Config
   mongo:
     container_name: mongo
@@ -148,10 +164,29 @@ services:
       - service-discovery-server
     networks:
       - opnet
+
+  bike-service:
+    container_name: bike-service
+    image: bike-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-bike
+      - POSTGRES_DB=bike_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8088:8088"
+    depends_on:
+      - postgres-bike
+      - service-discovery-server
+    networks:
+      - opnet
 volumes:
   shop-postgres-data:
   user-postgres-data:
   ad-postgres-data:
+  bike-postgres-data:
   mongo-data:
 networks:
   opnet:

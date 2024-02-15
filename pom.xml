@@ -20,6 +20,7 @@
         <module>api-gateway</module>
         <module>shop-service</module>
         <module>ad-service</module>
+        <module>bike-service</module>
     </modules>
 
     <properties>

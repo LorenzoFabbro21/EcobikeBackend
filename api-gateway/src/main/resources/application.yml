@@ -25,6 +25,10 @@ spring:
           uri: lb://ad-service
           predicates:
             - Path=/api/ad/**
+        - id: bike-service
+          uri: lb://bike-service
+          predicates:
+            - Path=/api/bike/**
     kubernetes:
       enabled: false
   application:
