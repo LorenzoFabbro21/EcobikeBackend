@@ -1,5 +1,6 @@
 package microservice.shopservice.service;
 
+import microservice.shopservice.dto.User;
 import microservice.shopservice.model.Shop;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,4 +21,6 @@ public interface ShopService {
     ResponseEntity<String> deleteAllShops();
 
     ResponseEntity<Shop> updateShop(long id, @RequestBody Shop shop);
+
+    User getUserFromShop(long id);
 }

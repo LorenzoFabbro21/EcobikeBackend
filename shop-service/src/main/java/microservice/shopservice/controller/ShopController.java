@@ -1,5 +1,6 @@
 package microservice.shopservice.controller;
 
+import microservice.shopservice.dto.User;
 import microservice.shopservice.model.Shop;
 import microservice.shopservice.service.ShopService;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,14 @@ public class ShopController {
         List<Shop> shop = new ArrayList<>();
         shop = shopService.getAllShops();
         return shop;
+    }
+
+    @GetMapping("/{id}/user")
+    public User getUserFromShop(@PathVariable("id") long id) {
+        System.out.println("Get user from review...");
+        User user = new User();
+        user = shopService.getUserFromShop(id);
+        return user;
     }
 
     @DeleteMapping("/{id}")
