@@ -13,4 +13,7 @@ docker build -t recensione-service .
 cd ../shop-service
 docker build -t shop-service .
 
+cd ../ad-service
+docker build -t ad-service .
+
 cd ..

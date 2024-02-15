@@ -19,6 +19,7 @@
         <module>service-discovery-server</module>
         <module>api-gateway</module>
         <module>shop-service</module>
+        <module>ad-service</module>
     </modules>
 
     <properties>
