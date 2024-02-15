@@ -1,22 +1,22 @@
-package microservice.shopservice;
+package microservice.adservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.cloud.client.discovery.*;
-import org.springframework.cloud.client.loadbalancer.*;
-import org.springframework.context.annotation.*;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.client.*;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EntityScan("microservice.shopservice.model")
-@EnableJpaRepositories("microservice.shopservice.repo")
-public class ShopServiceApplication {
+@EntityScan("microservice.adservice.model")
+@EnableJpaRepositories("microservice.adservice.repo")
+public class AdServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ShopServiceApplication.class, args);
+        SpringApplication.run(AdServiceApplication.class, args);
     }
 
     @LoadBalanced
@@ -25,10 +25,3 @@ public class ShopServiceApplication {
         return new RestTemplate();
     }
 }
-
-
-
-
-
-
-

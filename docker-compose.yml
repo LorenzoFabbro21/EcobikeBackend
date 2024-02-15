@@ -31,6 +31,23 @@ services:
       - "5432"
     networks:
       - opnet
+
+
+  postgres-ad:
+    container_name: postgres-ad
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=ad_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - ad-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
     ## Mongo Docker Compose Config
   mongo:
     container_name: mongo
@@ -113,9 +130,28 @@ services:
       - service-discovery-server
     networks:
       - opnet
+
+  ad-service:
+    container_name: ad-service
+    image: ad-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-ad
+      - POSTGRES_DB=ad_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres-ad
+      - service-discovery-server
+    networks:
+      - opnet
 volumes:
   shop-postgres-data:
   user-postgres-data:
+  ad-postgres-data:
   mongo-data:
 networks:
   opnet:
