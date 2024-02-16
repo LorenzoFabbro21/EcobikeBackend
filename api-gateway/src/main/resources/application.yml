@@ -29,6 +29,10 @@ spring:
           uri: lb://booking-service
           predicates:
             - Path=/api/booking/**
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/appointment/**
     kubernetes:
       enabled: false
   application:

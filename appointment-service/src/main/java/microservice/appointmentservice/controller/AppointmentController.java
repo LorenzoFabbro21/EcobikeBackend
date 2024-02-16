@@ -7,8 +7,7 @@ import microservice.appointmentservice.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -25,13 +24,11 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public Appointment getAppointment(@PathVariable("id") long id) {
+    public Optional<Appointment> getAppointment(@PathVariable("id") long id) {
         System.out.println("Get Appointment...");
-        Appointment appointment = new Appointment();
-        if (appointmentService.getAppointmentById(id).isPresent())
-            return appointment;
-        else
-            return null;
+        Optional<Appointment> appointment;
+        appointment = appointmentService.getAppointmentById(id);
+        return appointment;
     }
 
     @GetMapping("")
@@ -45,20 +42,20 @@ public class AppointmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable("id") long id) {
         System.out.println("Delete Appointment with ID = " + id + "...");
-        ResponseEntity<String> response = appointmentService.deleteAppointment(id);
-        return response;
+        return appointmentService.deleteAppointment(id);
+
     }
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllAppointments() {
         System.out.println("Delete all Appointments...");
-        ResponseEntity<String> response = appointmentService.deleteAllAppointments();
-        return response;
+        return appointmentService.deleteAllAppointments();
+
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Appointment> updateAppointment(@PathVariable("id") long id, @RequestBody Appointment appointment) {
         System.out.println("Update Appointment with ID = " + id + "...");
-        ResponseEntity<Appointment> response = appointmentService.updateAppointment(id,appointment);
-        return response;
+        return appointmentService.updateAppointment(id,appointment);
+
     }
 }
