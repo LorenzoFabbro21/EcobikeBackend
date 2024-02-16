@@ -16,4 +16,10 @@ docker build -t shop-service .
 cd ../ad-service
 docker build -t ad-service .
 
+cd ../booking-service
+docker build -t booking-service .
+
+cd ../appointment-service
+docker build -t appointment-service .
+
 cd ..

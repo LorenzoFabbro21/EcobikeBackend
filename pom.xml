@@ -20,6 +20,8 @@
         <module>api-gateway</module>
         <module>shop-service</module>
         <module>ad-service</module>
+        <module>appointment-service</module>
+        <module>booking-service</module>
     </modules>
 
     <properties>

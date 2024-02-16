@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/recensione-service/src/main/resources/data.sql" dialect="GenericSQL" />
+=======
+    <file url="file://$PROJECT_DIR$/appointment-service/src/main/resources/data.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/booking-service/src/main/resources/data.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user-service/src/main/resources/createUser.sql" dialect="GenericSQL" />
+>>>>>>> EcobikeBackend/booking-appointment-service
   </component>
 </project>
