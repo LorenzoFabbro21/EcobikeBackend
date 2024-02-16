@@ -46,6 +46,22 @@ services:
       - "5432"
     networks:
       - opnet
+  postgres-ad:
+    container_name: postgres-ad
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=ad_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - ad-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
+
   postgres-booking:
     container_name: postgres-booking
     image: "postgres:9.6-alpine"
@@ -61,6 +77,7 @@ services:
       - "5432"
     networks:
       - opnet
+
   postgres-appointment:
     container_name: postgres-appointment
     image: "postgres:9.6-alpine"
@@ -72,16 +89,6 @@ services:
     restart: unless-stopped
     volumes:
       - appointment-postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432"
-    networks:
-      - opnet
-      - POSTGRES_DB=ad_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    restart: unless-stopped
-    volumes:
-      - ad-postgres-data:/var/lib/postgresql/data
     ports:
       - "5432"
     networks:

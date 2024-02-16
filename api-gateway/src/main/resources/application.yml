@@ -23,12 +23,12 @@ spring:
             - Path=/api/shop/**
         - id: ad-service
           uri: lb://ad-service
+          predicates:
+            - Path=/api/ad/**
         - id: booking-service
           uri: lb://booking-service
           predicates:
-          predicates:
-            - Path=/api/ad/**
-            - Path=/api/booking**
+            - Path=/api/booking/**
     kubernetes:
       enabled: false
   application:
