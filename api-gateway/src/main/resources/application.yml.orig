@@ -25,18 +25,21 @@ spring:
           uri: lb://ad-service
           predicates:
             - Path=/api/ad/**
+<<<<<<< HEAD
         - id: booking-service
           uri: lb://booking-service
-        - id: bike-service
-          uri: lb://bike-service
-          predicates:
           predicates:
             - Path=/api/booking/**
-            - Path=/api/bike/**
         - id: appointment-service
           uri: lb://appointment-service
           predicates:
             - Path=/api/appointment/**
+=======
+        - id: bike-service
+          uri: lb://bike-service
+          predicates:
+            - Path=/api/bike/**
+>>>>>>> ad_service
     kubernetes:
       enabled: false
   application:

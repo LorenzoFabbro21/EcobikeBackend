@@ -20,9 +20,12 @@
         <module>api-gateway</module>
         <module>shop-service</module>
         <module>ad-service</module>
+<<<<<<< HEAD
         <module>appointment-service</module>
-        <module>bike-service</module>
         <module>booking-service</module>
+=======
+        <module>bike-service</module>
+>>>>>>> ad_service
     </modules>
 
     <properties>

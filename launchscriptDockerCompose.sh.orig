@@ -16,13 +16,15 @@ docker build -t shop-service .
 cd ../ad-service
 docker build -t ad-service .
 
+<<<<<<< HEAD
 cd ../booking-service
 docker build -t booking-service .
 
-cd ../bike-service
-docker build -t bike-service .
-
 cd ../appointment-service
 docker build -t appointment-service .
+=======
+cd ../bike-service
+docker build -t bike-service .
+>>>>>>> ad_service
 
 cd ..
