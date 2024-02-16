@@ -28,7 +28,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public List<Appointment> getAllAppointments() {
         List<Appointment> appointments = new ArrayList<>();
-        return null;
+        repository.findAll().forEach(appointments::add);
+        return appointments;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public ResponseEntity<String> deleteAppointment(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("announcement has been deleted!", HttpStatus.OK);
+        return new ResponseEntity<>("Appointment has been deleted!", HttpStatus.OK);
     }
 
     @Override
