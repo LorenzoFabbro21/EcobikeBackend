@@ -24,7 +24,11 @@ spring:
         - id: ad-service
           uri: lb://ad-service
           predicates:
-            - Path=/api/ad/**
+            - Path=/api/adrent/**
+        - id: ad-service
+          uri: lb://ad-service
+          predicates:
+            - Path=/api/adsell/**
         - id: bike-service
           uri: lb://bike-service
           predicates:
