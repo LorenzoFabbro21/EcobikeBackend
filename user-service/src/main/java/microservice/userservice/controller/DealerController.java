@@ -7,8 +7,8 @@ import microservice.userservice.service.DealerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 @RestController
 @RequestMapping("/api/dealer")
 @RequiredArgsConstructor
@@ -25,13 +25,11 @@ public class DealerController {
     }
 
     @GetMapping("/{id}")
-    public Dealer getDealer(@PathVariable long id) {
+    public Optional<Dealer> getDealer(@PathVariable long id) {
         System.out.println("Get dealer...");
-        Dealer dealer = new Dealer();
-        if (dealerService.getDealerById(id).isPresent()) {
-            return dealer;
-        }
-        else return null;
+        Optional<Dealer> delaer;
+        delaer = dealerService.getDealerById(id);
+        return delaer;
     }
 
     @GetMapping("")

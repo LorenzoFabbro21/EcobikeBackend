@@ -75,7 +75,6 @@ public class ShopServiceImpl implements ShopService {
 
 
     @Override
-    @Transactional
     public User getUserFromShop(long id) {
         Optional<Shop> shopData = repository.findById(id);
         System.out.println("Prova1\n");
