@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.*;
 import lombok.extern.slf4j.*;
 
@@ -27,14 +29,12 @@ public class BikeController {
     }
 
     @GetMapping("/{id}")
-    public Bike getBike(@PathVariable("id") long id) {
+    public Optional<Bike> getBike(@PathVariable("id") long id) {
 
         System.out.println("Get bike...");
-        Bike bike = new Bike();
-        if (bikeService.getBikeById(id).isPresent()) {
-            return bike;
-        }
-        else return null;
+        Optional<Bike> bike;
+        bike = bikeService.getBikeById(id);
+        return bike;
     }
 
     @GetMapping("")

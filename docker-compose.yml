@@ -46,6 +46,23 @@ services:
       - "5432"
     networks:
       - opnet
+
+  postgres-bike:
+    container_name: postgres-bike
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=bike_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - bike-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
+
   postgres-ad:
     container_name: postgres-ad
     image: "postgres:9.6-alpine"
@@ -167,6 +184,24 @@ services:
     networks:
       - opnet
 
+  bike-service:
+    container_name: bike-service
+    image: bike-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-bike
+      - POSTGRES_DB=bike_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8088:8088"
+    depends_on:
+      - postgres-bike
+      - service-discovery-server
+    networks:
+      - opnet
+
   ad-service:
     container_name: ad-service
     image: ad-service:latest
@@ -218,6 +253,7 @@ services:
       - service-discovery-server
     networks:
       - opnet
+
 volumes:
   shop-postgres-data:
   user-postgres-data:
@@ -225,7 +261,8 @@ volumes:
   review-postgres-data:
   booking-postgres-data:
   appointment-postgres-data:
-  mongo-data:
+  bike-postgres-data:
+
 networks:
   opnet:
     driver: bridge
