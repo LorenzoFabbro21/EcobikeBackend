@@ -1,6 +1,7 @@
 package microservice.recensioneservice.service;
 
 import lombok.*;
+import microservice.recensioneservice.dto.*;
 import microservice.recensioneservice.model.Recensione;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
@@ -21,4 +22,5 @@ public interface RecensioneService {
     ResponseEntity<String> deleteAllReview();
 
     ResponseEntity<Recensione> updateReview(long id, @RequestBody Recensione review);
+    User getUserFromReview(long id);
 }

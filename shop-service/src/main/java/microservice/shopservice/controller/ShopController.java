@@ -5,10 +5,13 @@ import microservice.shopservice.model.Shop;
 import microservice.shopservice.service.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 import lombok.*;
 import lombok.extern.slf4j.*;
+
+import javax.swing.text.html.*;
 
 @RestController
 @RequestMapping("/api/shop")
@@ -26,14 +29,12 @@ public class ShopController {
     }
 
     @GetMapping("/{id}")
-    public Shop getShop(@PathVariable("id") long id) {
+    public Optional<Shop> getShop(@PathVariable("id") long id) {
 
         System.out.println("Get shop...");
-        Shop shop = new Shop();
-        if (shopService.getShopById(id).isPresent()) {
-            return shop;
-        }
-        else return null;
+        Optional<Shop> shop;
+        shop = shopService.getShopById(id);
+        return shop;
     }
 
     @GetMapping("")

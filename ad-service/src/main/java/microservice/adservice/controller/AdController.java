@@ -7,8 +7,7 @@ import microservice.adservice.service.AdService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/ad")
@@ -26,13 +25,11 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public Ad getAd(@PathVariable("id") long id) {
+    public Optional<Ad> getAd(@PathVariable("id") long id) {
         System.out.println("Get ad...");
-        Ad ad = new Ad();
-        if (adService.getAdById(id).isPresent()) {
-            return ad;
-        }
-        else return null;
+        Optional<Ad> ad;
+        ad = adService.getAdById(id);
+        return ad;
     }
 
     @GetMapping("")

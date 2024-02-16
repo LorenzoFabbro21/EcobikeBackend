@@ -16,6 +16,21 @@ services:
     networks:
       - opnet
 
+  postgres-review:
+    container_name: postgres-review
+    image: "postgres:9.6-alpine"
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - POSTGRES_DB=recensione_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - review-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - opnet
   postgres-shop:
     container_name: postgres-shop
     image: "postgres:9.6-alpine"
@@ -32,7 +47,6 @@ services:
     networks:
       - opnet
 
-
   postgres-ad:
     container_name: postgres-ad
     image: "postgres:9.6-alpine"
@@ -48,19 +62,19 @@ services:
       - "5432"
     networks:
       - opnet
-    ## Mongo Docker Compose Config
-  mongo:
-    container_name: mongo
-    image: mongo:4.4.14-rc0-focal
-    restart: always
-    ports:
-      - "27017"
-    volumes:
-      - mongo-data:/var/lib/mongo/data
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
-    networks:
-      - opnet
+  ## Mongo Docker Compose Config
+  # mongo:
+  #  container_name: mongo
+  #  image: mongo:4.4.14-rc0-focal
+  #  restart: always
+  #  ports:
+  #    - "27017"
+  #  volumes:
+  #    - mongo-data:/var/lib/mongo/data
+  #  environment:
+  #    - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+  #  networks:
+  #    - opnet
   ## Eureka Server
   service-discovery-server:
     image: service-discovery-server:latest
@@ -86,11 +100,15 @@ services:
     image: recensione-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - DB_SERVER=postgres-review
+      - POSTGRES_DB=recensione_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8082:8082"
     depends_on:
-      - mongo
+      - postgres-review
       - service-discovery-server
     networks:
       - opnet
@@ -152,6 +170,7 @@ volumes:
   shop-postgres-data:
   user-postgres-data:
   ad-postgres-data:
+  review-postgres-data:
   mongo-data:
 networks:
   opnet:
