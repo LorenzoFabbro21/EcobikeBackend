@@ -1,6 +1,7 @@
 package microservice.adservice.model;
 
-import javax.persistence.Entity;
+
+import jakarta.persistence.*;
 
 @Entity
 public class AdSell extends  Ad {

@@ -2,11 +2,12 @@ package microservice.adservice.service;
 
 import microservice.adservice.model.AdSell;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
-
+@Component
 public interface AdSellService {
 
         AdSell saveAdSell(AdSell adSell);

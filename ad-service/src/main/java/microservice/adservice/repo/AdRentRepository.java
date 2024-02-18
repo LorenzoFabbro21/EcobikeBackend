@@ -1,7 +1,7 @@
 package microservice.adservice.repo;
 
-import microservice.adservice.model.AdRent;
-import org.springframework.data.repository.CrudRepository;
+import microservice.adservice.model.*;
+import org.springframework.data.repository.*;
 import org.springframework.stereotype.Repository;
 
 @Repository

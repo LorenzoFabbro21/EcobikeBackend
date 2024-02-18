@@ -3,7 +3,7 @@ package microservice.adservice.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import microservice.adservice.model.AdRent;
-import microservice.adservice.service.AdRentService;
+import microservice.adservice.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

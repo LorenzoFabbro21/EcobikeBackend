@@ -3,10 +3,9 @@ package microservice.adservice.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import microservice.adservice.model.Ad;
 import microservice.adservice.model.AdSell;
-import microservice.adservice.repo.AdSellRepository;
-import microservice.adservice.repo.AdSellRepository;
+import microservice.adservice.repo.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;

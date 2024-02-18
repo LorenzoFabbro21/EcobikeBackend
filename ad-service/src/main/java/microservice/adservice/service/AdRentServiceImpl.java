@@ -1,9 +1,11 @@
 package microservice.adservice.service;
 
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import microservice.adservice.model.AdRent;
-import microservice.adservice.repo.AdRentRepository;
+import microservice.adservice.repo.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
@@ -12,14 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class AdRentServiceImpl implements AdRentService {
 
-    private final AdRentRepository repository;
 
-    public AdRentServiceImpl(AdRentRepository repository) {
-        this.repository = repository;
-    }
+    private final AdRentRepository repository;
 
     @Override
     public AdRent saveAdRent(AdRent adRent) {

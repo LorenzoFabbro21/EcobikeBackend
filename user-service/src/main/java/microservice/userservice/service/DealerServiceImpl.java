@@ -3,10 +3,8 @@ package microservice.userservice.service;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.userservice.model.Dealer;
-import microservice.userservice.model.User;
 import microservice.userservice.repo.DealerRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 

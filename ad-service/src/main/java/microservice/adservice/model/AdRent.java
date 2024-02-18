@@ -1,8 +1,8 @@
 package microservice.adservice.model;
 
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
 
 @Entity
 public class AdRent extends Ad {
