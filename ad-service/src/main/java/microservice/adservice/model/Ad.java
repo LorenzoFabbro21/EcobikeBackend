@@ -1,7 +1,9 @@
 package microservice.adservice.model;
 
+
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.*;
 
 @Setter
 @Getter
@@ -9,7 +11,7 @@ import lombok.*;
 @Data
 @Table(name = "ad")
 @NoArgsConstructor
-public class Ad {
+public abstract class Ad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
