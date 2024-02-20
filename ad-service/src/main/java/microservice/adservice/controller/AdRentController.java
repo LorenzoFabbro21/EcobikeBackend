@@ -2,6 +2,7 @@ package microservice.adservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import microservice.adservice.dto.*;
 import microservice.adservice.model.AdRent;
 import microservice.adservice.service.*;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/adrent")
 @RequiredArgsConstructor
 @Slf4j
@@ -40,6 +42,12 @@ public class AdRentController {
         List<AdRent> adRent = new ArrayList<>();
         adRent = adRentService.getAllAdsRent();
         return adRent;
+    }
+
+    @GetMapping("/bikes")
+    public List<Bike> getBikesToRent() {
+        System.out.println("Get bikes...");
+        return adRentService.getBikesToRent();
     }
 
     @DeleteMapping("/{id}")

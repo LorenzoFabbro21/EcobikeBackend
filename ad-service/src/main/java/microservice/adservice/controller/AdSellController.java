@@ -2,6 +2,7 @@ package microservice.adservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import microservice.adservice.dto.*;
 import microservice.adservice.model.AdSell;
 import microservice.adservice.service.AdSellService;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/adsell")
 @RequiredArgsConstructor
 @Slf4j
@@ -40,6 +42,12 @@ public class AdSellController {
         return adSell;
     }
 
+    @GetMapping("/bikes")
+    public List<Bike> getBikesToRent() {
+        System.out.println("Get bikes...");
+        return adSellService.getBikesToSell();
+
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAdSell(@PathVariable("id") long id) {
         System.out.println("Delete adSell with ID = " + id + "...");

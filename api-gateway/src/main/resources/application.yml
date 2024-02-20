@@ -9,38 +9,128 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/dealer/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/private/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: recensione-service
           uri: lb://recensione-service
           predicates:
             - Path=/api/review/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: shop-service
           uri: lb://shop-service
           predicates:
             - Path=/api/shop/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: ad-service
           uri: lb://ad-service
           predicates:
             - Path=/api/adrent/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: ad-service
           uri: lb://ad-service
           predicates:
             - Path=/api/adsell/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: bike-service
           uri: lb://bike-service
           predicates:
             - Path=/api/bike/**
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: booking-service
           uri: lb://booking-service
           predicates:
             - Path=/api/booking/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
         - id: appointment-service
           uri: lb://appointment-service
           predicates:
             - Path=/api/appointment/**
+          metadata:
+            cors:
+              allowedOrigins: 'http://localhost:4200'
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+              allowedHeaders: '*'
+              maxAge: 30
     kubernetes:
       enabled: false
   application:

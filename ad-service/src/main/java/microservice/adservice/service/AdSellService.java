@@ -1,5 +1,6 @@
 package microservice.adservice.service;
 
+import microservice.adservice.dto.*;
 import microservice.adservice.model.AdSell;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
@@ -21,4 +22,5 @@ public interface AdSellService {
         ResponseEntity<String> deleteAllAdsSell();
 
         ResponseEntity<AdSell> updateAdSell(long id, @RequestBody AdSell adSell);
+        List<Bike> getBikesToSell();
 }

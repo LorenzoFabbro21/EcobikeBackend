@@ -1,5 +1,6 @@
 package microservice.adservice.service;
 
+import microservice.adservice.dto.*;
 import microservice.adservice.model.Ad;
 import microservice.adservice.model.AdRent;
 import microservice.adservice.model.AdSell;
@@ -23,4 +24,5 @@ public interface AdRentService {
     ResponseEntity<String> deleteAllAdsRent();
 
     ResponseEntity<AdRent> updateAdRent(long id, @RequestBody AdRent adRent);
+    List<Bike> getBikesToRent();
 }

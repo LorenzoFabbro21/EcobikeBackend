@@ -77,19 +77,14 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public User getUserFromShop(long id) {
         Optional<Shop> shopData = repository.findById(id);
-        System.out.println("Prova1\n");
         if (shopData.isPresent()) {
             Shop _shop = shopData.get();
-            System.out.println("REVIEW= " + _shop + " Prova1\n");
             User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + _shop.getIdUser(), User.class);
-            System.out.println("USER1=" + dealer +"\n");
             if (dealer == null) {
                 User privateUser = restTemplate.getForObject("http://user-service/api/private/" + _shop.getIdUser(), User.class);
                 if (privateUser == null) {
-                    System.out.println("VUOTO2");
                     return null;
                 } else {
-                    System.out.println("USER2="+privateUser +"\n");
                     return privateUser;
                 }
             } else {

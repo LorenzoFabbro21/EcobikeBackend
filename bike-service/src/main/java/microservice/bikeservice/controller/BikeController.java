@@ -12,7 +12,7 @@ import java.util.Optional;
 import lombok.*;
 import lombok.extern.slf4j.*;
 
-
+@CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 @RequestMapping("/api/bike")
 @RequiredArgsConstructor

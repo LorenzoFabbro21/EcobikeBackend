@@ -3,12 +3,15 @@ package microservice.adservice.service;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import microservice.adservice.dto.*;
 import microservice.adservice.model.AdRent;
 import microservice.adservice.repo.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
+import org.springframework.web.client.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,9 @@ public class AdRentServiceImpl implements AdRentService {
 
 
     private final AdRentRepository repository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public AdRent saveAdRent(AdRent adRent) {
@@ -63,5 +69,23 @@ public class AdRentServiceImpl implements AdRentService {
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public List<Bike> getBikesToRent() {
+        List<AdRent> adsRent = new ArrayList<>();
+        adsRent = this.getAllAdsRent();
+        if ( !adsRent.isEmpty())
+        {
+            List<Bike> bikes = new ArrayList<>();
+            for ( AdRent elem : adsRent) {
+                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                bikes.add(bike);
+            }
+            return bikes;
+        }
+        else {
+            return null;
+        }
     }
 }
