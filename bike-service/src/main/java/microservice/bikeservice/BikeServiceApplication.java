@@ -22,12 +22,13 @@ public class BikeServiceApplication {
     }
 
 
+    /*
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
+        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedHeader("Content-Type");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
@@ -36,4 +37,6 @@ public class BikeServiceApplication {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
+     */
 }

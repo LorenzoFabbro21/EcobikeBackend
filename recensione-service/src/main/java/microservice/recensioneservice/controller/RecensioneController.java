@@ -1,5 +1,6 @@
 package microservice.recensioneservice.controller;
 
+import java.awt.desktop.*;
 import java.util.*;
 
 import lombok.*;
@@ -36,8 +37,10 @@ public class RecensioneController  {
     @GetMapping("")
     public List<Recensione> getAllReview() {
         System.out.println("Get all reviews...");
+
         List<Recensione> reviews;
         reviews = reviewService.getAllReview();
+        System.out.println("Recensioni=" + reviews);
         return reviews;
     }
 

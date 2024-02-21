@@ -11,6 +11,8 @@ import org.springframework.web.client.*;
 import org.springframework.web.cors.*;
 import org.springframework.web.filter.*;
 
+import java.util.*;
+
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -26,13 +28,16 @@ public class RecensioneServiceApplication {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-
+/*
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
+		List<String>  listHeaders= new ArrayList<>();
+
+		listHeaders.addAll(Arrays.asList("Access-Control-Allow-Headers", "Authorization", "Access-Control-Allow-Headers", "Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+		config.addAllowedOrigin("http://localhost:4200");
+		config.setAllowedHeaders(listHeaders);
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
 		config.addAllowedMethod("POST");
@@ -41,4 +46,6 @@ public class RecensioneServiceApplication {
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
+
+ */
 }

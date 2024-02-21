@@ -44,7 +44,8 @@ public class AdSellController {
 
     @GetMapping("/bikes")
     public List<Bike> getBikesToRent() {
-        System.out.println("Get bikes...");
+        System.out.println("Get bikes to sell...");
+        System.out.println("Bici="+ adSellService.getBikesToSell());
         return adSellService.getBikesToSell();
 
     }
