@@ -1,6 +1,13 @@
 spring:
   cloud:
     gateway:
+      default-filters:
+        - name: Cors
+          args:
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods: "GET,POST,PUT,DELETE"
+            allowedHeaders: "Requestor-Type"
+            exposedHeaders: "X-Get-Header"
       discovery:
         locator:
           enabled: true
@@ -37,7 +44,6 @@ spring:
           uri: lb://booking-service
           predicates:
             - Path=/api/booking/**
-
         - id: appointment-service
           uri: lb://appointment-service
           predicates:

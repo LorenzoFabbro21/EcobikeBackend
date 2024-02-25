@@ -1,0 +1,26 @@
+<div class="footer">
+    <div class="newsletter">
+        <div class="testo">
+            <h2>NewsLetter</h2>
+            <span>Iscriviti alla newsletter. Ricevi gli ultimi aggiornamenti sui prodotti e le offerte speciali direttamente nella tua casella di posta.</span>            </div>
+        <div>
+            <input type="text" pInputText placeholder="Inserisci la tua mail" ngModel="value" class="input"/>
+            <button pButton  label="Iscriviti" class="button"></button>
+        </div>
+    </div>
+    <div class="otherInfo">
+        <div class="infoGenerali">
+            <h3> Informazioni Generali </h3>
+            <div class="link">
+                <a routerLink="/chiSiamo"  label="Chi Siamo" routerLinkActive="active-link" class='linkRow' >Chi siamo</a>
+            </div>
+        </div>  
+        <div class="Privacy">
+            <h3> Privacy & Termini </h3>
+            <div class="link">
+                <span><a routerLink="/termini"  label="Termini" routerLinkActive="active-link" class='linkRow' >Termini di Servizio</a></span>
+                <a routerLink="/privacy"  label="Privacy" routerLinkActive="active-link" class='linkRow' >Privacy</a>
+            </div>
+        </div>  
+    </div>
+</div>
