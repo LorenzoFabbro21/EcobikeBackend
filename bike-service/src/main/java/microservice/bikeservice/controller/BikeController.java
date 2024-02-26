@@ -23,8 +23,9 @@ public class BikeController {
 
     @PostMapping(value = "")
     public Bike postBike(@RequestBody Bike bike) {
-
+        System.out.println("New Bike:"+ bike);
         Bike _Bike = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+        System.out.println("returned Bike:"+ bike);
         return _Bike;
     }
 
