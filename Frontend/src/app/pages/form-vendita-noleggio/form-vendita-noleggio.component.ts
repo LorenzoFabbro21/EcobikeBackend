@@ -26,20 +26,23 @@ interface UploadEvent {
 export class FormVenditaNoleggioComponent {
   uploadedFiles: any[] = [];
   userLogged?: LoggedUser;
-  tagliaValue?: any;
+  tagliaValue!: Taglia;
   tagliaFiltered: any[] = [];
   tagliaList: any[]= [];
-  colore?:string;
-  marca?:string;
-  model?:string;
-  tipologia?:string;
-  prezzo?:number;
-  misure?:string;
+  colore!:string;
+  marca!:string;
+  model!:string;
+  tipologia!:string;
+  prezzo!:number;
+  misure!:string;
+  img?:any;
 
-  constructor ( private userService: UserLoggedService, private ebService: EcobikeApiService) {
-    if ( userService.userLogged ) {
+  constructor ( private ebService: EcobikeApiService) {
+    
+    /* if ( userService.userLogged ) {
       this.userLogged = userService.userLogged;
     }
+    } */  
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
@@ -67,34 +70,46 @@ export class FormVenditaNoleggioComponent {
   }
 
   send () {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const base64String = (e.target as any).result;
+      this.img= base64String;
+      this.postBike();
+    };
+
+    reader.readAsDataURL(this.uploadedFiles[0]);
+
+  }
+  postBike() {
     let idBike: number;
     let bike: Bicicletta;
+    const imgString = atob(this.img);
     bike = {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: Taglia.TagliaL,
+      size: this.tagliaValue,
       type: this.tipologia,
       measure: this.misure,
-      img: this.uploadedFiles[0]
+      img: imgString
     }
-    this.ebService.new_bike(bike).subscribe({
-      next: (response:Bicicletta) => {
-        if( response && response.id) {
-          idBike = response.id;
+    this.ebService.new_bike(bike).subscribe(response=>{
+      if( response && response.id) {
+        idBike = response.id;
 
-          let adRent: adRent;
-          adRent = {
-          price:this.prezzo,
-          idBike:idBike
-          }
-          this.ebService.new_noleggio(adRent).subscribe({
-            next: (response:adRent) => {
-              console.log(response);
-          }
-          });
+        let adRent: adRent;
+        adRent = {
+        price:this.prezzo,
+        idBike:idBike
         }
+        this.ebService.new_noleggio(adRent).subscribe({
+          next: (response:adRent) => {
+            console.log(response);
+        }
+        });
       }
+
     });
   }
 

@@ -25,7 +25,7 @@ docker build -t bike-service .
 cd ../appointment-service
 docker build -t appointment-service .
 
-cd Frontend
+cd ../Frontend
 docker build -t frontend .
 
 cd ..

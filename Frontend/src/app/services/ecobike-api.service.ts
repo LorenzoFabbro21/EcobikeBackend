@@ -55,10 +55,11 @@ export class EcobikeApiService {
  * Endpoint Rest: bike
  */
   public new_bike(bike: Bicicletta | any){
-    console.log("suka5");
-    let headers = new HttpHeaders({'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    return this.httpClient.post<Bicicletta>(`${this.url}/bike`, bike, options);
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+  });   
+  let options = { headers: headers };
+    return this.httpClient.post<Bicicletta>(`${this.url}/bike`,bike, options);
   }
 /**
  * Inserisce una nuovo noleggio
@@ -67,12 +68,11 @@ export class EcobikeApiService {
  */
   public new_noleggio(adRent: adRent | any){
 
-    return this.httpClient.post<adRent>(`${this.url}/adrent`, adRent, {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*'
-        })
-      }).pipe(retry(0), catchError(this.handleError)
-      );
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    }); 
+    let options = { headers: headers };
+    return this.httpClient.post<adRent>(`${this.url}/adrent`, adRent, options);
   }
 
   /**
@@ -82,12 +82,11 @@ export class EcobikeApiService {
  */
   public new_vendita(adSell: adSell | any){
 
-    return this.httpClient.post<adSell>(`${this.url}/adsell`, adSell, {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*'
-        })
-      }).pipe(retry(0), catchError(this.handleError)
-      );
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    }); 
+    let options = { headers: headers };
+    return this.httpClient.post<adRent>(`${this.url}/adSell`, adSell, options);
   }
   
 
