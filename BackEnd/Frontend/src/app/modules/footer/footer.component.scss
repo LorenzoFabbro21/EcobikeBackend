@@ -1,0 +1,69 @@
+.footer {
+    background-color: rgba(31, 89, 92, 0.2);
+    height: 37vh;
+    margin-top: 3vh;
+}
+
+.newsletter {
+    display: flex;
+    flex-direction: row;
+
+    margin: 0 40px;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.testo {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+
+}
+.input {
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size:large;
+    margin-right: 1vw;
+    width: 25vw; 
+}
+.button{
+    background-color: #01aaa9;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: large;
+}
+
+.otherInfo {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10vw;
+    margin: 0 40px;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+}
+.infoGenerali {
+    display: flex;
+    flex-direction: column;
+}
+
+.link {
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+    column-gap: 3vw;
+    
+    .linkRow {
+    
+    font-size: medium;
+    text-decoration: none;
+    }
+  }
+
+
+    .p-button:enabled:hover {
+        background: #01aaa9;
+        color: #ffffff;
+        border-color: #01aaa9;
+    }
+

@@ -1,0 +1,67 @@
+<div>
+    <div class="product">
+        <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" src="../../../assets/images/{{bicicletta.img}}" class="imagePrincipale"/>
+        <div *ngIf="bicicletta" class="details">
+            <h1 class="marca">{{bicicletta.brand}}</h1>
+            <h2 class="model">{{bicicletta.model}}</h2>
+            <div class="Taglia">
+                <label>Colore: {{bicicletta.color}}</label>
+                <label>Taglia: {{bicicletta.size}}</label>
+            </div>
+            <br>
+            <h1 class="prezzo">{{prezzo}} €</h1>
+            <label> {{prezzo_noTax}} tax escluse</label>
+            <br>
+            <br>
+            <div class="btn">
+                <div class="">
+                    <label></label>
+                    <h2 class="Text">{{bicicletta.color}}</h2>
+                </div>
+                <div class="showMore">
+                    <p-button  label="Prenota" class="showMoreBtn" (onClick)="prenota()"></p-button>
+                </div>
+                <div class="disponibile">
+                    <div id="circle"></div> 
+                    <label>Disponibile</label>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="immaginiPlus"> 
+        <div *ngFor="let image of images">
+            <img alt="Card" src="../../../assets/images/{{image}}" class="image" (click)="imageActualChange(image)"/>
+        </div>
+    </div>
+    <div class="accordion">
+        <p-accordion>
+            <p-accordionTab header="Dettagli">
+                <div *ngIf="bicicletta" class="Taglia">
+                    <label>Colore: {{bicicletta.color}}</label>
+                    <label>Taglia: {{bicicletta.size}}</label>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Misure">
+                <p>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                    ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                </p>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+
+    <div>
+        <div class="titleMenu">
+          <h2>Prodotti Simili</h2>
+        </div>
+        <div class="view">
+          <div *ngFor=" let bike of bikesSimili;  let i=index" >
+            <div *ngIf="i<4">
+              <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

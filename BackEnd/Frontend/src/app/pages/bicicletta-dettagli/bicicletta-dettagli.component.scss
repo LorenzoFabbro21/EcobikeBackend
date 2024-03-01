@@ -1,0 +1,142 @@
+.view {
+    display: grid;
+    grid-template-columns: repeat(4 , minmax(200px,1fr));
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+
+  .titleMenu {
+    display: flex;
+    flex-direction: row;
+    margin: 0px 40px;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2vh;
+  }
+
+  .imagePrincipale {
+    max-width: 45vw;
+    min-width: 40vw;
+  }
+  .product {
+    display: flex;
+    flex-direction: row;
+    height: 75vh;
+    margin: 0 80px;
+    justify-content: flex-start;
+    column-gap: 10vw;
+  }
+  .details {
+    margin-top: 5vh;
+  }
+  .marca {
+    margin-bottom: 0px;
+    font-size: xx-large;
+  }
+  .model {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: x-large;
+  }
+  .coloreTaglia{
+    display: flex;
+    flex-direction: column;
+  }
+  .prezzo {
+    margin-bottom: 0px;
+    font-size: xx-large;
+  }
+  .btn{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .colore{
+    display: flex;
+    flex-direction: column;
+    width: 28vw;
+    border: 1px solid #01aaa9;
+    padding: 10px;
+  }
+
+  .coloreText {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: large;
+  }
+  :host ::ng-deep {
+    .p-card .p-card-content {
+      padding: 0;
+    }
+    .p-card .p-card-body {
+      padding: 0.75rem;
+    }
+    .p-card .p-card-footer {
+      padding: 0;
+    }
+  }
+:host ::ng-deep {
+  .p-button{
+    background-color: #444444;
+    width: 28vw;
+    color: #fff;
+    border-radius: 10px;
+    font-size: larger;
+    }
+
+    .p-button:enabled:hover {
+        background: #01aaa9;
+        color: #ffffff;
+        border-color: #01aaa9;
+    }
+
+    .p-accordion .p-accordion-header .p-accordion-header-link {
+        height: 10vh;
+    }
+}
+
+.showMore {
+    display: flex;
+    justify-content: center;
+    margin-top: 3vh;
+    margin-bottom: 2vh;
+
+}
+
+#circle {
+    width: 10px;
+    height: 10px;
+    background: green;
+    border-radius: 50%
+  }
+
+  .disponibile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  .immaginiPlus {
+    display: grid;
+    grid-template-columns: repeat(4 , minmax(10vw,1fr));
+    width: 50vw;
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+
+  .image{
+    max-width: 10vw;
+    border: 1px solid lightgray;
+  }
+
+  .accordion {
+    width: 50vw;
+    margin-top: 4vh;
+    margin-left: 40px;
+  }
+  

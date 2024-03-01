@@ -1,0 +1,38 @@
+<div #body>
+    <div class="sectionGenerale">
+      <div class="textSection">
+        <h3 >Noleggio e acquisto di E-Bike</h3>
+        <div class="buttons">
+            <button pButton  label="Noleggia" class="noleggia"  [routerLink]="['noleggio']"></button>
+            <button pButton  label="Acquista" class="acquista"  [routerLink]="['vendita']"></button>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <div class="titleMenu">
+        <h2>E-Bike in noleggio</h2>
+        <a routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
+      </div>
+      <div class="view">
+        <div *ngFor=" let bike of bikesNoleggio;  let i=index" >
+          <div *ngIf="i<4">
+            <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 5vh;">
+      <div class="titleMenu">
+        <h2>E-Bike in Vendita</h2>
+        <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
+      </div>
+      <div class="view">
+        <div *ngFor=" let bike of bikesVendita;  let i=index" >
+          <div *ngIf="i<4">
+            <app-ebike [bicicletta]="bike" [prezzo]="30" ></app-ebike>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
