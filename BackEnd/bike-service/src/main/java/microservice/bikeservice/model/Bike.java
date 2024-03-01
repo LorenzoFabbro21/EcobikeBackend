@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.sql.Blob;
-
 @Setter
 @Getter
 @Entity
@@ -42,9 +39,9 @@ public class Bike {
 
     @Column(name = "img")
     @Lob
-    private byte[] img;
+    private String img;
 
-    public Bike(String brand, String model, String size, String type, String color, String measure, byte[] img) {
+    public Bike(String brand, String model, String size, String type, String color, String measure, String img) {
         this.brand = brand;
         this.model = model;
         this.size = size;
