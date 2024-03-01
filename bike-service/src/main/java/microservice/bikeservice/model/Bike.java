@@ -12,7 +12,7 @@ import lombok.*;
 @Getter
 @Entity
 @Data
-@Table(name = "shop")
+@Table(name = "bike")
 @NoArgsConstructor
 public class Bike {
     @Id
@@ -38,6 +38,7 @@ public class Bike {
     private String measure;
 
     @Column(name = "img")
+    @Lob
     private String img;
 
     public Bike(String brand, String model, String size, String type, String color, String measure, String img) {
