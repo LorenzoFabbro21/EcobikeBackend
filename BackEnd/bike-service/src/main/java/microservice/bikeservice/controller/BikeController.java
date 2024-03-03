@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BikeController {
 
     private final BikeService bikeService;
-/*
+
     @PostMapping(value = "")
     public Bike postBike(@RequestBody Bike bike) {
         System.out.println("New Bike:"+ bike);
@@ -32,28 +32,6 @@ public class BikeController {
         System.out.println("returned Bike:"+ bike);
         return _Bike;
     }
-    */
-@PostMapping(value = "")
-public ResponseEntity<Bike> postBike(@RequestParam("img") MultipartFile img,
-                                     @RequestParam("brand") String brand,
-                                     @RequestParam("model") String model,
-                                     @RequestParam("size") String size,
-                                     @RequestParam("type") String type,
-                                     @RequestParam("color") String color,
-                                     @RequestParam("measure") String measure) {
-    // Processa l'immagine e altri dati come necessario
-    // Ad esempio, salvali su disco o nel database
-    try {
-        byte[] imageBytes = img.getBytes();
-        Bike bike = new Bike(brand, model, size, type, color, measure, imageBytes);
-        Bike savedBike = bikeService.saveBike(bike);
-        return ResponseEntity.ok(savedBike);
-    } catch (IOException e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-}
-
     @GetMapping("/{id}")
     public Optional<Bike> getBike(@PathVariable("id") long id) {
 

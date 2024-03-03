@@ -27,8 +27,8 @@ docker build -t appointment-service .
 
 cd ..
 
-cd ../Frontend
-docker build -t frontend .
+#cd Frontend
+#docker build -t frontend .
 
 
 

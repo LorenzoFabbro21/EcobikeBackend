@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
-import { adRent } from 'src/app/interfaces/adRent';
+import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
-import { UserLoggedService } from 'src/app/services/user-logged.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event| any;
@@ -17,13 +15,12 @@ interface UploadEvent {
   files: File[];
 }
 
-
 @Component({
-  selector: 'app-form-vendita-noleggio',
-  templateUrl: './form-vendita-noleggio.component.html',
-  styleUrls: ['./form-vendita-noleggio.component.scss']
+  selector: 'app-form-vendita',
+  templateUrl: './form-vendita.component.html',
+  styleUrls: ['./form-vendita.component.scss']
 })
-export class FormVenditaNoleggioComponent {
+export class FormVenditaComponent {
   uploadedFiles: any[] = [];
   userLogged?: LoggedUser;
   tagliaValue!: Taglia;
@@ -41,8 +38,7 @@ export class FormVenditaNoleggioComponent {
     
     /* if ( userService.userLogged ) {
       this.userLogged = userService.userLogged;
-    }
-    } */  
+    } */
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
@@ -70,41 +66,43 @@ export class FormVenditaNoleggioComponent {
   }
 
   send () {
+    
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const base64String = (e.target as any).result;
-      this.img= base64String.split(',')[1];
+      this.img= base64String;
       this.postBike();
     };
 
     reader.readAsDataURL(this.uploadedFiles[0]);
 
   }
+
   postBike() {
     let idBike: number;
     let bike: Bicicletta;
-
     bike = {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: this.tagliaValue,
+      size: Taglia.TagliaS,
       type: this.tipologia,
       measure: this.misure,
-      img:"prova.jpg"
+      img: this.img
     }
+
     this.ebService.new_bike(bike).subscribe(response=>{
       if( response && response.id) {
         idBike = response.id;
 
-        let adRent: adRent;
-        adRent = {
+        let adSell: adSell;
+        adSell = {
         price:this.prezzo,
         idBike:idBike
         }
-        this.ebService.new_noleggio(adRent).subscribe({
-          next: (response:adRent) => {
+        this.ebService.new_noleggio(adSell).subscribe({
+          next: (response:adSell) => {
             console.log(response);
         }
         });
@@ -112,5 +110,4 @@ export class FormVenditaNoleggioComponent {
 
     });
   }
-
 }

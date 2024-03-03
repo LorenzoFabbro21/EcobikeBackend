@@ -20,10 +20,10 @@ interface UploadEvent {
 
 @Component({
   selector: 'app-form-vendita-noleggio',
-  templateUrl: './form-vendita-noleggio.component.html',
-  styleUrls: ['./form-vendita-noleggio.component.scss']
+  templateUrl: './form-noleggio.component.html',
+  styleUrls: ['./form-noleggio.component.scss']
 })
-export class FormVenditaNoleggioComponent {
+export class FormNoleggioComponent {
   uploadedFiles: any[] = [];
   userLogged?: LoggedUser;
   tagliaValue!: Taglia;
@@ -41,8 +41,7 @@ export class FormVenditaNoleggioComponent {
     
     /* if ( userService.userLogged ) {
       this.userLogged = userService.userLogged;
-    }
-    } */  
+    } */
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
@@ -70,21 +69,22 @@ export class FormVenditaNoleggioComponent {
   }
 
   send () {
+    
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const base64String = (e.target as any).result;
-      this.img= base64String.split(',')[1];
+      this.img= base64String;
       this.postBike();
     };
 
     reader.readAsDataURL(this.uploadedFiles[0]);
 
   }
+
   postBike() {
     let idBike: number;
     let bike: Bicicletta;
-
     bike = {
       model: this.model,
       brand: this.marca,
@@ -92,8 +92,9 @@ export class FormVenditaNoleggioComponent {
       size: this.tagliaValue,
       type: this.tipologia,
       measure: this.misure,
-      img:"prova.jpg"
+      img: this.img
     }
+
     this.ebService.new_bike(bike).subscribe(response=>{
       if( response && response.id) {
         idBike = response.id;
@@ -112,5 +113,6 @@ export class FormVenditaNoleggioComponent {
 
     });
   }
+
 
 }

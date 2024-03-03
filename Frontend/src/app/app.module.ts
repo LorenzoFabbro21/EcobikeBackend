@@ -8,7 +8,8 @@ import { FooterModule } from './modules/footer/footer.module';
 import { NoleggioModule } from './pages/noleggio/noleggio.module';
 import { HomePageModule } from './pages/home-page/home-page.module';
 import { VenditaModule } from './pages/vendita/vendita.module';
-import { FormVenditaNoleggioModule } from './pages/form-vendita-noleggio/form-vendita-noleggio.module';
+import { FormNoleggioModule} from "./pages/form-noleggio/form-noleggio.module";
+import { FormVenditaModule} from "./pages/form-vendita/form-vendita.module";
 import { BiciclettaDettagliModule } from './pages/bicicletta-dettagli/bicicletta-dettagli.module';
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { BiciclettaDettagliModule } from './pages/bicicletta-dettagli/bicicletta
     NoleggioModule,
     HomePageModule,
     VenditaModule,
-    FormVenditaNoleggioModule,
+    FormNoleggioModule,
+    FormVenditaModule,
     BiciclettaDettagliModule
   ],
   providers: [],

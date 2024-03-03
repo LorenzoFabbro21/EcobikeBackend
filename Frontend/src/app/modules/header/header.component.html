@@ -15,9 +15,8 @@
         <div class="link">
             <a routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' >Noleggio E-Bike</a>
             <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' >Acquisto E-Bike</a>
-            <a routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Vendita E-Bike</a>
-            <!-- <a *ngIf="user !== undefined && user.type === 'P'" routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Vendita E-Bike</a>
-            <a *ngIf="user !== undefined && user.type === 'V'" routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Noleggio E-Bike</a> -->
+            <a routerLink="/form_noleggio"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Noleggio E-Bike</a>
+            <a routerLink="/form_vendita"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Vendita E-Bike</a>
         </div>
         <div *ngIf="user" class = 'user-info-content'> 
             <span>Benvenuto {{user.username}}</span>

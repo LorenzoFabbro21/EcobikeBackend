@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EbikeComponent } from './ebike.component';
+import { FormNoleggioComponent } from './form-noleggio.component';
 
-describe('EbikeComponent', () => {
-  let component: EbikeComponent;
-  let fixture: ComponentFixture<EbikeComponent>;
+describe('FormVenditaNoleggioComponent', () => {
+  let component: FormNoleggioComponent;
+  let fixture: ComponentFixture<FormNoleggioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EbikeComponent ]
+      declarations: [ FormNoleggioComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EbikeComponent);
+    fixture = TestBed.createComponent(FormNoleggioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.*;
+
 @Setter
 @Getter
 @Entity
@@ -36,7 +39,10 @@ public class Bike {
 
     @Column(name = "measure")
     private String measure;
-
+/*
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "bike_id")
+    */
     @Column(name = "img")
     @Lob
     private String img;

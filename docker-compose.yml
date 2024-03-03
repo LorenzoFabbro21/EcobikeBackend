@@ -1,21 +1,21 @@
 version: "3"
 services:
-  frontend:
-    build: ./Frontend
-    container_name: frontend
-    ports:
-      - "4200:80"
-    networks:
-      - opnet
-    depends_on:
-      - ad-service
-      - appointment-service
-      - bike-service
-      - api-gateway
-      - booking-service
-      - recensione-service
-      - shop-service
-      - user-service
+  #frontend:
+  #  build: ./Frontend
+  #  container_name: frontend
+  #  ports:
+  #    - "4200:80"
+  #  networks:
+  #    - opnet
+  #  depends_on:
+  #    - ad-service
+  #    - appointment-service
+  #    - bike-service
+  #    - api-gateway
+  #    - booking-service
+  #    - recensione-service
+  #    - shop-service
+  #    - user-service
   postgres-user:
     container_name: postgres-user
     image: "postgres:9.6-alpine"

@@ -2,14 +2,13 @@
     <div #body>
       <div class="sectionGenerale">
         <div class="textSection">
-          <a routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow vendita'>Vendita E-Bike</a>
-          <!-- <a *ngIf="userLogged !== undefined && userLogged.type === 'P'" routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow vendita'>Vendita E-Bike</a>
-          <a *ngIf="userLogged !== undefined && userLogged.type === 'V'" routerLink="/form_inserimento"  label="form_inserimento" routerLinkActive="active-link" class='linkRow noleggio'>Noleggio E-Bike</a> -->
+          <a routerLink="/form_noleggio"  label="form_noleggio" routerLinkActive="active-link" class='linkRow vendita'>Noleggio E-Bike</a>
+          
         </div>
       </div>
       <div>
         <div class="titleMenu">
-          <h2 >Vendita E-Bike</h2>
+          <h2 >Noleggio E-Bike</h2>
           <!-- <h2 *ngIf="userLogged !== undefined && userLogged.type === 'P'">Vendita E-Bike</h2>
           <h2 *ngIf="userLogged !== undefined && userLogged.type === 'V'">Noleggio E-Bike</h2> -->
         </div>
@@ -36,8 +35,7 @@
           <input type="text" pInputText placeholder="Inserisci la tipologia" [(ngModel)]="tipologia" class="p-inputtext-lg input"/>
         </div>
         <div class="labelCombo">
-          <label>Prezzo*</label>
-          <label *ngIf="userLogged !== undefined && userLogged.type === 'V'">Prezzo all'ora*</label>
+          <label >Prezzo all'ora*</label>
           <input type="text" pInputText placeholder="Inserisci il prezzo" [(ngModel)]="prezzo" class="p-inputtext-lg input"/>
         </div>
         <div class="labelCombo">

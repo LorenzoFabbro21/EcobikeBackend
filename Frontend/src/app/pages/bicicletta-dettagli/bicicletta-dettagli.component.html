@@ -1,6 +1,6 @@
 <div>
     <div class="product">
-        <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" src="../../../assets/images/{{bicicletta.img}}" class="imagePrincipale"/>
+        <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="+bicicletta.img" class="imagePrincipale"/>
         <div *ngIf="bicicletta" class="details">
             <h1 class="marca">{{bicicletta.brand}}</h1>
             <h2 class="model">{{bicicletta.model}}</h2>

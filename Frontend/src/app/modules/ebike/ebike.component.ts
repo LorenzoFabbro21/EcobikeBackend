@@ -17,15 +17,6 @@ export class EbikeComponent {
     prezzo?: number = 20
 
   constructor ( private router: Router) {
-   this.bicicletta = {
-      id: 1,
-      model: 'RX1-Sport',
-      brand: 'Olmo',
-      color: 'Rosso e bianco',
-      size: Taglia.TagliaS,
-      type: 'Mountain Bike',
-      img: 'ebike.jpg'
-    };
   }
 
   clickBike() {
