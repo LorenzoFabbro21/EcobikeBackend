@@ -1,0 +1,24 @@
+.footerStyle {
+    display: flex;
+    flex-direction: column;
+}
+
+.idBike {
+    font-weight: bold;
+}
+
+.details{
+    font-weight: lighter;
+    font-size: small;
+}
+.dettagliPrezzo {
+    display: flex;
+    flex-direction: column;
+}
+:host ::ng-deep {
+    .p-card-header img {
+        width: 100%; 
+        height: 32vh;
+        object-fit: cover;
+    }
+}

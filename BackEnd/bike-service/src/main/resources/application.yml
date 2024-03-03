@@ -1,0 +1,18 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  application:
+    name: bike-service
+  cloud:
+    kubernetes:
+      enabled: false
+server:
+  port: 8088
+  forward-headers-strategy: framework
+  max-http-header-size=8192:
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}

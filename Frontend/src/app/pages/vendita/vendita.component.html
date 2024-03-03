@@ -1,0 +1,54 @@
+<div class="spinner" *ngIf="mostraSpinner">
+  <p-progressSpinner ></p-progressSpinner>
+</div>
+<div *ngIf="mostraSpinner==false">
+    <div #body >
+      <div class="sectionGenerale">
+        <div class="textSection">
+          <a routerLink="/vendita"  label="vendita" routerLinkActive="active-link" class='linkRow vendita'>E-Bike in vendita</a>
+        </div>
+      </div>
+      <div>
+        <div class="titleMenu">
+          <h2>E-Bike in vendita</h2>
+        </div>
+        <div class="filters">
+  
+            <div class="labelCombo">
+                <label>Marca</label>
+                <p-autoComplete [(ngModel)]="marcaValue" [suggestions]="marcaFiltered" [dropdown]="true" (completeMethod)="filterMarca($event)" field="name"></p-autoComplete>
+            </div>
+            <div class="labelCombo">
+                <label>Taglia</label>
+                <p-autoComplete [(ngModel)]="tagliaValue" [dropdown]="true" [suggestions]="tagliaFiltered" (completeMethod)="filterTaglia($event)" field="name"></p-autoComplete>
+            </div>
+            <div class="labelCombo">
+                <label>Colore</label>
+                <p-autoComplete [(ngModel)]="coloreValue" [dropdown]="true" [suggestions]="coloreList" (completeMethod)="filterColore($event)" field="name"></p-autoComplete>
+            </div>
+        </div>
+
+        <div *ngIf="viewAllBikes === false">
+            <div class="view">
+            <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
+                <div *ngIf="i<10">
+                <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+                </div>
+            </div>
+            
+            </div>
+            <div class="showMore">
+                <p-button  label="Mostra tutti" class="showMoreBtn" (onClick)="viewAll()"></p-button>
+            </div>
+        </div>
+        <div *ngIf="viewAllBikes" class="view">
+            <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
+              <div>
+                <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>

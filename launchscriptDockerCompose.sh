@@ -1,4 +1,4 @@
-cd service-discovery-server
+cd BackEnd/service-discovery-server
 docker build -t service-discovery-server .
 
 cd ../api-gateway
@@ -26,3 +26,10 @@ cd ../appointment-service
 docker build -t appointment-service .
 
 cd ..
+
+#cd Frontend
+#docker build -t frontend .
+
+
+
+

@@ -1,0 +1,68 @@
+<div >
+    <div #body>
+      <div class="sectionGenerale">
+        <div class="textSection">
+          <a routerLink="/form_vendita"  label="form_vendita" routerLinkActive="active-link" class='linkRow vendita'>Vendita E-Bike</a>
+        </div>
+      </div>
+      <div>
+        <div class="titleMenu">
+          <h2 >Vendita E-Bike</h2>
+        </div>
+      </div>
+      <div [ngClass]="{'spinner-active': mostraSpinner}" class="view" >
+        <div class="spinner" *ngIf="mostraSpinner">
+          <p-progressSpinner ></p-progressSpinner>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Marca*</label>
+          <input type="text" pInputText placeholder="Inserisci la marca" [(ngModel)]="marca" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Modello*</label>
+          <input type="text" pInputText placeholder="Inserisci il modello" [(ngModel)]="model" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Colore*</label>
+          <input type="text" pInputText placeholder="Inserisci il colore" [(ngModel)]="colore" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Taglia*</label>
+          <p-autoComplete [(ngModel)]="tagliaValue" [dropdown]="true" [suggestions]="tagliaFiltered" (completeMethod)="filterTaglia($event)" field="name"></p-autoComplete>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Tipologia*</label>
+          <input type="text" pInputText placeholder="Inserisci la tipologia" [(ngModel)]="tipologia" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Prezzo*</label>
+          <label *ngIf="userLogged !== undefined && userLogged.type === 'V'">Prezzo vendita*</label>
+          <input type="text" pInputText placeholder="Inserisci il prezzo" [(ngModel)]="prezzo" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Misure</label>
+          <input type="text" pInputText placeholder="Inserisci le misure" [(ngModel)]="misure" class="p-inputtext-lg input"/>
+        </div>
+      </div>
+      <div [ngClass]="{'spinner-active': mostraSpinner}" class="view" >
+        <div class="labelCombo upload content-below-spinner">
+          <label>Immagini</label>
+          <div class="upload">
+            <p-fileUpload name="uploadedFiles[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" >
+              <ng-template pTemplate="content">
+                  <ul *ngIf="uploadedFiles.length">
+                      <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                  </ul>
+              </ng-template>
+            </p-fileUpload>
+          </div>
+        </div>
+      </div>
+      <div class="submit">
+        <button pButton  label="Invia" class="button" (click)="send()"></button>
+      </div>
+    </div>
+</div>
+
+
+
