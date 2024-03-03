@@ -17,8 +17,8 @@
   }
 
   .imagePrincipale {
-    max-width: 45vw;
-    min-width: 40vw;
+    width: 50vw;
+    object-fit: cover;
   }
   .product {
     display: flex;
@@ -125,13 +125,17 @@
     width: 50vw;
     column-gap: 2vw;
     align-items: center;
-    margin: 0px 40px;
+    margin: 20px 40px;
     row-gap: 4vh;
   }
 
   .image{
     max-width: 10vw;
     border: 1px solid lightgray;
+    width: 100%; 
+    height: 32vh;
+    object-fit: cover;
+  
   }
 
   .accordion {

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Taglia } from 'src/app/enum/tagliaEnum';
+import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
+import { bikeRentSell } from 'src/app/interfaces/bikeRentSell';
+import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event| any;
@@ -27,156 +30,41 @@ export class VenditaComponent {
   coloreList: any[]= [];
 
   bikesVendita: Bicicletta[] = [];
+  sells: adSell[]= [];
+  bikeSellPrice:bikeRentSell[]= [];
+  mostraSpinner:boolean = true;
 
-  constructor () {
+  constructor (private ebService: EcobikeApiService) {
 
-    /* this.bikesVendita= [
-      {
-      id: 1,
-      model: 'RX1-Sport',
-      marca: 'Olmo',
-      colore: 'Rosso e bianco',
-      taglia: Taglia.TagliaS,
-      tipologia: 'Mountain Bike',
-      immagini: 'ebike.jpg'
-      },
-      {
-        id: 2,
-        model: 'CV5-Sport',
-        marca: 'Thor',
-        colore: 'Rosso e nero',
-        taglia: Taglia.TagliaM,
-        tipologia: 'Mountain Bike',
-        immagini: 'ebike.jpg'
-        },
-        {
-          id: 3,
-          model: 'BN8-Trial',
-          marca: 'Prova',
-          colore: 'Rosso e bianco',
-          taglia: Taglia.TagliaS,
-          tipologia: 'Trial',
-          immagini: 'ebike.jpg'
-          },
-          {
-            id: 4,
-            model: 'TopModel',
-            marca: 'Brabus',
-            colore: 'Verde',
-            taglia: Taglia.TagliaL,
-            tipologia: 'Mountain Bike',
-            immagini: 'ebike.jpg'
-            },
-            {
-              id: 1,
-              model: 'RX1-Sport',
-              marca: 'Olmo',
-              colore: 'Rosso e bianco',
-              taglia: Taglia.TagliaS,
-              tipologia: 'Mountain Bike',
-              immagini: 'ebike.jpg'
-              },
-              {
-                id: 2,
-                model: 'CV5-Sport',
-                marca: 'Thor',
-                colore: 'Rosso e nero',
-                taglia: Taglia.TagliaM,
-                tipologia: 'Mountain Bike',
-                immagini: 'ebike.jpg'
-                },
-                {
-                  id: 3,
-                  model: 'BN8-Trial',
-                  marca: 'Prova',
-                  colore: 'Rosso e bianco',
-                  taglia: Taglia.TagliaS,
-                  tipologia: 'Trial',
-                  immagini: 'ebike.jpg'
-                  },
-                  {
-                    id: 4,
-                    model: 'TopModel',
-                    marca: 'Brabus',
-                    colore: 'Verde',
-                    taglia: Taglia.TagliaL,
-                    tipologia: 'Mountain Bike',
-                    immagini: 'ebike.jpg'
-                    },
-                    {
-                      id: 1,
-                      model: 'RX1-Sport',
-                      marca: 'Olmo',
-                      colore: 'Rosso e bianco',
-                      taglia: Taglia.TagliaS,
-                      tipologia: 'Mountain Bike',
-                      immagini: 'ebike.jpg'
-                      },
-                      {
-                        id: 2,
-                        model: 'CV5-Sport',
-                        marca: 'Thor',
-                        colore: 'Rosso e nero',
-                        taglia: Taglia.TagliaM,
-                        tipologia: 'Mountain Bike',
-                        immagini: 'ebike.jpg'
-                        },
-                        {
-                          id: 3,
-                          model: 'BN8-Trial',
-                          marca: 'Prova',
-                          colore: 'Rosso e bianco',
-                          taglia: Taglia.TagliaS,
-                          tipologia: 'Trial',
-                          immagini: 'ebike.jpg'
-                          },
-                          {
-                            id: 4,
-                            model: 'TopModel',
-                            marca: 'Brabus',
-                            colore: 'Verde',
-                            taglia: Taglia.TagliaL,
-                            tipologia: 'Mountain Bike',
-                            immagini: 'ebike.jpg'
-                            },
-                            {
-                              id: 1,
-                              model: 'RX1-Sport',
-                              marca: 'Olmo',
-                              colore: 'Rosso e bianco',
-                              taglia: Taglia.TagliaS,
-                              tipologia: 'Mountain Bike',
-                              immagini: 'ebike.jpg'
-                              },
-                              {
-                                id: 2,
-                                model: 'CV5-Sport',
-                                marca: 'Thor',
-                                colore: 'Rosso e nero',
-                                taglia: Taglia.TagliaM,
-                                tipologia: 'Mountain Bike',
-                                immagini: 'ebike.jpg'
-                                },
-                                {
-                                  id: 3,
-                                  model: 'BN8-Trial',
-                                  marca: 'Prova',
-                                  colore: 'Rosso e bianco',
-                                  taglia: Taglia.TagliaS,
-                                  tipologia: 'Trial',
-                                  immagini: 'ebike.jpg'
-                                  },
-                                  {
-                                    id: 4,
-                                    model: 'TopModel',
-                                    marca: 'Brabus',
-                                    colore: 'Verde',
-                                    taglia: Taglia.TagliaL,
-                                    tipologia: 'Mountain Bike',
-                                    immagini: 'ebike.jpg'
-                                    }
-    ]; */
+    this.ebService.elenco_vendite().subscribe({
+      next: (response:adSell[]) => {
 
+        if (response != null) {
+          this.sells = response
+          this.ebService.elenco_bici_vendita().subscribe({
+            next: (response:Bicicletta[]) => {
+      
+              if (response != null) {
+                this.bikesVendita= response;
+      
+                this.sells.forEach(rent => {
+                  this.bikesVendita.forEach(bike => {
+                    if(rent.idBike == bike.id) {
+                      const obj: bikeRentSell= {
+                        bike: bike,
+                        price: rent.price ? rent.price : 0
+                      };
+                      this.bikeSellPrice.push(obj);
+                    }
+                  });
+                });
+                this.mostraSpinner = false;
+              }
+            }
+          });
+        }
+      }
+    });
 
     this.marcaList = [
       { name: 'Afghanistan', code: 'AF' },
@@ -195,6 +83,7 @@ export class VenditaComponent {
     ];
     
     this.marcaFiltered= this.marcaList;
+
   }
 
 

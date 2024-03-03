@@ -1,5 +1,8 @@
-<div>
-    <div #body>
+<div class="spinner" *ngIf="mostraSpinner">
+  <p-progressSpinner ></p-progressSpinner>
+</div>
+<div *ngIf="mostraSpinner==false">
+    <div #body >
       <div class="sectionGenerale">
         <div class="textSection">
           <a routerLink="/vendita"  label="vendita" routerLinkActive="active-link" class='linkRow vendita'>E-Bike in vendita</a>
@@ -20,16 +23,16 @@
                 <p-autoComplete [(ngModel)]="tagliaValue" [dropdown]="true" [suggestions]="tagliaFiltered" (completeMethod)="filterTaglia($event)" field="name"></p-autoComplete>
             </div>
             <div class="labelCombo">
-                <label></label>
+                <label>Colore</label>
                 <p-autoComplete [(ngModel)]="coloreValue" [dropdown]="true" [suggestions]="coloreList" (completeMethod)="filterColore($event)" field="name"></p-autoComplete>
             </div>
         </div>
 
         <div *ngIf="viewAllBikes === false">
             <div class="view">
-            <div *ngFor=" let bike of bikesVendita;  let i=index" >
+            <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
                 <div *ngIf="i<10">
-                <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+                <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
                 </div>
             </div>
             
@@ -39,9 +42,9 @@
             </div>
         </div>
         <div *ngIf="viewAllBikes" class="view">
-            <div *ngFor=" let bike of bikesVendita;  let i=index" >
+            <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
               <div>
-                <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+                <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
               </div>
             </div>
           </div>

@@ -35,7 +35,8 @@ export class FormNoleggioComponent {
   tipologia!:string;
   prezzo!:number;
   misure!:string;
-  img?:any;
+  img?:string= "";
+  mostraSpinner: boolean = false;
 
   constructor ( private ebService: EcobikeApiService) {
     
@@ -71,25 +72,38 @@ export class FormNoleggioComponent {
   send () {
     
     const reader = new FileReader();
+let count = 0;
 
+const readNextFile = () => {
+  if (count < this.uploadedFiles.length) {
+    const file = this.uploadedFiles[count];
     reader.onload = (e) => {
       const base64String = (e.target as any).result;
-      this.img= base64String;
-      this.postBike();
+      this.img= this.img + base64String;
+      count++;
+      readNextFile(); // Leggi il prossimo file in modo ricorsivo
     };
 
-    reader.readAsDataURL(this.uploadedFiles[0]);
+    reader.readAsDataURL(file);
+  } else {
+   this.postBike(); 
+  }
+
 
   }
 
+  readNextFile();
+}
+
   postBike() {
+    this.mostraSpinner= true;
     let idBike: number;
     let bike: Bicicletta;
     bike = {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: this.tagliaValue,
+      size: Taglia.TagliaS,
       type: this.tipologia,
       measure: this.misure,
       img: this.img
@@ -107,11 +121,17 @@ export class FormNoleggioComponent {
         this.ebService.new_noleggio(adRent).subscribe({
           next: (response:adRent) => {
             console.log(response);
+            setTimeout(() => {
+              this.mostraSpinner = false;
+              window.location.reload();
+            }, 3500);
         }
         });
       }
 
     });
+
+    
   }
 
 

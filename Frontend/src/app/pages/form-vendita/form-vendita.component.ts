@@ -33,6 +33,7 @@ export class FormVenditaComponent {
   prezzo!:number;
   misure!:string;
   img?:any;
+  mostraSpinner: boolean= false;
 
   constructor ( private ebService: EcobikeApiService) {
     
@@ -80,6 +81,7 @@ export class FormVenditaComponent {
   }
 
   postBike() {
+    this.mostraSpinner = true;
     let idBike: number;
     let bike: Bicicletta;
     bike = {
@@ -101,13 +103,20 @@ export class FormVenditaComponent {
         price:this.prezzo,
         idBike:idBike
         }
-        this.ebService.new_noleggio(adSell).subscribe({
+        this.ebService.new_vendita(adSell).subscribe({
           next: (response:adSell) => {
             console.log(response);
+            
+            setTimeout(() => {
+              this.mostraSpinner = false;
+              window.location.reload();
+            }, 3500);
         }
         });
       }
 
     });
+    
+
   }
 }

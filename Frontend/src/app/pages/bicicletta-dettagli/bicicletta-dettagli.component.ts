@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Scroll, } from '@angular/router';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
+import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 
 @Component({
   selector: 'app-bicicletta-dettagli',
   templateUrl: './bicicletta-dettagli.component.html',
   styleUrls: ['./bicicletta-dettagli.component.scss']
 })
-export class BiciclettaDettagliComponent {
+export class BiciclettaDettagliComponent implements OnInit{
 
+  id: number = 0;
   bicicletta?: Bicicletta;
   prezzo?: number;
   prezzo_noTax?: number;
   bikesSimili: Bicicletta[]= [];
   images: string[]= [];
-  constructor ( private route: ActivatedRoute) {
-
-    this.images = ['ebike.jpg','ebike-2.jpg','ebike.jpg','ebike.jpg','ebike.jpg']; 
+  imagePrincipal: string= "";
+  constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService) {
+    
     this.bikesSimili= [
       {
       id: 1,
@@ -58,9 +60,30 @@ export class BiciclettaDettagliComponent {
     ];
   }
   ngOnInit() {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     this.route.queryParams.subscribe(params => {
-      this.bicicletta = JSON.parse(params['ebike']);
-      this.prezzo = params["prezzo"];
+      this.id = JSON.parse(params['idBike']);
+      this.prezzo = JSON.parse(params['price']);
+    });
+
+    this.ebService.get_bicicletta(this.id).subscribe({
+      next: (response:Bicicletta) => {
+
+        if (response != null) {
+          this.bicicletta= response;
+          if(this.bicicletta !== undefined && this.bicicletta.img !== undefined) {
+            const splittedStrings = this.bicicletta.img.split('data:image/jpeg;base64');
+            splittedStrings.forEach((image: string) => {
+              if ( image !== "") {
+                this.images.push('data:image/jpeg;base64'+ image);
+              }
+              
+            });
+            this.imagePrincipal = this.images[0];
+            
+          }
+        }
+      }
     });
 
     if ( this.prezzo) {
@@ -74,11 +97,6 @@ export class BiciclettaDettagliComponent {
   }
 
   imageActualChange(image: string) {
-    if (this.bicicletta) {
-      this.bicicletta.img = image;
-    }
-    
-    
-
+    this.imagePrincipal = image;
   }
 }

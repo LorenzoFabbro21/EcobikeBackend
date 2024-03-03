@@ -1,4 +1,4 @@
-<div #body>
+<div #body >
     <div class="sectionGenerale">
       <div class="textSection">
         <h3 >Noleggio e acquisto di E-Bike</h3>
@@ -15,9 +15,9 @@
         <a routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
       </div>
       <div class="view">
-        <div *ngFor=" let bike of bikesNoleggio;  let i=index" >
+        <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
           <div *ngIf="i<4">
-            <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
           </div>
         </div>
       </div>
@@ -28,9 +28,9 @@
         <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
       </div>
       <div class="view">
-        <div *ngFor=" let bike of bikesVendita;  let i=index" >
+        <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
           <div *ngIf="i<4">
-            <app-ebike [bicicletta]="bike" [prezzo]="30" ></app-ebike>
+            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price" ></app-ebike>
           </div>
         </div>
       </div>

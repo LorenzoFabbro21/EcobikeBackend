@@ -21,6 +21,7 @@
   }
 
 .view {
+  position: relative;
     display: grid;
     grid-template-columns: repeat(2 , minmax(150px,1fr));
     column-gap: 3vw;
@@ -126,6 +127,18 @@ label {
     border-color: #01aaa9;
     font-size: large;
   }
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 1000; 
+}
+
+.view.spinner-active .content-below-spinner{
+  opacity: 0.5;
 }
 
 

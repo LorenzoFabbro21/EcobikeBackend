@@ -12,7 +12,7 @@ const routes: Routes = [
     title: '',
     path: '',
     component: HomePageComponent
-  },
+  }, 
   {
     title: "Noleggio",
     path: 'noleggio',
@@ -22,7 +22,7 @@ const routes: Routes = [
     title: "Vendita",
     path: 'vendita',
     component: VenditaComponent
-  },
+  }, 
   {
     title: "form_noleggio",
     path: 'form_noleggio',

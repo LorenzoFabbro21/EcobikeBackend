@@ -8,6 +8,6 @@ export interface Bicicletta {
   size?: Taglia,
   type?: string,
   measure?: string,
-  img?: any
+  img?: string
 
 }

@@ -1,6 +1,6 @@
 <div>
     <div class="product">
-        <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="+bicicletta.img" class="imagePrincipale"/>
+        <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="imagePrincipal" class="imagePrincipale"/>
         <div *ngIf="bicicletta" class="details">
             <h1 class="marca">{{bicicletta.brand}}</h1>
             <h2 class="model">{{bicicletta.model}}</h2>
@@ -32,7 +32,7 @@
     </div>
     <div class="immaginiPlus"> 
         <div *ngFor="let image of images">
-            <img alt="Card" src="../../../assets/images/{{image}}" class="image" (click)="imageActualChange(image)"/>
+            <img alt="Card" [src]="image" class="image" (click)="imageActualChange(image)"/>
         </div>
     </div>
     <div class="accordion">

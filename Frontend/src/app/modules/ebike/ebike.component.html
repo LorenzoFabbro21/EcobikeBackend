@@ -1,7 +1,7 @@
 <div (click)="clickBike()">
     <p-card>
         <ng-template pTemplate="header">
-            <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="bicicletta.img" />
+            <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="firstImage" class="image"/>
         </ng-template>
         <ng-template pTemplate="footer" class="footerStyle">
             <div class="idBike">E-Bike {{bicicletta?.id}}</div>

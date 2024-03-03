@@ -8,11 +8,11 @@ import { EbikeModule } from 'src/app/modules/ebike/ebike.module';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [VenditaComponent],
-  imports: [CommonModule, ButtonModule, FooterModule, HeaderModule,EbikeModule,AppRoutingModule,AutoCompleteModule,BrowserAnimationsModule,],
+  imports: [CommonModule, ButtonModule, FooterModule, HeaderModule,EbikeModule,AppRoutingModule,AutoCompleteModule,BrowserAnimationsModule,ProgressSpinnerModule],
   exports: [VenditaComponent]
 })
 export class VenditaModule { }
