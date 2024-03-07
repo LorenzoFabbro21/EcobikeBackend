@@ -39,10 +39,7 @@ public class Bike {
 
     @Column(name = "measure")
     private String measure;
-/*
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "bike_id")
-    */
+
     @Column(name = "img")
     @Lob
     private String img;

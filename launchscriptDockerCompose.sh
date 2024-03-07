@@ -19,11 +19,13 @@ docker build -t ad-service .
 cd ../booking-service
 docker build -t booking-service .
 
+cd ../appointment-service
+docker build -t appointment-service .
+
 cd ../bike-service
 docker build -t bike-service .
 
-cd ../appointment-service
-docker build -t appointment-service .
+
 
 cd ..
 

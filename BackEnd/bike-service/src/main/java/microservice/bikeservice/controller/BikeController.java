@@ -50,6 +50,16 @@ public class BikeController {
         return bike;
     }
 
+    @GetMapping("/filter")
+    public List<Bike> getBikesFilter(@RequestParam(name = "brand",required = false) String brand,
+                                     @RequestParam(name="color",required = false) String color,
+                                     @RequestParam(name="size",required = false) String size) {
+
+        List<Bike> bikes = new ArrayList<>();
+        bikes = bikeService.findFilterBike(brand,color,size);
+        return bikes;
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBike(@PathVariable("id") long id) {
 

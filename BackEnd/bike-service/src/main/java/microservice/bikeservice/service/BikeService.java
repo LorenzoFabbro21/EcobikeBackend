@@ -20,4 +20,6 @@ public interface BikeService {
     ResponseEntity<String> deleteAllBikes();
 
     ResponseEntity<Bike> updateBike(long id, @RequestBody Bike bike);
+
+    List<Bike> findFilterBike ( String brand,String color, String size);
 }

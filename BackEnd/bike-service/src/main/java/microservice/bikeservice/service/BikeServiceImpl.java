@@ -70,4 +70,11 @@ public class BikeServiceImpl implements BikeService{
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Override
+    @Transactional
+    public List<Bike> findFilterBike(String brand, String color, String size) {
+        List<Bike> obj = repository.findFilterBike(brand,color,size);
+        return obj;
+    }
 }
