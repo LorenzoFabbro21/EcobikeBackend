@@ -4,8 +4,9 @@ import { NoleggioComponent } from './pages/noleggio/noleggio.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { VenditaComponent } from './pages/vendita/vendita.component';
 import { FormNoleggioComponent } from './pages/form-noleggio/form-noleggio.component';
-import { BiciclettaDettagliComponent } from './pages/bicicletta-dettagli/bicicletta-dettagli.component';
+import { BiciclettaVenditaComponent } from './pages/bicicletta-vendita/bicicletta-vendita.component';
 import { FormVenditaComponent } from './pages/form-vendita/form-vendita.component';
+import { BiciclettaNoleggioComponent } from './pages/bicicletta-noleggio/bicicletta-noleggio.component';
 
 const routes: Routes = [
   {
@@ -34,9 +35,14 @@ const routes: Routes = [
     component: FormVenditaComponent
   },
   {
-    title: "dettaglio",
-    path: 'dettagli_ebike',
-    component: BiciclettaDettagliComponent
+    title: "dettaglio_vendita",
+    path: 'dettagli_vendita',
+    component: BiciclettaVenditaComponent
+  },
+  {
+    title: "dettaglio_noleggio",
+    path: 'dettagli_noleggio',
+    component: BiciclettaNoleggioComponent
   }
 ];
 @NgModule({

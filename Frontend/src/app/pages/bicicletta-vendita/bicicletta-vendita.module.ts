@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BiciclettaDettagliComponent } from './bicicletta-dettagli.component';
+import { BiciclettaVenditaComponent } from './bicicletta-vendita.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AppRoutingModule } from 'src/app/app-routing.module';
@@ -15,9 +15,8 @@ import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  declarations: [BiciclettaDettagliComponent],
+  declarations: [BiciclettaVenditaComponent],
   imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, FileUploadModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,EbikeModule, CardModule, AccordionModule],
-  exports: [BiciclettaDettagliComponent]
+  exports: [BiciclettaVenditaComponent]
 })
-export class BiciclettaDettagliModule {
- }
+export class BiciclettaVenditaModule {}

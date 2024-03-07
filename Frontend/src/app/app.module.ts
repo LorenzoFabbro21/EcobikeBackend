@@ -10,7 +10,8 @@ import { HomePageModule } from './pages/home-page/home-page.module';
 import { VenditaModule } from './pages/vendita/vendita.module';
 import { FormNoleggioModule } from './pages/form-noleggio/form-noleggio.module';
 import { FormVenditaModule } from './pages/form-vendita/form-vendita.module'; 
-import { BiciclettaDettagliModule } from './pages/bicicletta-dettagli/bicicletta-dettagli.module';
+import { BiciclettaVenditaModule } from './pages/bicicletta-vendita/bicicletta-vendita.module';
+import { BiciclettaNoleggioModule } from './pages/bicicletta-noleggio/bicicletta-noleggio.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -25,7 +26,8 @@ import { BiciclettaDettagliModule } from './pages/bicicletta-dettagli/bicicletta
     VenditaModule,
     FormNoleggioModule,
     FormVenditaModule,
-    BiciclettaDettagliModule
+    BiciclettaVenditaModule,
+    BiciclettaNoleggioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

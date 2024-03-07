@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Scroll, } from '@angular/router';
 import { Taglia } from 'src/app/enum/tagliaEnum';
+import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 
 @Component({
-  selector: 'app-bicicletta-dettagli',
-  templateUrl: './bicicletta-dettagli.component.html',
-  styleUrls: ['./bicicletta-dettagli.component.scss']
+  selector: 'app-bicicletta-vendita',
+  templateUrl: './bicicletta-vendita.component.html',
+  styleUrls: ['./bicicletta-vendita.component.scss']
 })
-export class BiciclettaDettagliComponent implements OnInit{
+export class BiciclettaVenditaComponent implements OnInit{
 
   id: number = 0;
   bicicletta?: Bicicletta;
@@ -18,6 +19,7 @@ export class BiciclettaDettagliComponent implements OnInit{
   bikesSimili: Bicicletta[]= [];
   images: string[]= [];
   imagePrincipal: string= "";
+  idAnnuncio?: number
   constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService) {
     
     this.bikesSimili= [
@@ -82,6 +84,19 @@ export class BiciclettaDettagliComponent implements OnInit{
             this.imagePrincipal = this.images[0];
             
           }
+        }
+      }
+    });
+
+    this.ebService.elenco_vendite().subscribe({
+      next: (response:adSell[]) => {
+        if ( response) {
+          response.forEach(rent => {
+            if( rent.idBike == this.bicicletta?.id) {
+              this.idAnnuncio= rent.id;
+              this.prezzo = rent.price;
+            }
+          });
         }
       }
     });

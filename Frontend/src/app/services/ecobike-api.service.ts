@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Bicicletta } from '../interfaces/bicicletta';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, retry, throwError } from 'rxjs';
 import { adRent } from '../interfaces/adRent';
 import { adSell } from '../interfaces/adSell';
+import { Booking } from '../interfaces/booking';
 
 @Injectable({
   providedIn: 'root'
@@ -110,11 +111,49 @@ export class EcobikeApiService {
     let options = { headers: headers };
     return this.httpClient.post<adSell>(`${this.url}/adsell`, adsell, options);
   }
-  
 
 
+  /**
+ * Inserisce una nuovo noleggio
+ *
+ * Endpoint Rest: bike
+ */
+  public new_booking(booking: Booking){
 
- 
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    }); 
+    let options = { headers: headers };
+    return this.httpClient.post<Booking>(`${this.url}/booking`, booking, options);
+  }
+
+  public get_bookings (): Observable<Booking[]> {
+    return  this.httpClient.get<Booking[]>(`${this.url}/booking`);
+  }
+
+  /**
+  * Restituisce l'elenco delle biciclette filtrate
+  *
+  * Endpoint Rest: bike/filter
+  */
+  findFilteredBikes(brand?: string, color?: string, size?: string): Observable<Bicicletta[]> {
+    let params = new HttpParams();
+    
+    // Aggiungi i parametri solo se non sono nulli
+    if (brand) {
+      params = params.set('brand', brand);
+    }
+    
+    if (color) {
+      params = params.set('color', color);
+    }
+    
+    if (size) {
+      params = params.set('size', size);
+    }
+
+    return this.httpClient.get<Bicicletta[]>(`${this.url}/bike/filter`, { params });
+  }
 
   handleError(error: any) {
     let errorMessage = '';

@@ -18,6 +18,10 @@
                     <label></label>
                     <h2 class="Text">{{bicicletta.color}}</h2>
                 </div>
+
+                <div class="card flex justify-content-center">
+                    <p-calendar class="max-w-full" [(ngModel)]="date" [disabledDates]="disabledDates"  placeholder="Seleziona la data del noleggio"></p-calendar>
+                </div>
                 <div class="showMore">
                     <p-button  label="Prenota" class="showMoreBtn" (onClick)="prenota()"></p-button>
                 </div>
