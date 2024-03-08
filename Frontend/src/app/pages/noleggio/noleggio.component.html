@@ -17,15 +17,15 @@
 
         <div class="labelCombo card ">
             <label>Marca</label>
-            <p-autoComplete [(ngModel)]="marcaValue" [suggestions]="marcaFiltered" [dropdown]="true" (completeMethod)="filterMarca($event)" field="name"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="marcaValue" [suggestions]="marcaFiltered" [dropdown]="true" (completeMethod)="filterMarca($event)" (onSelect)="setBrandValue($event)" field="name"></p-autoComplete>
         </div>
         <div class="labelCombo">
             <label>Taglia</label>
-            <p-autoComplete [(ngModel)]="tagliaValue" [dropdown]="true" [suggestions]="tagliaFiltered" (completeMethod)="filterTaglia($event)" field="name"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="tagliaValue" [dropdown]="true" [suggestions]="tagliaFiltered" (completeMethod)="filterTaglia($event)" (onSelect)="setSizeValue($event)" field="name"></p-autoComplete>
         </div>
         <div class="labelCombo">
             <label>Colore</label>
-            <p-autoComplete [(ngModel)]="coloreValue" [dropdown]="true" [suggestions]="coloreList" (completeMethod)="filterColore($event)" field="name"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="coloreValue" [dropdown]="true" [suggestions]="coloreFiltered" (completeMethod)="filterColore($event)" (onSelect)="setColorValue($event)" field="name"></p-autoComplete>
         </div>
     </div>
     <div *ngIf="viewAllBikes === false">

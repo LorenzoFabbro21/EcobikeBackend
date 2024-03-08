@@ -20,14 +20,7 @@ export class HomePageComponent {
   constructor (private ebService: EcobikeApiService) {
 
 
-    /* this.ebService.findFilteredBikes("Olmo",undefined, undefined).subscribe({
-      next: (response:Bicicletta[]) => {
-
-        if (response != null) {
-          console.log(response);
-        }
-      }
-    }); */
+    
 
     this.ebService.elenco_noleggi().subscribe({
       next: (response:adRent[]) => {

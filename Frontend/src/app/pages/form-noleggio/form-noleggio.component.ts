@@ -26,7 +26,7 @@ interface UploadEvent {
 export class FormNoleggioComponent {
   uploadedFiles: any[] = [];
   userLogged?: LoggedUser;
-  tagliaValue!: Taglia;
+  tagliaValue!: any;
   tagliaFiltered: any[] = [];
   tagliaList: any[]= [];
   colore!:string;
@@ -99,11 +99,12 @@ const readNextFile = () => {
     this.mostraSpinner= true;
     let idBike: number;
     let bike: Bicicletta;
+    
     bike = {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: Taglia.TagliaS,
+      size: this.tagliaValue.code,
       type: this.tipologia,
       measure: this.misure,
       img: this.img
