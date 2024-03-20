@@ -101,12 +101,12 @@ public class AppointmentServiceImpl implements AppointmentService {
             for(Appointment b: appointments){
                 Optional<User> userprivate = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/private/" + b.getIdUser(), User.class));
                 if(userprivate.isPresent()) {
-                    BikeUser obj = new BikeUser(userprivate.get(), bike);
+                    BikeUser obj = new BikeUser(userprivate.get(), bike, b, a);
                     bikeUser.add(obj);
                 }
                 else {
                     Optional<User> dealer = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/dealer/" + b.getIdUser(), User.class));
-                    BikeUser obj = new BikeUser(dealer.get(), bike);
+                    BikeUser obj = new BikeUser(dealer.get(), bike, b, a);
                     bikeUser.add(obj);
                 }
 

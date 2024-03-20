@@ -101,7 +101,7 @@ public class BookingServiceImpl implements BookingService{
             Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
             for(Booking b: bookings){
                 User user = restTemplate.getForObject("http://user-service/api/private/" + b.getIdPrivate(), User.class);
-                BikeUser obj = new BikeUser(user, bike);
+                BikeUser obj = new BikeUser(user, bike, b, a);
                 bikeUser.add(obj);
             }
         }
