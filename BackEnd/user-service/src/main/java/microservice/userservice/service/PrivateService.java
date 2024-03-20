@@ -1,6 +1,7 @@
 package microservice.userservice.service;
 
-import microservice.userservice.model.Dealer;
+import microservice.userservice.dto.Appointment;
+import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,4 +22,7 @@ public interface PrivateService {
         ResponseEntity<String> deleteAllPrivates();
 
         ResponseEntity<Private> updatePrivate(long id, @RequestBody Private userprivate);
+
+        List<Booking> getAllBookings(long id);
+        List<Appointment> getAllAppointments(long id);
 }

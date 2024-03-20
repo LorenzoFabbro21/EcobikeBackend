@@ -2,11 +2,14 @@ package microservice.userservice.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import microservice.userservice.dto.Appointment;
+import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
 import microservice.userservice.service.PrivateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +62,20 @@ public class PrivateController {
         System.out.println("Update Dealer with ID = " + id + "...");
         return privateService.updatePrivate(id, userprivate);
 
+    }
+    @GetMapping("/{idPrivate}/booking")
+    public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Bookings by idPrivate...");
+        List<Booking> bookings = new ArrayList<>();
+        bookings= privateService.getAllBookings(id);
+        return bookings;
+    }
+
+    @GetMapping("/{idPrivate}/appointments")
+    public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Appointements by idPrivate...");
+        List<Appointment> appointments = new ArrayList<>();
+        appointments = privateService.getAllAppointments(id);
+        return appointments;
     }
 }

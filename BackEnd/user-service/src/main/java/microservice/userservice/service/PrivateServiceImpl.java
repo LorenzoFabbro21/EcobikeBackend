@@ -2,14 +2,18 @@ package microservice.userservice.service;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
-import microservice.userservice.model.Dealer;
+import microservice.userservice.dto.Appointment;
+import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
-import microservice.userservice.repo.DealerRepository;
 import microservice.userservice.repo.PrivateRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,9 @@ import java.util.Optional;
 public class PrivateServiceImpl implements PrivateService {
 
     private final PrivateRepository repository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     @Transactional
@@ -72,5 +79,51 @@ public class PrivateServiceImpl implements PrivateService {
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public List<Booking> getAllBookings(long id) {
+        Optional<Private> privateData = repository.findById(id);
+        List<Booking> bookings;
+        if (privateData.isPresent()) {
+            Private _private = privateData.get();
+            ResponseEntity<List<Booking>> response;
+
+            bookings = restTemplate.exchange(
+                    "http://booking-service/api/booking/user/" + _private.getId(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Booking>>() {}
+            ).getBody();
+
+
+            return bookings;
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Appointment> getAllAppointments(long id) {
+        Optional<Private> privateData = repository.findById(id);
+        List<Appointment> appointments;
+        if (privateData.isPresent()) {
+            Private _private = privateData.get();
+            ResponseEntity<List<Appointment>> response;
+
+            appointments = restTemplate.exchange(
+                    "http://appointment-service/api/appointment/user/" + _private.getId(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Appointment>>() {}
+            ).getBody();
+
+
+            return appointments;
+        }
+        else {
+            return null;
+        }
     }
 }

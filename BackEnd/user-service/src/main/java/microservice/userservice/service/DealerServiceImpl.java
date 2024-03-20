@@ -2,11 +2,19 @@ package microservice.userservice.service;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import microservice.userservice.dto.Appointment;
+import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Dealer;
+import microservice.userservice.model.Private;
 import microservice.userservice.repo.DealerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
+import org.springframework.web.client.RestTemplate;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +26,8 @@ public class DealerServiceImpl implements DealerService {
 
     private final DealerRepository repository;
 
+    @Autowired
+    private RestTemplate restTemplate;
     @Override
     public Dealer saveDealer(Dealer dealer) {
         return repository.save(dealer);
@@ -63,5 +73,29 @@ public class DealerServiceImpl implements DealerService {
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @Override
+    public List<Appointment> getAllAppointments(long id) {
+        Optional<Dealer> dealerData = repository.findById(id);
+        List<Appointment> appointments;
+        if (dealerData.isPresent()) {
+            Dealer _dealer = dealerData.get();
+            ResponseEntity<List<Appointment>> response;
+
+            appointments = restTemplate.exchange(
+                    "http://appointment-service/api/appointment/user/" + _dealer.getId(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Appointment>>() {}
+            ).getBody();
+
+
+            return appointments;
+        }
+        else {
+            return null;
+        }
     }
 }

@@ -10,7 +10,7 @@ public class AdSell extends  Ad {
         super();
     }
 
-    public AdSell(float price, long idBike) {
-        super(price, idBike);
+    public AdSell(float price, long idBike, long idUser) {
+        super(price, idBike, idUser);
     }
 }

@@ -10,7 +10,7 @@ public class AdRent extends Ad {
         super();
     }
 
-    public AdRent(float price, long idBike) {
-        super(price, idBike);
+    public AdRent(float price, long idBike, long idUser) {
+        super(price, idBike, idUser);
     }
 }

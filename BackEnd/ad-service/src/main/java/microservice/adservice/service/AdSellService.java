@@ -23,4 +23,7 @@ public interface AdSellService {
 
         ResponseEntity<AdSell> updateAdSell(long id, @RequestBody AdSell adSell);
         List<Bike> getBikesToSell();
+        List<Bike> getAllBikeToSellByUser(long id);
+
+        List<AdSell> getAllAdSellByUser(long id);
 }

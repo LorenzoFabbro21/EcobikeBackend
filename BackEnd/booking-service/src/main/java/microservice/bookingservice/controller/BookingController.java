@@ -2,6 +2,7 @@ package microservice.bookingservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import microservice.bookingservice.dto.BikeUser;
 import microservice.bookingservice.model.Booking;
 import microservice.bookingservice.service.BookingService;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,14 @@ public class BookingController {
         return bookings;
     }
 
+    @GetMapping("/user/{idPrivate}")
+    public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Bookings by idPrivate...");
+        List<Booking> bookings = new ArrayList<>();
+        bookingService.getAllBookingsByPrivate(id).forEach(bookings::add);
+        return bookings;
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable("id") long id) {
         System.out.println("Delete Booking with ID = " + id + "...");
@@ -59,5 +68,11 @@ public class BookingController {
         System.out.println("Update Booking with ID = " + id + "...");
         ResponseEntity<Booking> response = bookingService.updateBooking(id,booking);
         return response;
+    }
+
+    @GetMapping("/user/{idPrivate}/bikes")
+    public List<BikeUser> getAllBikesRented(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Bikes rented by idPrivate...");
+        return bookingService.getAllBikesRented(id);
     }
 }
