@@ -116,11 +116,9 @@ public class PrivateServiceImpl implements PrivateService {
     public ResponseEntity<String> verifyParams(String email, String password) {
         Optional<Private> user = repository.findByMail(email);
         if (user.isPresent()) {
-            System.out.println("VALORE1="+ user.get().getGoogleCheck());
             if (user.get().getGoogleCheck()) { // if is a Google account getPassword will do an NPE
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("This email is associated with a google account, please login with google account");
             } else {
-                System.out.println("VALORE2="+ user.get().getPassword());
                 if (user.get().getPassword().equals(password)) {
                     return ResponseEntity.status(HttpStatus.OK).body("User verified");
                 }
@@ -145,7 +143,37 @@ public class PrivateServiceImpl implements PrivateService {
         if (!response.equals("ok")) {
             return response;
         }
-        
+
+        return "ok";
+    }
+
+    private String validateUserParams(Private userPrivate) {
+        System.out.println(userPrivate.getMail());
+        if (emailValidation(userPrivate.getMail()) && userPrivate.getMail() != null && !userPrivate.getMail().isEmpty()) {
+            return "Email non valida";
+        }
+        if (userPrivate.getPassword() == null || userPrivate.getPassword().isEmpty()) {
+            return "Password non valida";
+        }
+        if (userPrivate.getNome() == null || userPrivate.getNome().isEmpty()) {
+            return "First name not valid";
+        }
+
+        if (userPrivate.getCognome() == null || userPrivate.getCognome().isEmpty()) {
+            return "Last name not valid";
+        }
+        if (userPrivate.getTelefono().length() < 9) {
+            return "Phone number not valid";
+        }
+
+        return "ok";
+    }
+
+    private void updateUser(Private private_user, Private userObj) {
+        private_user.setPassword(userObj.getPassword());
+        private_user.setTelefono(userObj.getTelefono());
+        repository.save(private_user);
+    }
     public List<Booking> getAllBookings(long id) {
         Optional<Private> privateData = repository.findById(id);
         List<Booking> bookings;
@@ -189,31 +217,7 @@ public class PrivateServiceImpl implements PrivateService {
         }
      }
 
-    private String validateUserParams(Private userPrivate) {
-        System.out.println(userPrivate.getMail());
-        if (emailValidation(userPrivate.getMail()) && userPrivate.getMail() != null && !userPrivate.getMail().isEmpty()) {
-            return "Email non valida";
-        }
-        if (userPrivate.getPassword() == null || userPrivate.getPassword().isEmpty()) {
-            return "Password non valida";
-        }
-        if (userPrivate.getNome() == null || userPrivate.getNome().isEmpty()) {
-            return "First name not valid";
-        }
 
-        if (userPrivate.getCognome() == null || userPrivate.getCognome().isEmpty()) {
-            return "Last name not valid";
-        }
-        if (userPrivate.getTelefono().length() < 9) {
-            return "Phone number not valid";
-        }
 
-        return "ok";
-    }
 
-    private void updateUser(Private private_user, Private userObj) {
-        private_user.setPassword(userObj.getPassword());
-        private_user.setTelefono(userObj.getTelefono());
-        repository.save(private_user);
-    }
 }
