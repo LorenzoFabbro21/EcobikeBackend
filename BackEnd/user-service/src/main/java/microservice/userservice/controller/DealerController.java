@@ -2,6 +2,7 @@ package microservice.userservice.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import microservice.userservice.dto.Appointment;
 import microservice.userservice.model.Dealer;
 import microservice.userservice.service.DealerService;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,14 @@ public class DealerController {
         System.out.println("Update Dealer with ID = " + id + "...");
         ResponseEntity<Dealer> response = dealerService.updateDealer(id, dealer);
         return response;
+    }
+
+    @GetMapping("/{idDealer}/appointments")
+    public List<Appointment> getAllAppointmentsByDealer(@PathVariable("idDealer") long id) {
+        System.out.println("Get all Appointements by idDealer...");
+        List<Appointment> appointments = new ArrayList<>();
+        appointments = dealerService.getAllAppointments(id);
+        return appointments;
     }
 }
 

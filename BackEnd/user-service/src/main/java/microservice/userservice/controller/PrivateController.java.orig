@@ -2,17 +2,23 @@ package microservice.userservice.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+<<<<<<< HEAD
 import microservice.userservice.model.*;
+=======
 import microservice.userservice.dto.Appointment;
 import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import microservice.userservice.service.PrivateService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.net.*;
-import java.util.ArrayList;
 import java.nio.charset.*;
+=======
+import java.util.ArrayList;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import java.util.List;
 import java.util.Optional;
 
@@ -74,22 +80,20 @@ public class PrivateController {
         return privateService.updatePrivate(id, userprivate);
 
     }
+<<<<<<< HEAD
 
     @GetMapping("/verify")
     public ResponseEntity<String> verifyUser(@RequestParam String email, @RequestParam String password) {
 
         return privateService.verifyParams(email, password);
-    }
-   
+=======
     @GetMapping("/{idPrivate}/booking")
     public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bookings by idPrivate...");
         List<Booking> bookings = new ArrayList<>();
         bookings= privateService.getAllBookings(id);
         return bookings;
-        
     }
-    
 
     @GetMapping("/{idPrivate}/appointments")
     public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
@@ -97,5 +101,6 @@ public class PrivateController {
         List<Appointment> appointments = new ArrayList<>();
         appointments = privateService.getAllAppointments(id);
         return appointments;
+>>>>>>> EcobikeBackend/call_user_personal_area
     }
 }

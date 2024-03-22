@@ -2,10 +2,13 @@ package microservice.userservice.service;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+<<<<<<< HEAD
 import microservice.userservice.model.*;
+=======
 import microservice.userservice.dto.Appointment;
 import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import microservice.userservice.repo.PrivateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -108,6 +111,7 @@ public class PrivateServiceImpl implements PrivateService {
     }
 
     @Override
+<<<<<<< HEAD
     public Optional<Private> getPrivateByMail(String mail) {
         return repository.findByMail(mail);
     }
@@ -145,7 +149,37 @@ public class PrivateServiceImpl implements PrivateService {
         if (!response.equals("ok")) {
             return response;
         }
-        
+
+        return "ok";
+    }
+
+    private String validateUserParams(Private userPrivate) {
+        System.out.println(userPrivate.getMail());
+        if (emailValidation(userPrivate.getMail()) && userPrivate.getMail() != null && !userPrivate.getMail().isEmpty()) {
+            return "Email non valida";
+        }
+        if (userPrivate.getPassword() == null || userPrivate.getPassword().isEmpty()) {
+            return "Password non valida";
+        }
+        if (userPrivate.getNome() == null || userPrivate.getNome().isEmpty()) {
+            return "First name not valid";
+        }
+
+        if (userPrivate.getCognome() == null || userPrivate.getCognome().isEmpty()) {
+            return "Last name not valid";
+        }
+        if (userPrivate.getTelefono().length() < 9) {
+            return "Phone number not valid";
+        }
+
+        return "ok";
+    }
+
+    private void updateUser(Private private_user, Private userObj) {
+        private_user.setPassword(userObj.getPassword());
+        private_user.setTelefono(userObj.getTelefono());
+        repository.save(private_user);
+=======
     public List<Booking> getAllBookings(long id) {
         Optional<Private> privateData = repository.findById(id);
         List<Booking> bookings;
@@ -182,38 +216,13 @@ public class PrivateServiceImpl implements PrivateService {
                     null,
                     new ParameterizedTypeReference<List<Appointment>>() {}
             ).getBody();
-                        return appointments;
+
+
+            return appointments;
         }
         else {
             return null;
         }
-     }
-
-    private String validateUserParams(Private userPrivate) {
-        System.out.println(userPrivate.getMail());
-        if (emailValidation(userPrivate.getMail()) && userPrivate.getMail() != null && !userPrivate.getMail().isEmpty()) {
-            return "Email non valida";
-        }
-        if (userPrivate.getPassword() == null || userPrivate.getPassword().isEmpty()) {
-            return "Password non valida";
-        }
-        if (userPrivate.getNome() == null || userPrivate.getNome().isEmpty()) {
-            return "First name not valid";
-        }
-
-        if (userPrivate.getCognome() == null || userPrivate.getCognome().isEmpty()) {
-            return "Last name not valid";
-        }
-        if (userPrivate.getTelefono().length() < 9) {
-            return "Phone number not valid";
-        }
-
-        return "ok";
-    }
-
-    private void updateUser(Private private_user, Private userObj) {
-        private_user.setPassword(userObj.getPassword());
-        private_user.setTelefono(userObj.getTelefono());
-        repository.save(private_user);
+>>>>>>> EcobikeBackend/call_user_personal_area
     }
 }

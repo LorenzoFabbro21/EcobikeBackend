@@ -3,6 +3,7 @@ package microservice.adservice.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import microservice.adservice.dto.*;
+import microservice.adservice.model.AdRent;
 import microservice.adservice.model.AdSell;
 import microservice.adservice.service.AdSellService;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class AdSellController {
     @PostMapping(value = "")
     public AdSell postAdSell(@RequestBody AdSell adSell) {
 
-        AdSell _AdSell = adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike()));
+        AdSell _AdSell = adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
         return _AdSell;
     }
 
@@ -68,6 +69,18 @@ public class AdSellController {
         System.out.println("Update adSell with ID = " + id + "...");
         ResponseEntity<AdSell> response = adSellService.updateAdSell(id, adSell);
         return response;
+    }
+
+    @GetMapping("user/{id}/bikes")
+    public List<Bike> getAllAdsRentByUser(@PathVariable("id") long id) {
+        System.out.println("Get all Bike to Sell by user...");
+        return adSellService.getAllBikeToSellByUser(id);
+    }
+
+    @GetMapping("/user/{id}")
+    public List<AdSell> getAllAdsSellByUser(@PathVariable("id") long id) {
+        System.out.println("Get all Ads to rent by user...");
+        return adSellService.getAllAdSellByUser(id);
     }
 }
 

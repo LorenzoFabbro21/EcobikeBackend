@@ -88,4 +88,27 @@ public class AdRentServiceImpl implements AdRentService {
             return null;
         }
     }
+
+    public List<AdRent> getAllAdRentsByUser(long id){
+        return repository.getAllRentByUser(id);
+    }
+    public List<Bike> getBikesUser(long id) {
+
+        List<AdRent> adsRent = this.getAllAdRentsByUser(id);
+
+        if ( !adsRent.isEmpty())
+        {
+            List<Bike> bikes = new ArrayList<>();
+            for ( AdRent elem : adsRent) {
+                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                bikes.add(bike);
+            }
+            return bikes;
+        }
+        else {
+            return null;
+        }
+    }
+
+
 }

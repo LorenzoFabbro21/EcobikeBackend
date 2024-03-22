@@ -23,9 +23,11 @@ public interface DealerService {
 
         ResponseEntity<Dealer> updateDealer( long id, @RequestBody Dealer dealer);
 
+<<<<<<< HEAD
         Optional<Dealer> getDealerByMail(String mail);
 
-        List<Appointment> getAllAppointments(long id);
-
         ResponseEntity<String> verifyParams(String email, String password);
+=======
+        List<Appointment> getAllAppointments(long id);
+>>>>>>> EcobikeBackend/call_user_personal_area
 }

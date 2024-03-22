@@ -2,13 +2,21 @@ package microservice.appointmentservice.repo;
 
 import microservice.appointmentservice.dto.BikeUser;
 import microservice.appointmentservice.model.Appointment;
+<<<<<<< HEAD
 import org.springframework.data.jpa.repository.*;
+=======
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+<<<<<<< HEAD
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+=======
+public interface AppointmentRepository extends CrudRepository<Appointment, Long> {
     @Query("SELECT b FROM Appointment b WHERE " + " b.idUser = ?1")
     public List<Appointment> getAllAppointmentsByUser (long id);
 
@@ -17,4 +25,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     public List<Appointment> getAllAppointmentsByAnnouncement (long id);
 
 
+>>>>>>> EcobikeBackend/call_user_personal_area
 }

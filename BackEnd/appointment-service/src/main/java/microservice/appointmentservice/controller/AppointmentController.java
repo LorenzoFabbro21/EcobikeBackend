@@ -2,6 +2,7 @@ package microservice.appointmentservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import microservice.appointmentservice.dto.BikeUser;
 import microservice.appointmentservice.model.Appointment;
 import microservice.appointmentservice.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,17 @@ public class AppointmentController {
         System.out.println("Update Appointment with ID = " + id + "...");
         return appointmentService.updateAppointment(id,appointment);
 
+    }
+
+    @GetMapping("/user/{idUser}")
+    public List<Appointment> getAllAppointmentByUser(@PathVariable("idUser") long id) {
+        System.out.println("Get all Appointments by idUser...");
+        return appointmentService.getAllAppointmentsByUser(id);
+    }
+
+    @GetMapping("/user/{idUser}/bikes")
+    public List<BikeUser> getAllBikesSold(@PathVariable("idUser") long id) {
+        System.out.println("Get all Bikes sold by idUser...");
+        return appointmentService.getAllBikesSold(id);
     }
 }

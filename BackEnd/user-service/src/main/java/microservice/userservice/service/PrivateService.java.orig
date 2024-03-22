@@ -23,9 +23,12 @@ public interface PrivateService {
 
         ResponseEntity<Private> updatePrivate(long id, @RequestBody Private userprivate);
 
+<<<<<<< HEAD
         Optional<Private> getPrivateByMail(String mail);
 
+        ResponseEntity<String> verifyParams(String email, String password);
+=======
         List<Booking> getAllBookings(long id);
         List<Appointment> getAllAppointments(long id);
-        ResponseEntity<String> verifyParams(String email, String password);
+>>>>>>> EcobikeBackend/call_user_personal_area
 }

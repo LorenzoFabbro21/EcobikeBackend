@@ -2,11 +2,14 @@ package microservice.userservice.service;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
-import microservice.userservice.dto.Appointment;
+<<<<<<< HEAD
 import microservice.userservice.model.*;
+=======
+import microservice.userservice.dto.Appointment;
 import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Dealer;
 import microservice.userservice.model.Private;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import microservice.userservice.repo.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,7 +33,6 @@ public class DealerServiceImpl implements DealerService {
 
     @Autowired
     private RestTemplate restTemplate;
-
     @Override
     public Dealer saveDealer(Dealer dealer) {
         return repository.save(dealer);
@@ -78,30 +80,7 @@ public class DealerServiceImpl implements DealerService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    @Override
-    public List<Appointment> getAllAppointments(long id) {
-        Optional<Dealer> dealerData = repository.findById(id);
-        List<Appointment> appointments;
-        if (dealerData.isPresent()) {
-            Dealer _dealer = dealerData.get();
-            ResponseEntity<List<Appointment>> response;
-
-            appointments = restTemplate.exchange(
-                    "http://appointment-service/api/appointment/user/" + _dealer.getId(),
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Appointment>>() {}
-            ).getBody();
-
-
-            return appointments;
-        }
-        else {
-            return null;
-        }
-    }
-
+<<<<<<< HEAD
     @Override
     public Optional<Dealer> getDealerByMail(String mail) {
         return repository.findByMail(mail);
@@ -126,4 +105,29 @@ public class DealerServiceImpl implements DealerService {
         }
     }
 
+=======
+
+    @Override
+    public List<Appointment> getAllAppointments(long id) {
+        Optional<Dealer> dealerData = repository.findById(id);
+        List<Appointment> appointments;
+        if (dealerData.isPresent()) {
+            Dealer _dealer = dealerData.get();
+            ResponseEntity<List<Appointment>> response;
+
+            appointments = restTemplate.exchange(
+                    "http://appointment-service/api/appointment/user/" + _dealer.getId(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Appointment>>() {}
+            ).getBody();
+
+
+            return appointments;
+        }
+        else {
+            return null;
+        }
+    }
+>>>>>>> EcobikeBackend/call_user_personal_area
 }

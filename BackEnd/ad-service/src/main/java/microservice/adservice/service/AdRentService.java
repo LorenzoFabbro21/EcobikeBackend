@@ -24,5 +24,10 @@ public interface AdRentService {
     ResponseEntity<String> deleteAllAdsRent();
 
     ResponseEntity<AdRent> updateAdRent(long id, @RequestBody AdRent adRent);
+
     List<Bike> getBikesToRent();
+
+    List<Bike> getBikesUser(long id);
+
+    List<AdRent> getAllAdRentsByUser(long id);
 }

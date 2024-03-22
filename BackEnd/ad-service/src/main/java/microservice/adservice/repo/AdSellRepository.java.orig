@@ -1,13 +1,22 @@
 package microservice.adservice.repo;
 
 import microservice.adservice.model.*;
+<<<<<<< HEAD
 import org.springframework.data.jpa.repository.*;
+=======
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.*;
+>>>>>>> EcobikeBackend/call_user_personal_area
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+<<<<<<< HEAD
 public interface AdSellRepository extends JpaRepository<AdSell, Long> {
+=======
+public interface AdSellRepository extends CrudRepository<AdSell, Long> {
     @Query("SELECT b FROM AdSell b WHERE " + " b.idUser = ?1")
     public List<AdSell> getAllAdSellByUser (long id);
+>>>>>>> EcobikeBackend/call_user_personal_area
 }
