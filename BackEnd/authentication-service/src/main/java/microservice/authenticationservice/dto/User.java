@@ -1,20 +1,16 @@
-package microservice.shopservice.dto;
+package microservice.authenticationservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private long id;
     private String nome;
     private String cognome;
     private String mail;
     private String password;
-    private int telefono;
+    private String telefono;
     private Boolean googleCheck;
 }

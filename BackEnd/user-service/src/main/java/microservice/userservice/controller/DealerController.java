@@ -20,7 +20,7 @@ public class DealerController {
     @PostMapping(value = "")
     public Dealer postDealer(@RequestBody Dealer dealer) {
 
-        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getNome(), dealer.getCognome(), dealer.getMail(), dealer.getPassword(), dealer.getTelefono()));
+        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getNome(), dealer.getCognome(), dealer.getMail(), dealer.getPassword(), dealer.getTelefono(),dealer.getGoogleCheck()));
         return _Dealer;
     }
 
@@ -29,6 +29,14 @@ public class DealerController {
         System.out.println("Get dealer...");
         Optional<Dealer> delaer;
         delaer = dealerService.getDealerById(id);
+        return delaer;
+    }
+
+    @GetMapping("/email/{mail}")
+    public Optional<Dealer> getDealerByMail(@PathVariable String mail) {
+        System.out.println("Get dealer by mail...");
+        Optional<Dealer> delaer;
+        delaer = dealerService.getDealerByMail(mail);
         return delaer;
     }
 

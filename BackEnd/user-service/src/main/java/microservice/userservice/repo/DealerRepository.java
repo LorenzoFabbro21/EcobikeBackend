@@ -1,11 +1,12 @@
 package microservice.userservice.repo;
 
-import microservice.userservice.model.Dealer;
-import microservice.userservice.model.User;
-import org.springframework.data.repository.CrudRepository;
+import microservice.userservice.model.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;
 
-@Repository
-public interface DealerRepository extends CrudRepository<Dealer, Long> {
+import java.util.*;
 
+@Repository
+public interface DealerRepository extends JpaRepository<Dealer, Long> {
+    Optional<Dealer> findByMail(String email);
 }

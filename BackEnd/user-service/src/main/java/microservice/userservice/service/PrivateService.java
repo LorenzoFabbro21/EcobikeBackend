@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PrivateService {
 
-        Private savePrivate(Private user);
+        ResponseEntity<String> savePrivate(Private user);
 
         List<Private> getAllPrivates();
 
@@ -21,4 +21,8 @@ public interface PrivateService {
         ResponseEntity<String> deleteAllPrivates();
 
         ResponseEntity<Private> updatePrivate(long id, @RequestBody Private userprivate);
+
+        Optional<Private> getPrivateByMail(String mail);
+
+        ResponseEntity<String> verifyParams(String email, String password);
 }

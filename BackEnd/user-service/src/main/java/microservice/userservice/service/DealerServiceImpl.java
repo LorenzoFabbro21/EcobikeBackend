@@ -2,7 +2,7 @@ package microservice.userservice.service;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
-import microservice.userservice.model.Dealer;
+import microservice.userservice.model.*;
 import microservice.userservice.repo.DealerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -64,4 +65,29 @@ public class DealerServiceImpl implements DealerService {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Override
+    public Optional<Dealer> getDealerByMail(String mail) {
+        return repository.findByMail(mail);
+    }
+
+    @Override
+    public ResponseEntity<String> verifyParams(String email, String password) {
+        Optional<Dealer> user = repository.findByMail(email);
+        if (user.isPresent()) {
+            if (user.get().getGoogleCheck()) { // if is a Google account getPassword will do an NPE
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("This email is associated with a google account, please login with google account");
+            } else {
+                if (user.get().getPassword().equals(password)) {
+                    return ResponseEntity.status(HttpStatus.OK).body("User verified");
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User password not valid");
+                }
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not exists");
+        }
+    }
+
 }

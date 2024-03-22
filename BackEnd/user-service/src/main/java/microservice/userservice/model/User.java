@@ -31,15 +31,18 @@ public abstract class User {
     private String password;
 
     @Column(name = "telefono")
-    private int telefono;
+    private String telefono;
 
+    @Column(name = "googleCheck")
+    private Boolean googleCheck;
 
-    public User(String nome, String cognome, String mail, String password, int telefono) {
+    public User(String nome, String cognome, String mail, String password, String telefono, Boolean googleCheck) {
         this.nome = nome;
         this.cognome = cognome;
         this.mail = mail;
         this.password = password;
         this.telefono = telefono;
+        this.googleCheck = googleCheck;
     }
 
 }

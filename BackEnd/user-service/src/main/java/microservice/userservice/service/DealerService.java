@@ -21,4 +21,8 @@ public interface DealerService {
         ResponseEntity<String> deleteAllDealers();
 
         ResponseEntity<Dealer> updateDealer( long id, @RequestBody Dealer dealer);
+
+        Optional<Dealer> getDealerByMail(String mail);
+
+        ResponseEntity<String> verifyParams(String email, String password);
 }
