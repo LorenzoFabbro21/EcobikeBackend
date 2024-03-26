@@ -48,11 +48,15 @@ public class ShopController {
 
     @GetMapping("/{id}/user")
     public User getUserFromShop(@PathVariable("id") long id) {
-        System.out.println("Get user from review...");
         User user = new User();
         user = shopService.getUserFromShop(id);
         return user;
     }
+    @GetMapping("/user/{id}")
+    public Optional<Shop> getShopFromUser(@PathVariable("id") long id) {
+        return shopService.getShopFromUser(id);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteShop(@PathVariable("id") long id) {

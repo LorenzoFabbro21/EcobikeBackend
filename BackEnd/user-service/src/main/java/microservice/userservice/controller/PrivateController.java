@@ -27,7 +27,7 @@ public class PrivateController {
 
     @PostMapping(value = "")
     public ResponseEntity<String> postPrivate(@RequestBody Private user) {
-        ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getNome(), user.getCognome(), user.getMail(), user.getPassword(), user.getTelefono(),user.getGoogleCheck()));
+        ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
         return resp;
 
     }
@@ -57,9 +57,9 @@ public class PrivateController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePrivate(@PathVariable("id") long id) {
+    public ResponseEntity<?> deletePrivate(@PathVariable("id") long id) {
         System.out.println("Delete Private with ID = " + id + "...");
-        return  privateService.deletePrivate(id);
+        return privateService.deletePrivate(id);
     }
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllPrivates() {

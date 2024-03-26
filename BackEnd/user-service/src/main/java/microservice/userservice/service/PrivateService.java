@@ -17,7 +17,7 @@ public interface PrivateService {
 
         Optional<Private> getPrivateById(long id);
 
-        ResponseEntity<String> deletePrivate(long id);
+        ResponseEntity<?> deletePrivate(long id);
 
         ResponseEntity<String> deleteAllPrivates();
 

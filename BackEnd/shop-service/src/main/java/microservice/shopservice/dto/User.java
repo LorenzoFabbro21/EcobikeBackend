@@ -11,10 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class User {
     private long id;
-    private String nome;
-    private String cognome;
+    private String name;
+    private String lastName;
     private String mail;
     private String password;
-    private int telefono;
+    private String phoneNumber;
     private Boolean googleCheck;
 }

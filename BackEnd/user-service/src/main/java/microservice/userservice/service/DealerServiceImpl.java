@@ -66,11 +66,11 @@ public class DealerServiceImpl implements DealerService {
 
         if(dealerdata.isPresent()) {
             Dealer Dealer = dealerdata.get();
-            Dealer.setNome(dealer.getNome());
-            Dealer.setCognome(dealer.getCognome());
+            Dealer.setName(dealer.getName());
+            Dealer.setLastName(dealer.getLastName());
             Dealer.setMail(dealer.getMail());
             Dealer.setPassword(dealer.getPassword());
-            Dealer.setTelefono(dealer.getTelefono());
+            Dealer.setPhoneNumber(dealer.getPhoneNumber());
             repository.save(Dealer);
             return new ResponseEntity<>(repository.save(Dealer), HttpStatus.OK);
         }

@@ -96,4 +96,9 @@ public class ShopServiceImpl implements ShopService {
             return null;
         }
     }
+
+    @Override
+    public Optional<Shop> getShopFromUser(long id) {
+        return repository.findByIdUser(id);
+    }
 }

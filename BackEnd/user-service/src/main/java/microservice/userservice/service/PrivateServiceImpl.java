@@ -6,7 +6,7 @@ import microservice.userservice.model.*;
 import microservice.userservice.dto.Appointment;
 import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
-import microservice.userservice.repo.PrivateRepository;
+import microservice.userservice.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -16,9 +16,7 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.*;
 
 @Service
@@ -27,7 +25,7 @@ import java.util.regex.*;
 public class PrivateServiceImpl implements PrivateService {
 
     private final PrivateRepository repository;
-
+    private final DealerRepository repositoryDealer;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -43,6 +41,7 @@ public class PrivateServiceImpl implements PrivateService {
 
         // check if account exists
         Optional<Private> userReturned = repository.findByMail(userObj.getMail());
+        Optional<Dealer> dealerReturned = repositoryDealer.findByMail(userObj.getMail());
         if (userReturned.isPresent()) {
             if (userReturned.get().getGoogleCheck() && !userObj.getGoogleCheck()) {
                 updateUser(userReturned.get(), userObj);
@@ -51,8 +50,18 @@ public class PrivateServiceImpl implements PrivateService {
             else {
                 return ResponseEntity.badRequest().body("Client email is already present in the database");
             }
+        }
+        else if (dealerReturned.isPresent()) {
+            if (userReturned.get().getGoogleCheck() && !userObj.getGoogleCheck()) {
+                updateUser(userReturned.get(), userObj);
+                return ResponseEntity.status(HttpStatus.OK).body("Account updated successfully");
+            }
+            else {
+                return ResponseEntity.badRequest().body("Client email is already present in the database");
+            }
 
-        } else {
+        }
+        else {
             repository.save(userObj);
             return ResponseEntity.status(HttpStatus.OK).body("Client successfully created");
         }
@@ -76,9 +85,11 @@ public class PrivateServiceImpl implements PrivateService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> deletePrivate(long id) {
+    public ResponseEntity<?> deletePrivate(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("Private has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Private has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
@@ -95,11 +106,11 @@ public class PrivateServiceImpl implements PrivateService {
 
         if(privatedata.isPresent()) {
             Private Private = privatedata.get();
-            Private.setNome(userprivate.getNome());
-            Private.setCognome(userprivate.getCognome());
+            Private.setName(userprivate.getName());
+            Private.setLastName(userprivate.getLastName());
             Private.setMail(userprivate.getMail());
             Private.setPassword(userprivate.getPassword());
-            Private.setTelefono(userprivate.getTelefono());
+            Private.setPhoneNumber(userprivate.getPhoneNumber());
             repository.save(Private);
             return new ResponseEntity<>(repository.save(Private), HttpStatus.OK);
         }
@@ -109,6 +120,7 @@ public class PrivateServiceImpl implements PrivateService {
 
     @Override
     public Optional<Private> getPrivateByMail(String mail) {
+
         return repository.findByMail(mail);
     }
 
@@ -155,14 +167,14 @@ public class PrivateServiceImpl implements PrivateService {
         if (userPrivate.getPassword() == null || userPrivate.getPassword().isEmpty()) {
             return "Password non valida";
         }
-        if (userPrivate.getNome() == null || userPrivate.getNome().isEmpty()) {
+        if (userPrivate.getName() == null || userPrivate.getName().isEmpty()) {
             return "First name not valid";
         }
 
-        if (userPrivate.getCognome() == null || userPrivate.getCognome().isEmpty()) {
+        if (userPrivate.getLastName() == null || userPrivate.getLastName().isEmpty()) {
             return "Last name not valid";
         }
-        if (userPrivate.getTelefono().length() < 9) {
+        if (userPrivate.getPhoneNumber().length() < 9) {
             return "Phone number not valid";
         }
 
@@ -171,9 +183,17 @@ public class PrivateServiceImpl implements PrivateService {
 
     private void updateUser(Private private_user, Private userObj) {
         private_user.setPassword(userObj.getPassword());
-        private_user.setTelefono(userObj.getTelefono());
+        private_user.setPhoneNumber(userObj.getPhoneNumber());
         repository.save(private_user);
     }
+
+    private void updateUser(Dealer dealer, Dealer userObj) {
+        dealer.setPassword(userObj.getPassword());
+        dealer.setPhoneNumber(userObj.getPhoneNumber());
+        repositoryDealer.save(dealer);
+    }
+
+
     public List<Booking> getAllBookings(long id) {
         Optional<Private> privateData = repository.findById(id);
         List<Booking> bookings;

@@ -21,7 +21,7 @@ public class DealerController {
     @PostMapping(value = "")
     public Dealer postDealer(@RequestBody Dealer dealer) {
 
-        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getNome(), dealer.getCognome(), dealer.getMail(), dealer.getPassword(), dealer.getTelefono(),dealer.getGoogleCheck()));
+        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getName(), dealer.getLastName(), dealer.getMail(), dealer.getPassword(), dealer.getPhoneNumber(),dealer.getGoogleCheck()));
         return _Dealer;
     }
 

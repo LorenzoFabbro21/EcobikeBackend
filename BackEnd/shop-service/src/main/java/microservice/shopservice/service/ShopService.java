@@ -23,4 +23,6 @@ public interface ShopService {
     ResponseEntity<Shop> updateShop(long id, @RequestBody Shop shop);
 
     User getUserFromShop(long id);
+
+    Optional<Shop> getShopFromUser(long id);
 }

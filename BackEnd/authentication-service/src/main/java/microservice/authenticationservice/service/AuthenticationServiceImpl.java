@@ -32,13 +32,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //send a message to the user service to create the user
         User userDetails = new User();
         userDetails.setMail(user.getAttribute("email"));
-        userDetails.setNome(user.getAttribute("name"));
-        userDetails.setCognome(user.getAttribute("family_name"));
+        userDetails.setName(user.getAttribute("given_name"));
+        userDetails.setLastName(user.getAttribute("family_name"));
         userDetails.setGoogleCheck(true);
         userDetails.setPassword("");
-        userDetails.setTelefono("");
+        userDetails.setPhoneNumber("");
 
         try {
+
             HttpStatusCode user_response = restTemplate.postForEntity("http://user-service/api/private", userDetails, String.class).getStatusCode();
             if (user_response != HttpStatus.OK) {
                 return ResponseEntity.status(user_response).body("Invalid request");
@@ -82,14 +83,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 try {
                     HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service/api/private/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
                     if (responseStatusCode != HttpStatus.OK) {
-                        return ResponseEntity.status(responseStatusCode).body("Invalid credentials");
+                        Map<String, String> body = new HashMap<>();
+                        body.put("Message", "Invalid credentials");
+                        return ResponseEntity.status(responseStatusCode).body(body);
                     }
                     ResponseEntity<User> response = restTemplate.getForEntity("http://user-service/api/private/email/" + loginRequest.getEmail(), User.class);
                     if (response.getBody() == null) {
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
+                        Map<String, String> body = new HashMap<>();
+                        body.put("Message", "Server error occurred");
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
                     }
                     // Generate JWT token
-                    String token = JWT.create().withSubject(loginRequest.getEmail()).withClaim("name", response.getBody().getNome() != null ? response.getBody().getNome() : "").withClaim("last_name", response.getBody().getCognome() != null ? response.getBody().getCognome() : "").withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
+                    String token = JWT.create().withSubject(loginRequest.getEmail()).withClaim("name", response.getBody().getName() != null ? response.getBody().getName() : "").withClaim("last_name", response.getBody().getLastName() != null ? response.getBody().getLastName() : "").withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
 
                     Map<String, String> body = new HashMap<>();
                     body.put("token", token);
@@ -99,21 +104,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 catch (HttpClientErrorException e) {
                     return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
                 } catch (Exception e) {
+
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
                 }
         } else if (dealer.isPresent()){
                 try {
                     HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service/api/dealer/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
                     if (responseStatusCode != HttpStatus.OK) {
-                        return ResponseEntity.status(responseStatusCode).body("Invalid credentials");
+                        Map<String, String> body = new HashMap<>();
+                        body.put("Message", "Invalid credentials");
+                        return ResponseEntity.status(responseStatusCode).body(body);
                     }
                     ResponseEntity<User> response = restTemplate.getForEntity("http://user-service/api/dealer/email/" + loginRequest.getEmail(), User.class);
 
                     if (response.getBody() == null) {
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
+                        Map<String, String> body = new HashMap<>();
+                        body.put("Message", "Server error occurred");
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
                     }
                     // Generate JWT token
-                    String token = JWT.create().withSubject(loginRequest.getEmail()).withClaim("name", response.getBody().getNome() != null ? response.getBody().getNome() : "").withClaim("last_name", response.getBody().getCognome() != null ? response.getBody().getCognome() : "").withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
+                    String token = JWT.create().withSubject(loginRequest.getEmail()).withClaim("name", response.getBody().getName() != null ? response.getBody().getName() : "").withClaim("last_name", response.getBody().getLastName() != null ? response.getBody().getLastName() : "").withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
 
                     Map<String, String> body = new HashMap<>();
                     body.put("token", token);
@@ -128,7 +138,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
             else
             {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not exists");
+                Map<String, String> body = new HashMap<>();
+                body.put("Message","User not exists");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
             }
 
     }

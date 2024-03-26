@@ -9,10 +9,10 @@ import lombok.*;
 @Setter
 public class UserDetails {
 
-    private String nome;
-    private String cognome;
+    private String name;
+    private String lastName;
     private String mail;
     private String password;
-    private String telefono;
+    private String phoneNumber;
     private Boolean googleCheck;
 }
