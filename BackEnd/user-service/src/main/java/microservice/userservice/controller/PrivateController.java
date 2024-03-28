@@ -70,7 +70,7 @@ public class PrivateController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
-        System.out.println("Update Dealer with ID = " + id + "...");
+        System.out.println("Update Private with ID = " + id + "...");
         return privateService.updatePrivate(id, userprivate);
 
     }

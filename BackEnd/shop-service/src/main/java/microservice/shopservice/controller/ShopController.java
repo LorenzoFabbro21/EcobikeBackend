@@ -24,7 +24,7 @@ public class ShopController {
     @PostMapping(value = "")
     public Shop postShop(@RequestBody Shop shop) {
 
-        Shop _Shop = shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getIdUser()));
+        Shop _Shop = shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getImg(), shop.getIdUser()));
         return _Shop;
     }
 

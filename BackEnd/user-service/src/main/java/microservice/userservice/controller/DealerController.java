@@ -71,6 +71,13 @@ public class DealerController {
         return response;
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam String email, @RequestParam String password) {
+
+        return dealerService.verifyParams(email, password);
+    }
+
+
     @GetMapping("/{idDealer}/appointments")
     public List<Appointment> getAllAppointmentsByDealer(@PathVariable("idDealer") long id) {
         System.out.println("Get all Appointements by idDealer...");
