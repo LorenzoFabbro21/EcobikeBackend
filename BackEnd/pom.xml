@@ -23,6 +23,7 @@
         <module>appointment-service</module>
         <module>bike-service</module>
         <module>booking-service</module>
+        <module>authentication-service</module>
     </modules>
 
     <properties>

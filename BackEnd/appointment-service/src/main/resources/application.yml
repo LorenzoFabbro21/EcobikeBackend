@@ -4,6 +4,13 @@ spring:
   cloud:
     kubernetes:
       enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "416088533567-1nrmr75oqcqc2cj5bcsohterecmsoniu.apps.googleusercontent.com"
+            client-secret: "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"
 server:
   port: 8086
   forward-headers-strategy: framework

@@ -25,7 +25,8 @@ docker build -t appointment-service .
 cd ../bike-service
 docker build -t bike-service .
 
-
+cd ../authentication-service
+docker build -t authentication-service .
 
 cd ..
 

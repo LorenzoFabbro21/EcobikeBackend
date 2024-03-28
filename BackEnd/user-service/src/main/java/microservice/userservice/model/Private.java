@@ -9,7 +9,7 @@ public class Private extends User{
         super();
     }
 
-    public Private(String nome, String cognome, String mail, String password, int telefono) {
-        super(nome, cognome, mail, password, telefono);
+    public Private(String name, String lastName, String mail, String password, String phoneNumber, Boolean googleCheck) {
+        super(name, lastName, mail, password, phoneNumber, googleCheck);
     }
 }

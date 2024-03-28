@@ -1,0 +1,26 @@
+package microservice.bookingservice.repo;
+
+import microservice.bookingservice.model.Booking;
+<<<<<<< HEAD
+import org.springframework.data.jpa.repository.*;
+=======
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+>>>>>>> EcobikeBackend/call_user_personal_area
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+<<<<<<< HEAD
+public interface BookingRepository extends JpaRepository <Booking, Long> {
+=======
+public interface BookingRepository extends CrudRepository <Booking, Long> {
+
+    @Query("SELECT b FROM Booking b WHERE " + " b.idPrivate = ?1")
+    public List<Booking> getAllBookingsByPrivate (long id);
+
+    @Query("SELECT b FROM Booking b WHERE " + " b.idAnnouncement = ?1")
+    public List<Booking> getAllBookingsByAnnouncement (long id);
+>>>>>>> EcobikeBackend/call_user_personal_area
+}

@@ -31,14 +31,19 @@ public class Shop {
     @Column(name = "phoneNumber")
     private int phoneNumber;
 
+    @Column(name = "img")
+    @Lob
+    private String img;
+
     @Column(name = "idUser")
     private int idUser;
 
-    public Shop(String name, String city, String address, int phoneNumber, int idUser) {
+    public Shop( String name, String city, String address, int phoneNumber, String img, int idUser) {
         this.name = name;
         this.city = city;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.img = img;
         this.idUser = idUser;
     }
 }

@@ -18,11 +18,11 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "nome")
-    private String nome;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "cognome")
-    private String cognome;
+    @Column(name = "lastName")
+    private String lastName;
 
     @Column(name = "mail")
     private String mail;
@@ -30,16 +30,19 @@ public abstract class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "telefono")
-    private int telefono;
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
 
+    @Column(name = "googleCheck")
+    private Boolean googleCheck;
 
-    public User(String nome, String cognome, String mail, String password, int telefono) {
-        this.nome = nome;
-        this.cognome = cognome;
+    public User(String name, String lastName, String mail, String password, String phoneNumber, Boolean googleCheck) {
+
+        this.name = name;
+        this.lastName = lastName;
         this.mail = mail;
         this.password = password;
-        this.telefono = telefono;
+        this.phoneNumber = phoneNumber;
+        this.googleCheck = googleCheck;
     }
-
 }

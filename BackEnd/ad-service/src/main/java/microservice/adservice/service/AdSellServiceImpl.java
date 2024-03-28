@@ -25,6 +25,7 @@ public class AdSellServiceImpl implements AdSellService {
 
     @Autowired
     private RestTemplate restTemplate;
+
     @Override
     public AdSell saveAdSell(AdSell adSell) {
         return repository.save(adSell);
@@ -58,25 +59,45 @@ public class AdSellServiceImpl implements AdSellService {
     public ResponseEntity<AdSell> updateAdSell(long id, AdSell adSell) {
         Optional<AdSell> adSellData = repository.findById(id);
 
-        if(adSellData.isPresent()) {
+        if (adSellData.isPresent()) {
             AdSell AdSell = adSellData.get();
             AdSell.setPrice(adSell.getPrice());
             AdSell.setIdBike(adSell.getIdBike());
             repository.save(AdSell);
             return new ResponseEntity<>(repository.save(AdSell), HttpStatus.OK);
-        }
-        else
+        } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
     @Override
     public List<Bike> getBikesToSell() {
         List<AdSell> adsSell = new ArrayList<>();
         adsSell = this.getAllAdsSell();
-        if ( !adsSell.isEmpty())
+        if (!adsSell.isEmpty()) {
+            List<Bike> bikes = new ArrayList<>();
+            for (AdSell elem : adsSell) {
+                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                bikes.add(bike);
+            }
+            return bikes;
+        } else {
+            return null;
+        }
+    }
+
+    public List<AdSell> getAllAdSellByUser(long id){
+        return repository.getAllAdSellByUser(id);
+    }
+    @Override
+    public List<Bike> getAllBikeToSellByUser(long id) {
+        List<AdSell> adSells = new ArrayList<>();
+        adSells= this.getAllAdSellByUser(id);
+        List<AdRent> response = new ArrayList<>();
+        if ( !adSells.isEmpty())
         {
             List<Bike> bikes = new ArrayList<>();
-            for ( AdSell elem : adsSell) {
+            for ( AdSell elem : adSells) {
                 Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
@@ -86,6 +107,5 @@ public class AdSellServiceImpl implements AdSellService {
             return null;
         }
     }
-
 
 }

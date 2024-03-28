@@ -14,6 +14,7 @@ import java.util.Date;
 @Entity
 @Table(name = "appointment")
 public class Appointment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

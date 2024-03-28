@@ -23,8 +23,12 @@ public abstract class Ad {
     @Column(name = "idBike")
     private long idBike;
 
-    public Ad(float price, long idBike) {
+    @Column(name = "idUser")
+    private long idUser;
+
+    public Ad(float price, long idBike, long idUser) {
         this.price = price;
         this.idBike = idBike;
+        this.idUser = idUser;
     }
 }

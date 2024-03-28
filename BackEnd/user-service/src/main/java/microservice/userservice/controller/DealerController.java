@@ -2,6 +2,7 @@ package microservice.userservice.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import microservice.userservice.dto.Appointment;
 import microservice.userservice.model.Dealer;
 import microservice.userservice.service.DealerService;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class DealerController {
     @PostMapping(value = "")
     public Dealer postDealer(@RequestBody Dealer dealer) {
 
-        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getNome(), dealer.getCognome(), dealer.getMail(), dealer.getPassword(), dealer.getTelefono()));
+        Dealer _Dealer = dealerService.saveDealer(new Dealer(dealer.getName(), dealer.getLastName(), dealer.getMail(), dealer.getPassword(), dealer.getPhoneNumber(),dealer.getGoogleCheck()));
         return _Dealer;
     }
 
@@ -29,6 +30,14 @@ public class DealerController {
         System.out.println("Get dealer...");
         Optional<Dealer> delaer;
         delaer = dealerService.getDealerById(id);
+        return delaer;
+    }
+
+    @GetMapping("/email/{mail}")
+    public Optional<Dealer> getDealerByMail(@PathVariable String mail) {
+        System.out.println("Get dealer by mail...");
+        Optional<Dealer> delaer;
+        delaer = dealerService.getDealerByMail(mail);
         return delaer;
     }
 
@@ -60,6 +69,21 @@ public class DealerController {
         System.out.println("Update Dealer with ID = " + id + "...");
         ResponseEntity<Dealer> response = dealerService.updateDealer(id, dealer);
         return response;
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam String email, @RequestParam String password) {
+
+        return dealerService.verifyParams(email, password);
+    }
+
+
+    @GetMapping("/{idDealer}/appointments")
+    public List<Appointment> getAllAppointmentsByDealer(@PathVariable("idDealer") long id) {
+        System.out.println("Get all Appointements by idDealer...");
+        List<Appointment> appointments = new ArrayList<>();
+        appointments = dealerService.getAllAppointments(id);
+        return appointments;
     }
 }
 

@@ -1,5 +1,6 @@
 package microservice.userservice.service;
 
+import microservice.userservice.dto.Appointment;
 import microservice.userservice.model.Dealer;
 import microservice.userservice.model.User;
 import org.springframework.http.ResponseEntity;
@@ -21,4 +22,10 @@ public interface DealerService {
         ResponseEntity<String> deleteAllDealers();
 
         ResponseEntity<Dealer> updateDealer( long id, @RequestBody Dealer dealer);
+
+        Optional<Dealer> getDealerByMail(String mail);
+
+        List<Appointment> getAllAppointments(long id);
+
+        ResponseEntity<String> verifyParams(String email, String password);
 }

@@ -54,6 +54,10 @@ spring:
           uri: lb://appointment-service
           predicates:
             - Path=/api/appointment/**
+        - id: authentication-service
+          uri: lb://authentication-service
+          predicates:
+            - Path=/auth/**
     kubernetes:
       enabled: false
   application:

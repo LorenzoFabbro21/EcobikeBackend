@@ -9,7 +9,7 @@ public class Dealer extends User{
         super();
     }
 
-    public Dealer(String nome, String cognome, String mail, String password, int telefono) {
-        super(nome, cognome, mail, password, telefono);
+    public Dealer(String name, String lastName, String mail, String password, String phoneNumber, Boolean googleCheck) {
+        super(name, lastName, mail, password, phoneNumber, googleCheck);
     }
 }

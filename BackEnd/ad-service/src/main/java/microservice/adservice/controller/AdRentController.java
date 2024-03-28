@@ -23,7 +23,7 @@ public class AdRentController {
     @PostMapping(value = "")
     public AdRent postAdRent(@RequestBody AdRent adRent) {
 
-        AdRent _AdRent = adRentService.saveAdRent(new AdRent(adRent.getPrice(), adRent.getIdBike()));
+        AdRent _AdRent = adRentService.saveAdRent(new AdRent(adRent.getPrice(), adRent.getIdBike(), adRent.getIdUser()));
         return _AdRent;
     }
 
@@ -48,6 +48,18 @@ public class AdRentController {
         System.out.println("Get bikes to rent...");
         System.out.println("Bikes="+adRentService.getBikesToRent());
         return adRentService.getBikesToRent();
+    }
+
+    @GetMapping("/user/{id}/bikes")
+    public List<Bike> getBikesUser(@PathVariable("id") long id) {
+        System.out.println("Get all Bike to rent by user...");
+        return adRentService.getBikesUser(id);
+    }
+
+    @GetMapping("/user/{id}")
+    public List<AdRent> getAllAdsRentByUser(@PathVariable("id") long id) {
+        System.out.println("Get all Ads to rent by user...");
+        return adRentService.getAllAdRentsByUser(id);
     }
 
     @DeleteMapping("/{id}")

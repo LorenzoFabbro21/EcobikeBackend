@@ -2,11 +2,17 @@ package microservice.userservice.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import microservice.userservice.model.*;
+import microservice.userservice.dto.Appointment;
+import microservice.userservice.dto.Booking;
 import microservice.userservice.model.Private;
 import microservice.userservice.service.PrivateService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.*;
+import java.util.ArrayList;
+import java.nio.charset.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +26,10 @@ public class PrivateController {
     private final PrivateService privateService;
 
     @PostMapping(value = "")
-    public Private postPrivate(@RequestBody Private user) {
+    public ResponseEntity<String> postPrivate(@RequestBody Private user) {
+        ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
+        return resp;
 
-        Private _private = privateService.savePrivate(new Private(user.getNome(), user.getCognome(), user.getMail(), user.getPassword(), user.getTelefono()));
-        return _private;
     }
 
     @GetMapping("/{id}")
@@ -42,10 +48,18 @@ public class PrivateController {
         return userprivate;
     }
 
+    @GetMapping("/email/{mail}")
+    public Optional<Private> getPrivateByMail(@PathVariable String mail) {
+        System.out.println("Get private by mail...");
+        Optional<Private> private_user;
+        private_user = privateService.getPrivateByMail(mail);
+        return private_user;
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePrivate(@PathVariable("id") long id) {
+    public ResponseEntity<?> deletePrivate(@PathVariable("id") long id) {
         System.out.println("Delete Private with ID = " + id + "...");
-        return  privateService.deletePrivate(id);
+        return privateService.deletePrivate(id);
     }
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllPrivates() {
@@ -56,8 +70,32 @@ public class PrivateController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
-        System.out.println("Update Dealer with ID = " + id + "...");
+        System.out.println("Update Private with ID = " + id + "...");
         return privateService.updatePrivate(id, userprivate);
 
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam String email, @RequestParam String password) {
+
+        return privateService.verifyParams(email, password);
+    }
+   
+    @GetMapping("/{idPrivate}/booking")
+    public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Bookings by idPrivate...");
+        List<Booking> bookings = new ArrayList<>();
+        bookings= privateService.getAllBookings(id);
+        return bookings;
+        
+    }
+    
+
+    @GetMapping("/{idPrivate}/appointments")
+    public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
+        System.out.println("Get all Appointements by idPrivate...");
+        List<Appointment> appointments = new ArrayList<>();
+        appointments = privateService.getAllAppointments(id);
+        return appointments;
     }
 }
