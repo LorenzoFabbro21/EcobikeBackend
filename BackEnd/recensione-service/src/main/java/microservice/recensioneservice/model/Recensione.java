@@ -25,11 +25,14 @@ public class Recensione {
     private int score;
     @Column(name = "idUser")
     private int idUser; //Utente
+    @Column(name = "idShop")
+    private int idShop;
 
-    public Recensione(String text, int score, int idUser) {
+    public Recensione(String text, int score, int idUser, int idShop) {
         this.text = text;
         this.score = score;
         this.idUser = idUser;
+        this.idShop = idShop;   
     }
 
 }

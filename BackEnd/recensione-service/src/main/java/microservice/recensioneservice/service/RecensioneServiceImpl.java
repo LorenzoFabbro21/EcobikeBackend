@@ -93,4 +93,9 @@ public class RecensioneServiceImpl implements RecensioneService {
             return null;
         }
     }
+
+    @Override
+    public List<Recensione> getAllReviewByidShop(long id) {
+        return repository.getAllReviewByidShop(id);
+    }
 }
