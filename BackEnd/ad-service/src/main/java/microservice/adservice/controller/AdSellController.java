@@ -78,9 +78,9 @@ public class AdSellController {
     }
 
     @GetMapping("/user/{id}")
-    public List<AdSell> getAllAdsSellByUser(@PathVariable("id") long id) {
-        System.out.println("Get all Ads to rent by user...");
-        return adSellService.getAllAdSellByUser(id);
+    public List<Bike> getAllBikeToSellByUser(@PathVariable("id") long id) {
+        System.out.println("Get all Bike to Sell by user...");
+        return adSellService.getAllBikeToSellByUser(id);
     }
 }
 

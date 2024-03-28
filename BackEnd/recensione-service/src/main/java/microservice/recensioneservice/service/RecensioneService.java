@@ -23,4 +23,5 @@ public interface RecensioneService {
 
     ResponseEntity<Recensione> updateReview(long id, @RequestBody Recensione review);
     User getUserFromReview(long id);
+    List<Recensione> getAllReviewByidShop(long id);
 }
