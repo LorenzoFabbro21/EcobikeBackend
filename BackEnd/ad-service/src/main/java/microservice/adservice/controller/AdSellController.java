@@ -43,7 +43,7 @@ public class AdSellController {
     }
 
     @GetMapping("/bikes")
-    public List<Bike> getBikesToRent() {
+    public List<Bike> getBikesToSell() {
         System.out.println("Get bikes to sell...");
         System.out.println("Bici="+ adSellService.getBikesToSell());
         return adSellService.getBikesToSell();
@@ -70,7 +70,11 @@ public class AdSellController {
         ResponseEntity<AdSell> response = adSellService.updateAdSell(id, adSell);
         return response;
     }
-
+    @GetMapping("/user/{id}")
+    public List<AdSell> getAllAdsRentByUser(@PathVariable("id") long id) {
+        System.out.println("Get all Ads to rent by user...");
+        return adSellService.getAllAdSellByUser(id);
+    }
     @GetMapping("user/{id}/bikes")
     public List<Bike> getAllBikeToSellByUser(@PathVariable("id") long id) {
         System.out.println("Get all Bike to Sell by user...");
