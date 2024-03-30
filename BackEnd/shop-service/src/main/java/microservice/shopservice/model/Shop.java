@@ -29,7 +29,7 @@ public class Shop {
     private String address;
 
     @Column(name = "phoneNumber")
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "img")
     @Lob
@@ -38,7 +38,7 @@ public class Shop {
     @Column(name = "idUser")
     private int idUser;
 
-    public Shop( String name, String city, String address, int phoneNumber, String img, int idUser) {
+    public Shop( String name, String city, String address, String phoneNumber, String img, int idUser) {
         this.name = name;
         this.city = city;
         this.address = address;
