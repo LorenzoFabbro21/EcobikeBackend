@@ -32,6 +32,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public List<Shop> getAllShops() {
         List<Shop> shops = new ArrayList<>();
         repository.findAll().forEach(shops::add);
@@ -39,6 +40,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public Optional<Shop> getShopById(long id) {
         return repository.findById(id);
     }
@@ -75,6 +77,7 @@ public class ShopServiceImpl implements ShopService {
 
 
     @Override
+    @Transactional
     public User getUserFromShop(long id) {
         Optional<Shop> shopData = repository.findById(id);
         if (shopData.isPresent()) {

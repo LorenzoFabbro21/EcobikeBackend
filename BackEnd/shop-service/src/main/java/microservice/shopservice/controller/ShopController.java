@@ -1,5 +1,6 @@
 package microservice.shopservice.controller;
 
+import jakarta.transaction.*;
 import microservice.shopservice.dto.User;
 import microservice.shopservice.model.Shop;
 import microservice.shopservice.service.ShopService;
@@ -29,6 +30,7 @@ public class ShopController {
     }
 
     @GetMapping("/{id}")
+    @Transactional
     public Optional<Shop> getShop(@PathVariable("id") long id) {
 
         System.out.println("Get shop...");
@@ -38,6 +40,7 @@ public class ShopController {
     }
 
     @GetMapping("")
+    @Transactional
     public List<Shop> getAllShops() {
 
         System.out.println("Get all shops...");
@@ -53,6 +56,7 @@ public class ShopController {
         return user;
     }
     @GetMapping("/user/{id}")
+    @Transactional
     public Optional<Shop> getShopFromUser(@PathVariable("id") long id) {
         return shopService.getShopFromUser(id);
     }
