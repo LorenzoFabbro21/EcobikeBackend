@@ -1,12 +1,16 @@
-<div class="spinner" *ngIf="mostraSpinner== true">
+
+<div class="spinner" *ngIf="mostraSpinner==true">
   <p-progressSpinner ></p-progressSpinner>
 </div>
-<div *ngIf="mostraSpinner==false">
+<div *ngIf="bikesNull == true" class="noBikes">
+  <h2>Non sono presenti biciclette in noleggio</h2>
+  </div>
+<div *ngIf="mostraSpinner==false && !bikesNull">
   <div #body >
     <div class="sectionGenerale">
       <div class="textSection">
         <a routerLink="/noleggio"  label="noleggio" routerLinkActive="active-link" class='linkRow noleggio'>E-Bike in noleggio</a>
-        <a routerLink="/negozi"  label="negozi" routerLinkActive="active-link" class='linkRow' >Visualizza Negozi</a>
+        <a routerLink="/shops"  label="negozi" routerLinkActive="active-link" class='linkRow' >Views Shops</a>
       </div>
     </div>
     <div>
@@ -28,23 +32,28 @@
             <p-autoComplete [(ngModel)]="coloreValue" [dropdown]="true" [suggestions]="coloreFiltered" (completeMethod)="filterColore($event)" (onSelect)="setColorValue($event)" field="name"></p-autoComplete>
         </div>
     </div>
-    <div *ngIf="viewAllBikes === false">
-        <div class="view">
-        <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
-            <div *ngIf="i<10">
-            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
-            </div>
-        </div>
-        
-        </div>
-        <div class="showMore">
-            <p-button  label="Mostra tutti" class="showMoreBtn" (onClick)="viewAll()"></p-button>
-        </div>
+    <div class="spinner" *ngIf="spinnerFilter==true">
+      <p-progressSpinner ></p-progressSpinner>
     </div>
-    <div *ngIf="viewAllBikes" class="view">
-        <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
-          <div>
-            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+    <div *ngIf="!spinnerFilter">
+      <div *ngIf="viewAllBikes === false">
+          <div class="view">
+          <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
+              <div *ngIf="i<10">
+              <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+              </div>
+          </div>
+          
+          </div>
+          <div class="showMore">
+              <p-button  label="Mostra tutti" class="showMoreBtn" (onClick)="viewAll()"></p-button>
+          </div>
+      </div>
+      <div *ngIf="viewAllBikes" class="view">
+          <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
+            <div>
+              <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+            </div>
           </div>
         </div>
       </div>

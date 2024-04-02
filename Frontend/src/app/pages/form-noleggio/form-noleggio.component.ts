@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
@@ -38,11 +39,9 @@ export class FormNoleggioComponent {
   img?:string= "";
   mostraSpinner: boolean = false;
 
-  constructor ( private ebService: EcobikeApiService) {
+  constructor (private router: Router, private ebService: EcobikeApiService, private userService : UserLoggedService) {
     
-    /* if ( userService.userLogged ) {
-      this.userLogged = userService.userLogged;
-    } */
+  
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
@@ -63,7 +62,7 @@ export class FormNoleggioComponent {
     this.tagliaFiltered = filtered;
   }
 
-  onUpload(event:UploadEvent) {
+  onUpload(event:UploadEvent | any ) {
     for(let file of event.files) {
         this.uploadedFiles.push(file);
     }
@@ -72,24 +71,21 @@ export class FormNoleggioComponent {
   send () {
     
     const reader = new FileReader();
-let count = 0;
+    let count = 0;
+    const readNextFile = () => {
+      if (count < this.uploadedFiles.length) {
+        const file = this.uploadedFiles[count];
+        reader.onload = (e) => {
+          const base64String = (e.target as any).result;
+          this.img= this.img + base64String;
+          count++;
+          readNextFile(); // Leggi il prossimo file in modo ricorsivo
+        };
 
-const readNextFile = () => {
-  if (count < this.uploadedFiles.length) {
-    const file = this.uploadedFiles[count];
-    reader.onload = (e) => {
-      const base64String = (e.target as any).result;
-      this.img= this.img + base64String;
-      count++;
-      readNextFile(); // Leggi il prossimo file in modo ricorsivo
-    };
-
-    reader.readAsDataURL(file);
-  } else {
-   this.postBike(); 
-  }
-
-
+        reader.readAsDataURL(file);
+      } else {
+      this.postBike(); 
+      }
   }
 
   readNextFile();
@@ -109,28 +105,32 @@ const readNextFile = () => {
       measure: this.misure,
       img: this.img
     }
-
-    this.ebService.new_bike(bike).subscribe(response=>{
-      if( response && response.id) {
-        idBike = response.id;
-
-        let adRent: adRent;
-        adRent = {
-        price:this.prezzo,
-        idBike:idBike
+    if( this.userService.userLogged?.token !== undefined) {
+      let token : string = this.userService.userLogged?.token;
+      this.ebService.new_bike(bike, token).subscribe(response=>{
+        if( response && response.id) {
+          idBike = response.id;
+  
+          let adRent: adRent;
+          adRent = {
+          price:this.prezzo,
+          idBike:idBike,
+          idUser: this.userService.userLogged?.id
+          }
+          this.ebService.new_noleggio(adRent, token).subscribe({
+            next: (response:adRent) => {
+              console.log(response);
+              setTimeout(() => {
+                this.mostraSpinner = false;
+                this.router.navigate(['/']);
+              }, 3500);
+          }
+          });
         }
-        this.ebService.new_noleggio(adRent).subscribe({
-          next: (response:adRent) => {
-            console.log(response);
-            setTimeout(() => {
-              this.mostraSpinner = false;
-              window.location.reload();
-            }, 3500);
-        }
-        });
-      }
-
-    });
+  
+      });
+    }
+    
 
     
   }

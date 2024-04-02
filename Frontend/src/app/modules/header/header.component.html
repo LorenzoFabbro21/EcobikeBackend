@@ -13,21 +13,24 @@
     </div>
     <div class="linkUser">
         <div class="link">
-            <a routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' >Noleggio E-Bike</a>
-            <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' >Acquisto E-Bike</a>
-            <a routerLink="/form_noleggio"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Noleggio E-Bike</a>
-            <a routerLink="/form_vendita"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Vendita E-Bike</a>
+            <a *ngIf="userLogged == null || userLogged !== null && userLogged.type=='p'" routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' >Visualizza Noleggi</a>
+            <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' >Visualizza Vendite</a>
+            <a *ngIf="userLogged !== null && userLogged.type=='d'" routerLink="/form_noleggio"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Inserisci Noleggio</a>
+            <a *ngIf="userLogged !== null" routerLink="/form_vendita"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Inserisci Vendita</a>
         </div>
-        <div *ngIf="user" class = 'user-info-content'> 
-            <span>Benvenuto {{user.username}}</span>
-            <span><a (click)="logout()">Logout</a></span>
+        
+        <div *ngIf="userLogged !== null" class = "user-info-login"> 
+            
+            <span class="card">
+                <p-menubar [model]="items" styleClass="custom-menubar"></p-menubar>
+            </span>
+            
+            <button pButton  label="Logout" class="signup" (click)="logout()"></button>
         </div>
-        <div class="user-info-login">
+        <div class="user-info-login" *ngIf="userLogged == null">
             <div class="loginLogo">
-                <i class="pi pi-user mr-2"></i>
-                <div style="font-size: large;">Login</div>
-            </div>
-            <button pButton  label="Signup" class="signup"></button>
+                <i class="pi pi-user mr-2" [routerLink]="'/login-form'" routerLinkActive="active-link" style="font-size: larger;"></i>
+                
         </div>
     </div>
 </div>

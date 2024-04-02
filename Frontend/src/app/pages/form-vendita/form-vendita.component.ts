@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
+import { UserLoggedService } from 'src/app/services/user-logged.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event| any;
@@ -23,7 +25,7 @@ interface UploadEvent {
 export class FormVenditaComponent {
   uploadedFiles: any[] = [];
   userLogged?: LoggedUser;
-  tagliaValue!: Taglia;
+  tagliaValue!: any;
   tagliaFiltered: any[] = [];
   tagliaList: any[]= [];
   colore!:string;
@@ -32,14 +34,11 @@ export class FormVenditaComponent {
   tipologia!:string;
   prezzo!:number;
   misure!:string;
-  img?:any;
+  img?:string= "";
   mostraSpinner: boolean= false;
 
-  constructor ( private ebService: EcobikeApiService) {
+  constructor ( private router: Router, private ebService: EcobikeApiService, private userService : UserLoggedService) {
     
-    /* if ( userService.userLogged ) {
-      this.userLogged = userService.userLogged;
-    } */
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
@@ -60,7 +59,7 @@ export class FormVenditaComponent {
     this.tagliaFiltered = filtered;
   }
 
-  onUpload(event:UploadEvent) {
+  onUpload(event:UploadEvent | any) {
     for(let file of event.files) {
         this.uploadedFiles.push(file);
     }
@@ -69,16 +68,25 @@ export class FormVenditaComponent {
   send () {
     
     const reader = new FileReader();
+    let count = 0;
+    const readNextFile = () => {
+      if (count < this.uploadedFiles.length) {
+        const file = this.uploadedFiles[count];
+        reader.onload = (e) => {
+          const base64String = (e.target as any).result;
+          this.img= this.img + base64String;
+          count++;
+          readNextFile(); // Leggi il prossimo file in modo ricorsivo
+        };
 
-    reader.onload = (e) => {
-      const base64String = (e.target as any).result;
-      this.img= base64String;
-      this.postBike();
-    };
-
-    reader.readAsDataURL(this.uploadedFiles[0]);
-
+        reader.readAsDataURL(file);
+      } else {
+      this.postBike(); 
+      }
   }
+
+  readNextFile();
+}
 
   postBike() {
     this.mostraSpinner = true;
@@ -88,34 +96,40 @@ export class FormVenditaComponent {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: Taglia.TagliaS,
+      size: this.tagliaValue.code,
       type: this.tipologia,
       measure: this.misure,
       img: this.img
     }
+    if ( this.userService.userLogged?.token !== undefined) {
 
-    this.ebService.new_bike(bike).subscribe(response=>{
-      if( response && response.id) {
-        idBike = response.id;
-
-        let adSell: adSell;
-        adSell = {
-        price:this.prezzo,
-        idBike:idBike
+      let token : string = this.userService.userLogged?.token;
+      this.ebService.new_bike(bike, token).subscribe(response=>{
+      
+        if( response && response.id) {
+          idBike = response.id;
+  
+          let adSell: adSell;
+          adSell = {
+            price:this.prezzo,
+            idBike:idBike,
+            idUser: this.userService.userLogged?.id
+          }
+          this.ebService.new_vendita(adSell,token).subscribe({
+            next: (response:adSell) => {
+              console.log(response);
+              
+              setTimeout(() => {
+                this.mostraSpinner = false;
+                this.router.navigate(['/']);
+              }, 3500);
+          }
+          });
         }
-        this.ebService.new_vendita(adSell).subscribe({
-          next: (response:adSell) => {
-            console.log(response);
-            
-            setTimeout(() => {
-              this.mostraSpinner = false;
-              window.location.reload();
-            }, 3500);
-        }
-        });
-      }
-
-    });
+  
+      });
+    }
+    
     
 
   }

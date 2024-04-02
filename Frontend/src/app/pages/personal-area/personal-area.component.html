@@ -1,0 +1,53 @@
+<div class="info">
+    <img [src]="this.image" class="image"/>
+    <div>
+        <div class="user_data">
+            <div class="labelGrid">
+                <h1 style="margin: 0 40px;">Dati Personali:</h1>
+                <div class="grid_style">
+                    <div>
+                        <h2>Nome</h2>
+                        <span class="spanStyle">{{user?.name}}</span>
+                    </div>
+                    <div>
+                        <h2>Cognome</h2>
+                        <span class="spanStyle">{{user?.lastName}}</span>
+                    </div>
+                    <div>
+                        <h2>Mail</h2>
+                        <span class="spanStyle">{{user?.mail}}</span>
+                    </div>
+                    <div *ngIf="user?.phoneNumber !== ''">
+                        <h2>Telefono</h2>
+                        <span class="spanStyle">{{user?.phoneNumber}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="labelGrid" *ngIf="user?.type== 'd'">
+                <h1 style="margin: 0 40px;">Informazioni del negozio:</h1>
+                <div class="grid_style">
+                    <div>
+                        <h2>Nome Negozio</h2>
+                        <span class="spanStyle">{{shop?.name}}</span>
+                    </div>
+                    <div>
+                        <h2>Città</h2>
+                        <span class="spanStyle">{{shop?.city}}</span>
+                    </div>
+                    <div>
+                        <h2>Indirizzo negozio</h2>
+                        <span class="spanStyle">{{shop?.address}}</span>
+                    </div>
+                    <div>
+                        <h2>Telefono Negozio</h2>
+                        <span class="spanStyle">{{shop?.phoneNumber}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="user?.type== 'p'" class="btn">
+            <h1>Sei il propritario di un negozio?</h1>
+            <button pButton  label="Negozio" class="button" (click)="upgradeProfile()"></button>
+        </div>
+    </div>
+</div>

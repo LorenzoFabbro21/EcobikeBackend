@@ -1,0 +1,21 @@
+<div class="spinner" *ngIf="mostraSpinner">
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
+  <div *ngIf="bikesNull == true" class="noBikes">
+    <h2>Non hai ancora messo biciclette in noleggio</h2>
+    </div>
+  <div *ngIf="mostraSpinner==false && !bikesNull">
+      <div #body >
+        <div>
+          <div class="titleMenu">
+            <h2>E-Bike in vendita</h2>
+          </div>
+                <div class="view">
+                <div *ngFor="let bike of bikesVendita" >
+                    <app-ebike [bicicletta]="bike" [owned] = "true"></app-ebike>
+                </div>
+                </div>
+        </div>
+        </div>
+      </div>
+  

@@ -36,7 +36,7 @@
         </div>
         <div class="labelCombo content-below-spinner">
           <label>Prezzo*</label>
-          <label *ngIf="userLogged !== undefined && userLogged.type === 'V'">Prezzo vendita*</label>
+          <label *ngIf="userLogged !== undefined ">Prezzo vendita*</label>
           <input type="text" pInputText placeholder="Inserisci il prezzo" [(ngModel)]="prezzo" class="p-inputtext-lg input"/>
         </div>
         <div class="labelCombo content-below-spinner">

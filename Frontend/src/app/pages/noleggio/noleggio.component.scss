@@ -85,6 +85,22 @@
     height: 150px;
     font-size: xx-small;
 }
+.p-autocomplete-item {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    border: 0 none;
+    color: #495057;
+    background: transparent;
+    transition: box-shadow 0.2s;
+    border-radius: 0;
+    font-size: medium;
+}
+
+.p-autocomplete-dd .p-autocomplete-input {
+    font-size: large;
+    height: 4vh;
+    border-color: #01aaa9;
+}
 
 .p-autocomplete {
     .p-button {
@@ -126,4 +142,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .noBikes{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    height: 37vh;
   }

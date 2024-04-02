@@ -33,14 +33,17 @@ export class VenditaComponent {
   sells: adSell[]= [];
   bikeSellPrice:bikeRentSell[]= [];
   mostraSpinner:boolean = true;
+  bikesNull = false;
+  spinnerFilter: boolean= false;
 
   constructor (private ebService: EcobikeApiService) {
 
     this.ebService.elenco_vendite().subscribe({
       next: (response:adSell[]) => {
 
-        if (response != null) {
+        if (response.length != 0) {
           this.sells = response
+
           this.ebService.elenco_bici_vendita().subscribe({
             next: (response:Bicicletta[]) => {
       
@@ -58,34 +61,50 @@ export class VenditaComponent {
                     }
                   });
                 });
+                this.createFilters();
                 this.mostraSpinner = false;
               }
             }
           });
         }
+        else {
+          this.mostraSpinner = false;
+          this.bikesNull = true;
+        }
+      }
+    });
+  }
+
+  createFilters() {
+    const noneMarca = { name: '', code: undefined };
+    this.marcaFiltered.push(noneMarca);
+    const noneTaglia = { name: '', code: undefined };
+    this.tagliaFiltered.push(noneTaglia);
+    const noneColore = { name: '', code: undefined };
+    this.coloreFiltered.push(noneColore);
+    this.bikesVendita.forEach(bike => {
+      const brandValue =  { name: bike.brand, code: bike.brand };
+      const brandExists = this.marcaFiltered.some(item => item.name === brandValue.name && item.code === brandValue.code);
+      if(!brandExists) {
+        this.marcaFiltered.push(brandValue);
+      }
+      const sizeValue =  { name: bike.size, code: bike.size };
+      const tagliaExists = this.tagliaFiltered.some(item => item.name === sizeValue.name && item.code === sizeValue.code);
+      if(!tagliaExists) {
+        this.tagliaFiltered.push(sizeValue);
+      }
+      const colorValue =  { name: bike.color, code: bike.color };
+      const coloreExists = this.coloreFiltered.some(item => item.name === colorValue.name && item.code === colorValue.code);
+      if(!coloreExists) {
+        this.coloreFiltered.push(colorValue);
       }
     });
 
-    this.marcaList = [
-      { name: 'Afghanistan', code: 'AF' },
-            { name: 'Albania', code: 'AL' },
-            { name: 'Algeria', code: 'DZ' },
-            { name: 'American Samoa', code: 'AS' },
-            { name: 'Andorra', code: 'AD' },
-            { name: 'Angola', code: 'AO' },
-            { name: 'Anguilla', code: 'AI' },
-            { name: 'Antarctica', code: 'AQ' },
-            { name: 'Antigua and Barbuda', code: 'AG' },
-            { name: 'Argentina', code: 'AR' },
-            { name: 'Armenia', code: 'AM' },
-            { name: 'Aruba', code: 'AW' },
-            { name: 'Australia', code: 'AU' }
-    ];
+    this.marcaList=this.marcaFiltered;
+    this.tagliaList= this.tagliaFiltered;
+    this.coloreList= this.coloreFiltered;
     
-    this.marcaFiltered= this.marcaList;
-
   }
-
 
   filterMarca(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
@@ -117,13 +136,51 @@ export class VenditaComponent {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.marcaList as any[]).length; i++) {
+    for (let i = 0; i < (this.coloreList as any[]).length; i++) {
         let colore = (this.coloreList as any[])[i];
         if (colore.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
             filtered.push(colore);
         }
     }
     this.coloreFiltered = filtered;
+  }
+
+  setBrandValue(value:any) {
+    this.marcaValue= value.code;
+    this.getBikesFiltered();
+  }
+
+  setColorValue(value:any) {
+    this.coloreValue= value.code;
+    this.getBikesFiltered();
+  }
+
+  setSizeValue(value:any) {
+    this.tagliaValue= value.code;
+    this.getBikesFiltered();
+  }
+  
+  getBikesFiltered(){
+    this.spinnerFilter = true;
+    this.ebService.findFilteredBikes(this.marcaValue,this.coloreValue,this.tagliaValue).subscribe({
+      next: (response:Bicicletta[]) => {
+        this.bikeSellPrice.splice(0,this.bikeSellPrice.length);
+        if (response != null) {
+          this.sells.forEach(sells => {
+            response.forEach(bike => {
+              if(sells.idBike == bike.id) {
+                const obj: bikeRentSell= {
+                  bike: bike,
+                  price: sells.price ? sells.price : 0
+                };
+                this.bikeSellPrice.push(obj);
+              }
+            });
+          });
+          this.spinnerFilter = false;
+        }
+      }
+    })
   }
 
   viewAll() {

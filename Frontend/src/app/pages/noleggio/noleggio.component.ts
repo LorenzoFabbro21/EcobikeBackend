@@ -33,20 +33,21 @@ export class NoleggioComponent {
   rents: adRent[]= [];
   bikeRentPrice: bikeRentSell[] = [];
   mostraSpinner: boolean= true;
+  spinnerFilter: boolean= false;
   bikesNoleggioBackup: Bicicletta[] = [];
-
+  bikesNull = false;
 
   constructor (private ebService: EcobikeApiService) {
 
     this.ebService.elenco_noleggi().subscribe({
       next: (response:adRent[]) => {
 
-        if (response != null) {
+        if (response.length != 0) {
           this.rents = response;
           this.ebService.elenco_bici_noleggio().subscribe({
             next: (response:Bicicletta[]) => {
       
-              if (response != null) {
+              if (response.length !=0) {
                 this.bikesNoleggio= response;
                 this.rents.forEach(rent => {
                   this.bikesNoleggio.forEach(bike => {
@@ -65,6 +66,10 @@ export class NoleggioComponent {
               }
             }
           });
+        }
+        else {
+          this.mostraSpinner = false;
+          this.bikesNull = true;
         }
       }
     });
@@ -115,7 +120,6 @@ export class NoleggioComponent {
         }
     }
     this.marcaFiltered = filtered;
-    
   }
 
   filterTaglia(event: AutoCompleteCompleteEvent) {
@@ -129,9 +133,6 @@ export class NoleggioComponent {
         }
     }
     this.tagliaFiltered = filtered;
-
-    
-
   }
 
   
@@ -165,7 +166,7 @@ export class NoleggioComponent {
   }
   
   getBikesFiltered(){
-
+    this.spinnerFilter = true;
     this.ebService.findFilteredBikes(this.marcaValue,this.coloreValue,this.tagliaValue).subscribe({
       next: (response:Bicicletta[]) => {
         this.bikeRentPrice.splice(0,this.bikeRentPrice.length);
@@ -181,6 +182,7 @@ export class NoleggioComponent {
               }
             });
           });
+          this.spinnerFilter = false;
         }
       }
     })

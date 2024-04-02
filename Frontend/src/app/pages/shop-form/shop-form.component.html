@@ -1,0 +1,37 @@
+<div class="container">
+      
+      <div class="view" >
+        <div class="titleMenu">
+          <h2>Inserisci le informazioni del negozio</h2>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Nome*</label>
+          <input type="text" pInputText placeholder="Inserisci il nome del negozio" [(ngModel)]="shop_name" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Città*</label>
+          <input type="text" pInputText placeholder="Inserisci la città" [(ngModel)]="city" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Indirizzo*</label>
+          <input type="text" pInputText placeholder="Inserisci l'indirizzo" [(ngModel)]="address" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+            <label>Numero di telefono*</label>
+            <input type="text" pInputText placeholder="Inserisci il telefono del negozio" [(ngModel)]="phone_number" class="p-inputtext-lg input"/>
+        </div>
+        <div class="labelCombo content-below-spinner">
+          <label>Logo del Negozio*</label>
+          <div class="card flex justify-content-center">
+            <p-fileUpload mode="basic" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" (onUpload)="onUpload($event)" chooseLabel="carica"></p-fileUpload>
+          </div>
+          
+      </div>
+      <div class="submit">
+        <button pButton  label="Invia" class="button" (click)="send()"></button>
+      </div>
+    </div>
+</div>
+
+
+

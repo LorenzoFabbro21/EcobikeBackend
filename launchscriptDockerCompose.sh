@@ -30,8 +30,6 @@ docker build -t authentication-service .
 
 cd ..
 
-#cd Frontend
-#docker build -t frontend .
 
 
 

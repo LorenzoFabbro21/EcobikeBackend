@@ -1,0 +1,61 @@
+@import "primeicons/primeicons.css";
+
+.login_form  {
+    display: flex;
+    flex-direction: column;
+    
+    .inputValues {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 10vw;
+        justify-items: center;
+
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1vh 20vw 1vh;
+    width: 100vw;
+}
+
+.button{
+    background-color: #01aaa9;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: large;
+}
+
+  .divisore{
+    margin-right: 1px solid ;
+  }
+
+  .login {
+    width: fit-content;
+  }
+
+  .google-login-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #DB4437; // Colore rosso di Google
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #c1351b; // Colore rosso più scuro al passaggio del mouse
+    }
+  
+    i {
+      margin-right: 10px; // Spazio tra l'icona e il testo
+    }
+  }

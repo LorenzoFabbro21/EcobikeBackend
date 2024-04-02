@@ -1,0 +1,74 @@
+<div class="spinner" *ngIf="mostraSpinner">
+    <p-progressSpinner ></p-progressSpinner>
+</div>
+  <div *ngIf="mostraSpinner==false">
+      <div #body >
+        <div class="info">
+            <div>
+                img
+            </div>
+            <div class = "details">
+                <h1 class = "name">
+                    Welcome to {{shop?.name}}'shop! 
+                </h1>
+                <h2 class = "otherDetails"> 
+                    <label>City:</label>  
+                </h2>  
+                    {{shop?.city}}
+                <h2 class = "otherDetails"> 
+                    <label>Address:</label>
+                </h2>
+                    <span> {{shop?.address}}</span>
+                <h2 class = "otherDetails"> 
+                    <label>Phone Number:  </label>
+                </h2>
+                    <span>{{shop?.phoneNumber}}</span>
+            </div>
+        </div>
+        <div class = "name">
+            Bikes to rent
+            <div class="view">
+                <div *ngFor="let bike of biciclette" >
+                    <app-ebike [bicicletta]="bike" ></app-ebike>
+                </div>
+            </div>  
+        </div>
+
+        <h2 id="fh2">WE APPRECIATE YOUR REVIEW!</h2>
+        <h6 id="fh6">Your review will help us to improve our web hosting quality products, and customer services.</h6>
+
+        
+
+
+        <form id="feedback" action="">
+            <div class="pinfo">Rate our overall services.</div>
+    
+
+            <div class="form-group">
+                <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-heart"></i></span>
+                <select class="form-control" id="rate">
+                    <option value="1star">1</option>
+                    <option value="2stars">2</option>
+                    <option value="3stars">3</option>
+                    <option value="4stars">4</option>
+                    <option value="5stars">5</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="pinfo">Write your feedback.</div>
+            <div class="form-group">
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                        <textarea class="form-control" id="review" rows="3"></textarea>
+                
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+  </div>

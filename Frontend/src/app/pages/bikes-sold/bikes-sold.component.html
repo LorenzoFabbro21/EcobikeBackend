@@ -1,0 +1,8 @@
+<div class="titleMenu">
+    <h2>E-bike vendute</h2>
+</div>
+<div class="view">
+    <div *ngFor=" let x of bikeSold;  let i=index" >
+        <app-ebike-ad [bike]="x.bike" [user]="x.user" [appointment]="x.appointment" [ad]="x.adsell"></app-ebike-ad>
+    </div>
+</div>

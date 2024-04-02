@@ -3,9 +3,11 @@
         <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="imagePrincipal" class="imagePrincipale"/>
         <div *ngIf="bicicletta" class="details">
             <h1 class="marca">{{bicicletta.brand}}</h1>
+            <br>
             <h2 class="model">{{bicicletta.model}}</h2>
             <div class="Taglia">
                 <label>Colore: {{bicicletta.color}}</label>
+                <br>
                 <label>Taglia: {{bicicletta.size}}</label>
             </div>
             <br>
@@ -14,11 +16,10 @@
             <br>
             <br>
             <div class="btn">
-                <div class="">
-                    <label></label>
-                    <h2 class="Text">{{bicicletta.color}}</h2>
-                </div>
-                <div class="showMore">
+                <div *ngIf="userLogged != null" class="showMore" >
+                    <div *ngIf="userLogged != null" class="card flex justify-content-center">
+                        <p-calendar class="max-w-full" [(ngModel)]="date" [disabledDates]="disabledDates"  placeholder="Seleziona la data del noleggio"></p-calendar>
+                    </div>
                     <p-button  label="Prenota" class="showMoreBtn" (onClick)="prenota()"></p-button>
                 </div>
                 <div class="disponibile">
@@ -38,13 +39,13 @@
             <p-accordionTab header="Dettagli">
                 <div *ngIf="bicicletta" class="Taglia">
                     <label>Colore: {{bicicletta.color}}</label>
+                    <br>
                     <label>Taglia: {{bicicletta.size}}</label>
                 </div>
             </p-accordionTab>
             <p-accordionTab header="Misure">
                 <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                    ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                    Misure: {{bicicletta?.measure}}
                 </p>
             </p-accordionTab>
         </p-accordion>

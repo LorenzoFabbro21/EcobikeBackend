@@ -1,0 +1,138 @@
+.sectionGenerale{
+    height: 10vh;
+    background-color: rgba(31, 89, 92, 0.2);
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.textSection{
+    margin: 0px 40px;
+    font-size: medium;
+    display: flex;
+    flex-direction: row;
+    column-gap: 2vw;
+}
+
+.titleMenu {
+    display: flex;
+    margin: 0px 40px;
+
+  }
+
+.view {
+    display: grid;
+    grid-template-columns: repeat(5 , minmax(150px,1fr));
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+
+.linkRow {
+    font-size: large;
+    text-decoration: none;
+}
+
+
+.labelCombo {
+    display: flex;
+    flex-direction: column ;
+    align-items: flex-start;
+}
+
+:host ::ng-deep {
+
+    .p-card .p-card-content {
+        padding: 0;
+      }
+      .p-card .p-card-body {
+        padding: 0.75rem;
+      }
+      .p-card .p-card-footer {
+        padding: 0;
+      }
+    
+      .p-autocomplete-dd .p-autocomplete-input
+      {
+        font-size: xx-small;
+        height: 4vh;
+        border-color: #01aaa9;
+
+      }
+
+    .p-autocomplete-dd .p-autocomplete-dropdown {
+        background-color: #01aaa9;
+        color: #fff;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        height: 4vh;
+        
+    }
+.p-autocomplete-panel{
+    background-color: white;
+    height: 150px;
+    font-size: xx-small;
+}
+.p-autocomplete-item {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    border: 0 none;
+    color: #495057;
+    background: transparent;
+    transition: box-shadow 0.2s;
+    border-radius: 0;
+    font-size: medium;
+}
+
+.p-autocomplete-dd .p-autocomplete-input {
+    font-size: large;
+    height: 4vh;
+    border-color: #01aaa9;
+}
+
+.p-autocomplete {
+    .p-button {
+
+    width: 3vw;
+    }
+}
+
+.p-autocomplete-dd .p-autocomplete-input {
+    color:#1f595c
+}
+
+.p-button{
+    background-color: #444444;
+    width: 20vw;
+    color: #fff;
+    border-radius: 10px;
+    font-size: larger;
+    
+}
+
+.p-button:enabled:hover {
+    background: #01aaa9;
+    color: #ffffff;
+    border-color: #01aaa9;
+}
+}
+
+.showMore {
+    display: flex;
+    justify-content: center;
+    margin-top: 3vh;
+
+}
+
+.spinner {
+    position: relative;
+    height: 46vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shop{
+    display: flex;
+    flex-direction: row;
+  }

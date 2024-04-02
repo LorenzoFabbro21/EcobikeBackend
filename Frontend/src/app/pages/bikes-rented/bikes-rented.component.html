@@ -1,0 +1,8 @@
+<div class="titleMenu">
+    <h2>E-bike noleggiate</h2>
+</div>
+<div class="view">
+    <div *ngFor=" let x of bikesRented;  let i=index" >
+        <app-ebike-ad [bike]="x.bike" [user]="x.user" [booking]="x.booking" [ad]="x.adrent"></app-ebike-ad>
+    </div>
+</div>

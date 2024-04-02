@@ -1,0 +1,51 @@
+<!-- Login Section Begin -->
+<section class="login spad">
+  <div class="container">
+      <div class="login_form">
+        <div class="inputValues">
+          <h1>Login</h1>
+          <span class="p-input-icon-left">
+            <i class="pi pi-envelope"></i>
+            <input type="text" pInputText placeholder="Inserisci la mail" [(ngModel)]="mail" class="p-inputtext-lg input" style="margin-bottom: 10px;"/>
+          </span>
+          <span class="p-input-icon-left">
+            <i class="pi pi-lock"></i>
+            <input type="password" pInputText placeholder="Inserisci la password" [(ngModel)]="password" class="p-inputtext-lg input" style="margin-bottom: 10px;"/>
+          </span>
+          <button pButton label="Login" class="button login" (click)="login()"></button>
+        </div>
+        <div class=" mt-5">
+          <h3>oppure</h3>
+          <div class="row mt-5">
+            <div>
+              <button class="google-login-button" (click)="googleLogin()">
+                <i class="pi pi-google"></i>
+                Login with Google
+              </button>
+            </div>    
+            
+          </div>
+        </div>
+      </div>
+      <div class="divisore"></div>
+      <div >
+          <div class="login__register">
+              <h1>Non hai ancora un account?</h1>
+              <button pButton  label="Registrati ora" class="button" [routerLink]="['../signup']"></button>
+              
+          </div>
+      </div>
+  </div>
+</section>
+
+<app-error-dialog
+      [showModal]="showError"
+      [headerText]="errorStatus"
+      [label]="errorMessage"
+      (showModalChange)="changeValue($event)"
+
+    />
+
+
+  
+  

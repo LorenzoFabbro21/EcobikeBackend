@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adRent } from 'src/app/interfaces/adRent';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { Booking } from 'src/app/interfaces/booking';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
+import { UserLoggedService } from 'src/app/services/user-logged.service';
 
 @Component({
   selector: 'app-bicicletta-noleggio',
@@ -22,8 +24,9 @@ export class BiciclettaNoleggioComponent {
   date: Date | undefined;
   idAnnuncio?:number;
   disabledDates: Date[] = [];
-  constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService) {
-
+  userLogged: LoggedUser | null = null;
+  constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService) {
+    this.userLogged = this.userService.userLogged;
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     this.disabledDates.push(oggi);
@@ -155,19 +158,22 @@ export class BiciclettaNoleggioComponent {
 
     
     const booking: Booking = {
-      idPrivate : 1,
+      idPrivate : this.userService.userLogged?.id,
       idAnnouncement: this.idAnnuncio,
       startdate : this.date,
       enddate: this.date
     }
-
-    this.ebService.new_booking(booking).subscribe({
-      next: (response:Booking) => {
-        if ( response) {
-          console.log(response);
+    if ( this.userService.userLogged?.token !== undefined) {
+      let token: string = this.userService.userLogged?.token;
+      this.ebService.new_booking(booking, token).subscribe({
+        next: (response:Booking) => {
+          if ( response) {
+            console.log(response);
+          }
         }
-      }
-    });
+      });
+    }
+    
 
     //const giorno = this.date?.toDateString();
   

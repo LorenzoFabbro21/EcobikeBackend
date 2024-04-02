@@ -1,0 +1,15 @@
+<p-dialog
+  [(visible)]="showModal"
+  (onHide)="onHide()"
+  [modal]="true"
+  [header]="headerText ?? ''"
+  [closable]="true"
+  [draggable]="false"
+  [styleClass]="'dialogError'"
+  
+>
+  <div [ngClass]="'modal'" >
+    <p [ngClass]="'message'" [innerHTML]="label"></p>
+  </div>
+
+</p-dialog>

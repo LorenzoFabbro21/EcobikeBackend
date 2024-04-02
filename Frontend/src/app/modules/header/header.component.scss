@@ -1,6 +1,14 @@
 @import "../../../../node_modules/primeicons/primeicons.css";
 @import '~primeicons/primeicons.css';
 
+
+:host ::ng-deep .p-menubar {
+  background-color: transparent;
+  border-color: transparent;
+
+}
+
+
 .header {
   
   display: flex;
@@ -109,7 +117,13 @@
     
     font-size: large;
     text-decoration: none;
+    
     }
+    .linkRow.active-link {
+      font-weight: bold;
+    }
+
+
   }
   
   .signup {
@@ -151,3 +165,13 @@
     color: #ffffff;
     border-color: #01aaa9;
 }
+
+.custom-menubar .p-menubar-root-list .p-submenu-list {
+  left: 0 !important;
+}
+
+.custom-menubar .p-submenu-list {
+  top: 100% !important;
+}
+
+

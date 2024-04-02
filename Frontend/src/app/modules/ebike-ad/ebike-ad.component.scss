@@ -1,0 +1,46 @@
+.footerStyle {
+    display: flex;
+    flex-direction: column;
+}
+
+.idBike {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.details{
+    font-size: medium;
+}
+.dettagliPrezzo {
+    display: flex;
+    flex-direction:initial; /* Modifica la direzione del flexbox da column a row */
+    justify-content: space-between; /* Aggiunge spazio tra gli elementi all'interno del container */
+}
+:host ::ng-deep {
+    .p-card-header img {
+        width: 100%; 
+        height: 32vh;
+        object-fit: cover;
+    }
+}
+
+
+.prezzoBox {
+    display: flex;
+    align-items: right;
+}
+
+.prezzo {
+    background-color: rgba(16, 0, 255, 0.75); /* Imposta lo sfondo blu */
+    color: white; /* Cambia il colore del testo a bianco */
+    padding: 0.2em 0.2em; /* Aggiunge spazio intorno al testo */
+    border-radius: 8px; /* Aumenta il raggio degli angoli */
+    width: 120px; /* Imposta la larghezza del div */
+    height: 60px; /* Imposta l'altezza del div */
+    text-align: center; /* Centra il testo all'interno del div */
+    display: flex; /* Usa il flexbox per centrare il testo verticalmente */
+    justify-content: center; /* Centra il testo verticalmente */
+    align-items: center; /* Centra il testo verticalmente */
+    font-size: 20px; /* Aumenta la dimensione del carattere */
+    font-weight: bold;
+}

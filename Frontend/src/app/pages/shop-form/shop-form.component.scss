@@ -1,0 +1,66 @@
+.titleMenu {
+    display: flex;
+    align-items: center; /* Allinea verticalmente al centro */
+    margin-bottom: 0px;
+  }
+  
+  .view {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline; /* Centra nella pagina */
+    margin: auto; /* Centra nella pagina */
+    max-width: 800px; /* Limite massimo di larghezza per una migliore leggibilità */
+  }
+  
+  
+  .labelCombo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: large;
+    row-gap: 1vh;
+  }
+  
+  .submit {
+    margin-top: 20px; /* Aggiunto margine sopra */
+  }
+  
+  .button {
+    background-color: #01aaa9;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: large;
+  }
+  
+  .input {
+    width: 100%; /* Fai occupare tutto lo spazio disponibile */
+    max-width: 30vw; /* Limita la larghezza massima per una migliore leggibilità */
+    height: 6vh;
+    border-color: #01aaa9;
+    margin-bottom: 20px;
+  }
+  .container {
+    display: flex;
+    align-items: center;
+  }
+  :host ::ng-deep {
+    .p-button{
+      background-color: #01aaa9;
+      color: #fff;
+      font-size: large;
+      height: 6vh;
+      border-color: #01aaa9;
+    }
+    
+    .p-button.p-fileupload-choose {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 6vh;
+      padding: 0px 6px;
+      border-color: #01aaa9;
+    }
+  }
+  

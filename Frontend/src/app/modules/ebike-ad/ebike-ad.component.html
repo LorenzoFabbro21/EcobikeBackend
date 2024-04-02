@@ -1,0 +1,17 @@
+<div (click)="clickBike()">
+    <p-card>
+        <ng-template pTemplate="header">
+            <img *ngIf="bike && bike.img !== undefined" alt="Card" [src]="firstImage" class="image"/>
+        </ng-template>
+        <ng-template pTemplate="footer" class="footerStyle">
+            <div class="idBike">{{bike?.brand}} - {{bike?.model}}</div>
+            
+            <div class="dettagliPrezzo">
+                <span class="details" *ngIf="user && user.name !== undefined"><br>Acquistata da: {{user.name}} {{user.lastName}} <br> <span *ngIf="appointment && appointment.date !== undefined">Data di acquisto: {{appointment.date}}</span><span *ngIf="booking && booking.startdate !== undefined">Data: {{booking.startdate}}</span></span>  
+                <div class="prezzoBox" *ngIf="ad && ad.price !== undefined">
+                    <div class="prezzo">{{ad.price}} €</div>    
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

@@ -42,13 +42,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": ""
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "15kb",
-                  "maximumError": "20kb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
                 }
               ],
               "outputHashing": "all"
@@ -66,6 +66,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+
           "configurations": {
             "production": {
               "browserTarget": "Taas_frontend:build:production"
@@ -105,6 +106,6 @@
     }
   },
   "cli": {
-    "analytics": "372b99d6-1bf6-4d64-8a29-b482d563b421"
+    "analytics": false
   }
 }

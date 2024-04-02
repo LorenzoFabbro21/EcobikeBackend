@@ -1,0 +1,36 @@
+
+.modal{
+  display: flex;
+  justify-content: center;
+}
+
+.modal2{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.buttonPointer{
+  cursor: pointer;
+}
+
+.message{
+  font-size: 18px;
+}
+
+
+:host ::ng-deep{
+
+ .p-dialog {
+  .p-dialog-header{
+  background-color: #DC000F;
+  color: #ffffff;
+  }
+
+  .p-button:enabled {
+    background-color:  #DC000F;
+    color: #ffffff;
+
+  }
+}
+}

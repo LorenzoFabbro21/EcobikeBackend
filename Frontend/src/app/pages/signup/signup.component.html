@@ -1,0 +1,39 @@
+<div class="container">
+    
+  <div class="view">
+    <div class="titleMenu">
+      <h1 >Registrazione</h1>
+    </div>
+    <div class="labelCombo content-below-spinner">
+      <label>Nome*</label>
+      <input type="text" pInputText placeholder="Inserisci il nome" [(ngModel)]="first_name" class="p-inputtext-lg input" />
+    </div>
+    <div class="labelCombo content-below-spinner">
+      <label>Cognome*</label>
+      <input type="text" pInputText placeholder="Inserisci il modello" [(ngModel)]="last_name" class="p-inputtext-lg input"/>
+    </div>
+    <div class="labelCombo content-below-spinner">
+      <label>Mail*</label>
+      <input type="text" pInputText placeholder="Inserisci il mail" [(ngModel)]="mail" class="p-inputtext-lg input"/>
+    </div>
+    <div class="labelCombo content-below-spinner">
+      <label>Telefono*</label>
+      <input type="text" pInputText placeholder="Inserisci il numero di telefono" [(ngModel)]="phone_number" class="p-inputtext-lg input"/>
+    </div>
+    <div class="labelCombo content-below-spinner">
+      <label>Password*</label>
+      <input type="password" pInputText placeholder="Inserisci la password" [(ngModel)]="password" class="p-inputtext-lg input"/>
+    </div>
+    <div class="submit">
+      <button pButton  label="Invia" class="button" (click)="signup()"></button>
+    </div>
+  </div>
+  
+</div>
+<app-error-dialog
+      [showModal]="showError"
+      [headerText]="errorStatus"
+      [label]="errorMessage"
+      (showModalChange)="changeValue($event)"
+
+    />

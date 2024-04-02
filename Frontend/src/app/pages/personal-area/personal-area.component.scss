@@ -1,0 +1,41 @@
+.info {
+    display: flex;
+    flex-direction: row;
+    height: 70vh;
+    .image {
+        margin-top: 5vh;
+        border-radius: 50%;
+        width: 22vw;
+        max-height: 35vh;
+    }
+    .user_data{
+        display: flex;
+        flex-direction: column;
+    }
+    .grid_style{
+        display: grid;
+        grid-template-columns: repeat(3, minmax(24vw, 1fr));
+        align-items: center;
+        margin: 0px 40px;
+    }
+    .labelGrid{
+        margin-top: 8vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.btn {
+    margin: 0px 40px;
+}
+
+.button {
+    background-color: #01aaa9;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: large;
+  }
+.spanStyle {
+    font-size: larger;
+}
