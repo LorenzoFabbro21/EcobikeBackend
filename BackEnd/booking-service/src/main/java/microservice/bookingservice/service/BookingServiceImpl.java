@@ -17,9 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,8 +31,19 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     @Transactional
-    public Booking saveBooking(Booking booking) {
-        return repository.save(booking);
+    public ResponseEntity<?> saveBooking(Booking booking) {
+        try {
+            Booking bookingCreated = repository.save(booking);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Rent successfully created");
+            body.put("id", String.valueOf(bookingCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
@@ -52,16 +62,20 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteBooking(long id) {
+    public ResponseEntity<?> deleteBooking(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("Booking has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Booking has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteAllBookings() {
+    public ResponseEntity<?> deleteAllBookings() {
         repository.deleteAll();
-        return new ResponseEntity<>("All bookings have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All bookings have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

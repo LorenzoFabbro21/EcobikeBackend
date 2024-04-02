@@ -20,10 +20,9 @@ public class AdSellController {
     private final AdSellService adSellService;
 
     @PostMapping(value = "")
-    public AdSell postAdSell(@RequestBody AdSell adSell) {
+    public ResponseEntity<?> postAdSell(@RequestBody AdSell adSell) {
 
-        AdSell _AdSell = adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
-        return _AdSell;
+        return adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
     }
 
     @GetMapping("/{id}")
@@ -50,18 +49,14 @@ public class AdSellController {
 
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAdSell(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteAdSell(@PathVariable("id") long id) {
         System.out.println("Delete adSell with ID = " + id + "...");
-        ResponseEntity<String> response = adSellService.deleteAdSell(id);
-        return response;
+        return adSellService.deleteAdSell(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllAdsSell() {
+    public ResponseEntity<?> deleteAllAdsSell() {
         System.out.println("Delete All adsSell...");
-
-        ResponseEntity<String> response = adSellService.deleteAllAdsSell();
-
-        return response;
+        return adSellService.deleteAllAdsSell();
     }
 
     @PutMapping("/{id}")

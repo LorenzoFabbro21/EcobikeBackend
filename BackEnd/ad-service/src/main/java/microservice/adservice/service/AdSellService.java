@@ -11,15 +11,15 @@ import java.util.Optional;
 @Component
 public interface AdSellService {
 
-        AdSell saveAdSell(AdSell adSell);
+        ResponseEntity<?> saveAdSell(AdSell adSell);
 
         List<AdSell> getAllAdsSell();
 
         Optional<AdSell> getAdSellById(long id);
 
-        ResponseEntity<String> deleteAdSell(long id);
+        ResponseEntity<?> deleteAdSell(long id);
 
-        ResponseEntity<String> deleteAllAdsSell();
+        ResponseEntity<?> deleteAllAdsSell();
 
         ResponseEntity<AdSell> updateAdSell(long id, @RequestBody AdSell adSell);
         List<Bike> getBikesToSell();

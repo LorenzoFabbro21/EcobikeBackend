@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +25,19 @@ public class AdSellServiceImpl implements AdSellService {
     private RestTemplate restTemplate;
 
     @Override
-    public AdSell saveAdSell(AdSell adSell) {
-        return repository.save(adSell);
+    public ResponseEntity<?> saveAdSell(AdSell adSell) {
+        try {
+            AdSell adSellCreated = repository.save(adSell);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Sell successfully created");
+            body.put("id", String.valueOf(adSellCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
@@ -44,15 +53,19 @@ public class AdSellServiceImpl implements AdSellService {
     }
 
     @Override
-    public ResponseEntity<String> deleteAdSell(long id) {
+    public ResponseEntity<?> deleteAdSell(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("AdSell has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "AdSell has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
-    public ResponseEntity<String> deleteAllAdsSell() {
+    public ResponseEntity<?> deleteAllAdsSell() {
         repository.deleteAll();
-        return new ResponseEntity<>("All adsSell have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All adsSell have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

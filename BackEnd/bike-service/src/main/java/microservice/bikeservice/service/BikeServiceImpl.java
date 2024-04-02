@@ -10,9 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import microservice.bikeservice.repo.BikeRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +22,19 @@ public class BikeServiceImpl implements BikeService{
 
 
     @Override
-    public Bike saveBike(Bike bike) {
-        return repository.save(bike);
+    public ResponseEntity<?> saveBike(Bike bike) {
+        try {
+            Bike bikeCreated = repository.save(bike);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Bike has been created!");
+            body.put("id", String.valueOf(bikeCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
@@ -40,15 +50,20 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    public ResponseEntity<String> deleteBike(long id) {
+    public ResponseEntity<?> deleteBike(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("Bike has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Bike has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
     }
 
     @Override
-    public ResponseEntity<String> deleteAllBikes() {
+    public ResponseEntity<?> deleteAllBikes() {
         repository.deleteAll();
-        return new ResponseEntity<>("All bikes have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All bikes have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

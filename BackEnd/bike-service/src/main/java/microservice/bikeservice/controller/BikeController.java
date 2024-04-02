@@ -26,11 +26,9 @@ public class BikeController {
     private final BikeService bikeService;
 
     @PostMapping(value = "")
-    public Bike postBike(@RequestBody Bike bike) {
+    public ResponseEntity<?> postBike(@RequestBody Bike bike) {
         System.out.println("New Bike:"+ bike);
-        Bike _Bike = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
-        System.out.println("returned Bike:"+ bike);
-        return _Bike;
+        return bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
     }
     @GetMapping("/{id}")
     public Optional<Bike> getBike(@PathVariable("id") long id) {
@@ -61,19 +59,18 @@ public class BikeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBike(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteBike(@PathVariable("id") long id) {
 
         System.out.println("Delete bike with ID = " + id + "...");
-        ResponseEntity<String> response = bikeService.deleteBike(id);
-        return response;
+        return bikeService.deleteBike(id);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllSBikes() {
+    public ResponseEntity<?> deleteAllSBikes() {
 
         System.out.println("Delete All bikes...");
-        ResponseEntity<String> response = bikeService.deleteAllBikes();
-        return response;
+        return  bikeService.deleteAllBikes();
+
     }
 
     @PutMapping("/{id}")

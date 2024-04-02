@@ -23,10 +23,9 @@ public class ShopController {
     private final ShopService shopService;
 
     @PostMapping(value = "")
-    public Shop postShop(@RequestBody Shop shop) {
+    public ResponseEntity<?> postShop(@RequestBody Shop shop) {
 
-        Shop _Shop = shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getImg(), shop.getIdUser()));
-        return _Shop;
+        return shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getImg(), shop.getIdUser()));
     }
 
     @GetMapping("/{id}")
@@ -63,19 +62,18 @@ public class ShopController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteShop(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteShop(@PathVariable("id") long id) {
 
         System.out.println("Delete shop with ID = " + id + "...");
-        ResponseEntity<String> response = shopService.deleteShop(id);
-        return response;
+        return shopService.deleteShop(id);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllShops() {
+    public ResponseEntity<?> deleteAllShops() {
 
         System.out.println("Delete All shops...");
-        ResponseEntity<String> response = shopService.deleteAllShops();
-        return response;
+        return shopService.deleteAllShops();
+
     }
 
     @PutMapping("/{id}")

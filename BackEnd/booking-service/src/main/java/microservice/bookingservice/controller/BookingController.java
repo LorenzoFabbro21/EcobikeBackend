@@ -19,9 +19,8 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping(value = "")
-    public Booking postBooking(@RequestBody Booking booking) {
-        Booking _booking = bookingService.saveBooking(new Booking(booking.getId(), booking.getIdPrivate(), booking.getIdAnnouncement(),booking.getStartdate(), booking.getEnddate()));
-        return _booking;
+    public ResponseEntity<?> postBooking(@RequestBody Booking booking) {
+        return  bookingService.saveBooking(new Booking(booking.getId(), booking.getIdPrivate(), booking.getIdAnnouncement(),booking.getStartdate(), booking.getEnddate()));
     }
 
     @GetMapping("/{id}")
@@ -51,16 +50,15 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBooking(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteBooking(@PathVariable("id") long id) {
         System.out.println("Delete Booking with ID = " + id + "...");
-        ResponseEntity<String> response = bookingService.deleteBooking(id);
-        return response;
+        return bookingService.deleteBooking(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllBookings() {
+    public ResponseEntity<?> deleteAllBookings() {
         System.out.println("Delete all Bookings...");
-        ResponseEntity<String> response = bookingService.deleteAllBookings();
-        return response;
+        return bookingService.deleteAllBookings();
+
     }
 
     @PutMapping("/{id}")

@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingService {
-    Booking saveBooking(Booking booking);
+    ResponseEntity<?> saveBooking(Booking booking);
 
     List<Booking> getAllBookings();
 
     Optional<Booking> getBookingById(long id);
 
-    ResponseEntity<String> deleteBooking(long id);
+    ResponseEntity<?> deleteBooking(long id);
 
-    ResponseEntity<String> deleteAllBookings();
+    ResponseEntity<?> deleteAllBookings();
 
     ResponseEntity<Booking> updateBooking(long id, @RequestBody Booking booking);
 

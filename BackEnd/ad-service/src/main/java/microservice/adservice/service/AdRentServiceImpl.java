@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import microservice.adservice.dto.*;
-import microservice.adservice.model.AdRent;
+import microservice.adservice.model.*;
 import microservice.adservice.repo.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +26,20 @@ public class AdRentServiceImpl implements AdRentService {
     private RestTemplate restTemplate;
 
     @Override
-    public AdRent saveAdRent(AdRent adRent) {
-        return repository.save(adRent);
+    public ResponseEntity<?> saveAdRent(AdRent adRent) {
+        try {
+            AdRent adRentCreated = repository.save(adRent);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Rent successfully created");
+            body.put("id", String.valueOf(adRentCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
+
     }
 
     @Override
@@ -45,15 +55,20 @@ public class AdRentServiceImpl implements AdRentService {
     }
 
     @Override
-    public ResponseEntity<String> deleteAdRent(long id) {
+    public ResponseEntity<?> deleteAdRent(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("AdRent has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "AdRent has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
-    public ResponseEntity<String> deleteAllAdsRent() {
+    public ResponseEntity<?> deleteAllAdsRent() {
         repository.deleteAll();
-        return new ResponseEntity<>("All adsRent have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All adsRent have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
     }
 
     @Override

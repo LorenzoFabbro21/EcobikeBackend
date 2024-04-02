@@ -13,9 +13,8 @@ import org.springframework.transaction.annotation.*;
 import org.springframework.web.client.*;
 
 import javax.sound.sampled.ReverbType;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,8 +25,19 @@ public class RecensioneServiceImpl implements RecensioneService {
     @Autowired
     private RestTemplate restTemplate;
     @Override
-    public Recensione saveReview(Recensione review) {
-        return repository.save(review);
+    public ResponseEntity<?> saveReview(Recensione review) {
+        try {
+            Recensione reviewCreated = repository.save(review);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Review successfully created");
+            body.put("id", String.valueOf(reviewCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
@@ -44,15 +54,19 @@ public class RecensioneServiceImpl implements RecensioneService {
 
     @Override
 
-    public ResponseEntity<String> deleteReview(long id) {
+    public ResponseEntity<?> deleteReview(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("Review has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Review has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
-    public ResponseEntity<String> deleteAllReview() {
+    public ResponseEntity<?> deleteAllReview() {
         repository.deleteAll();
-        return new ResponseEntity<>("All reviews have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All reviews have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

@@ -21,9 +21,8 @@ public class RecensioneController  {
     private final RecensioneService reviewService;
 
     @PostMapping(value = "")
-    public Recensione postReview(@RequestBody Recensione review) {
-        Recensione _review = reviewService.saveReview(new Recensione(review.getText(), review.getScore(), review.getIdUser(), review.getIdShop()));
-        return _review;
+    public ResponseEntity<?> postReview(@RequestBody Recensione review) {
+        return reviewService.saveReview(new Recensione(review.getText(), review.getScore(), review.getIdUser(), review.getIdShop()));
     }
 
     @GetMapping("/{id}")
@@ -54,12 +53,12 @@ public class RecensioneController  {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReview(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteReview(@PathVariable("id") long id) {
         System.out.println("Delete review with ID = " + id + "...");
         return  reviewService.deleteReview(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllReviews() {
+    public ResponseEntity<?> deleteAllReviews() {
         System.out.println("Delete all reviews...");
         return reviewService.deleteAllReview();
 

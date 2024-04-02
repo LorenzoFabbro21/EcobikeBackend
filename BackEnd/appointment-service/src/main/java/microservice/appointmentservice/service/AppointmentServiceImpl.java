@@ -17,9 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,8 +30,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     private RestTemplate restTemplate;
     @Override
     @Transactional
-    public Appointment saveAppointment(Appointment appointment) {
-        return repository.save(appointment);
+    public ResponseEntity<?> saveAppointment(Appointment appointment) {
+        try {
+            Appointment appointmentCreated = repository.save(appointment);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Appointment successfully created");
+            body.put("id", String.valueOf(appointmentCreated.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
+
     }
 
     @Override
@@ -51,16 +62,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteAppointment(long id) {
+    public ResponseEntity<?> deleteAppointment(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<>("Appointment has been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Appointment has been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteAllAppointments() {
+    public ResponseEntity<?> deleteAllAppointments() {
         repository.deleteAll();
-        return new ResponseEntity<>("All announcement have been deleted!", HttpStatus.OK);
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "All appointments have been deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override

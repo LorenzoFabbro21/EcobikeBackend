@@ -21,10 +21,9 @@ public class AdRentController {
     private final AdRentService adRentService;
 
     @PostMapping(value = "")
-    public AdRent postAdRent(@RequestBody AdRent adRent) {
+    public ResponseEntity<?> postAdRent(@RequestBody AdRent adRent) {
 
-        AdRent _AdRent = adRentService.saveAdRent(new AdRent(adRent.getPrice(), adRent.getIdBike(), adRent.getIdUser()));
-        return _AdRent;
+        return  adRentService.saveAdRent(new AdRent(adRent.getPrice(), adRent.getIdBike(), adRent.getIdUser()));
     }
 
     @GetMapping("/{id}")
@@ -63,18 +62,14 @@ public class AdRentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAdRent(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteAdRent(@PathVariable("id") long id) {
         System.out.println("Delete adRent with ID = " + id + "...");
-        ResponseEntity<String> response = adRentService.deleteAdRent(id);
-        return response;
+        return  adRentService.deleteAdRent(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllAdsRent() {
+    public ResponseEntity<?> deleteAllAdsRent() {
         System.out.println("Delete All adsRent...");
-
-        ResponseEntity<String> response = adRentService.deleteAllAdsRent();
-
-        return response;
+        return  adRentService.deleteAllAdsRent();
     }
 
     @PutMapping("/{id}")

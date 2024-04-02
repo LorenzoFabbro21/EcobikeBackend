@@ -19,9 +19,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping(value = "")
-    public Appointment postAppointment(@RequestBody Appointment appointment) {
-        Appointment _appointment = appointmentService.saveAppointment(new Appointment(appointment.getId(), appointment.getIdUser(), appointment.getIdAnnouncement(), appointment.getDate()));
-        return _appointment;
+    public ResponseEntity<?> postAppointment(@RequestBody Appointment appointment) {
+        return  appointmentService.saveAppointment(new Appointment(appointment.getId(), appointment.getIdUser(), appointment.getIdAnnouncement(), appointment.getDate()));
     }
 
     @GetMapping("/{id}")
@@ -41,13 +40,13 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAppointment(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteAppointment(@PathVariable("id") long id) {
         System.out.println("Delete Appointment with ID = " + id + "...");
         return appointmentService.deleteAppointment(id);
 
     }
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllAppointments() {
+    public ResponseEntity<?> deleteAllAppointments() {
         System.out.println("Delete all Appointments...");
         return appointmentService.deleteAllAppointments();
 

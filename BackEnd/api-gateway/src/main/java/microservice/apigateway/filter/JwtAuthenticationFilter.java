@@ -46,22 +46,16 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
 	private boolean NotRequiresAuthentication(String requestPath,HttpMethod requestMethod) {
 		// Verifica se l'URI è contenuta nella lista della Uri che non richiedono autenticazione
-		System.out.println(requestPath);
-		System.out.println(requestMethod);
-		System.out.println(UriNotProtected.stream().anyMatch(uri -> requestPath.startsWith(uri)));
 		if (UriNotProtected.stream().anyMatch(uri -> requestPath.startsWith(uri))){
 
 			if (requestPath.contains("auth")) {
-				System.out.println("CIAO");
 				return true;
 			}
 			else {
-				System.out.println("ciao");
 				return requestMethod == HttpMethod.GET;
 			}
 		}
 		else {
-			System.out.println("aaaa");
 			return false;
 		}
 	}

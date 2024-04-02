@@ -13,15 +13,15 @@ import java.util.Optional;
 @Component
 public interface AdRentService {
 
-    AdRent saveAdRent(AdRent adRent);
+    ResponseEntity<?> saveAdRent(AdRent adRent);
 
     List<AdRent> getAllAdsRent();
 
     Optional<AdRent> getAdRentById(long id);
 
-    ResponseEntity<String> deleteAdRent(long id);
+    ResponseEntity<?> deleteAdRent(long id);
 
-    ResponseEntity<String> deleteAllAdsRent();
+    ResponseEntity<?> deleteAllAdsRent();
 
     ResponseEntity<AdRent> updateAdRent(long id, @RequestBody AdRent adRent);
 

@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppointmentService {
-    Appointment saveAppointment(Appointment appointment);
+    ResponseEntity<?> saveAppointment(Appointment appointment);
 
     List<Appointment> getAllAppointments();
 
     Optional<Appointment> getAppointmentById(long id);
 
-    ResponseEntity<String> deleteAppointment(long id);
+    ResponseEntity<?> deleteAppointment(long id);
 
-    ResponseEntity<String> deleteAllAppointments();
+    ResponseEntity<?> deleteAllAppointments();
 
     ResponseEntity<Appointment> updateAppointment(long id, @RequestBody Appointment appointment);
 

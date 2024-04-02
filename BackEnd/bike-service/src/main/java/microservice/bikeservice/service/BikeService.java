@@ -9,15 +9,15 @@ import java.util.Optional;
 
 public interface BikeService {
 
-    Bike saveBike(Bike bike);
+    ResponseEntity<?> saveBike(Bike bike);
 
     List<Bike> getAllBikes();
 
     Optional<Bike> getBikeById(long id);
 
-    ResponseEntity<String> deleteBike(long id);
+    ResponseEntity<?> deleteBike(long id);
 
-    ResponseEntity<String> deleteAllBikes();
+    ResponseEntity<?> deleteAllBikes();
 
     ResponseEntity<Bike> updateBike(long id, @RequestBody Bike bike);
 

@@ -10,15 +10,15 @@ import java.util.Optional;
 
 public interface ShopService {
 
-    Shop saveShop(Shop shop);
+    ResponseEntity<?> saveShop(Shop shop);
 
     List<Shop> getAllShops();
 
     Optional<Shop> getShopById(long id);
 
-    ResponseEntity<String> deleteShop(long id);
+    ResponseEntity<?> deleteShop(long id);
 
-    ResponseEntity<String> deleteAllShops();
+    ResponseEntity<?> deleteAllShops();
 
     ResponseEntity<Shop> updateShop(long id, @RequestBody Shop shop);
 
