@@ -2,7 +2,7 @@ version: "3"
 services:
   postgres-user:
     container_name: postgres-user
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=user_db
@@ -18,7 +18,7 @@ services:
 
   postgres-review:
     container_name: postgres-review
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=recensione_db
@@ -33,7 +33,7 @@ services:
       - opnet
   postgres-shop:
     container_name: postgres-shop
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=shop_db
@@ -49,7 +49,7 @@ services:
 
   postgres-bike:
     container_name: postgres-bike
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=bike_db
@@ -65,7 +65,7 @@ services:
 
   postgres-ad:
     container_name: postgres-ad
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=ad_db
@@ -81,7 +81,7 @@ services:
 
   postgres-booking:
     container_name: postgres-booking
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=booking_db
@@ -97,7 +97,7 @@ services:
 
   postgres-appointment:
     container_name: postgres-appointment
-    image: "postgres:9.6-alpine"
+    image: 'postgres:latest'
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
       - POSTGRES_DB=appointment_db
@@ -113,6 +113,7 @@ services:
   ## Eureka Server
   service-discovery-server:
     image: service-discovery-server:latest
+    build: BackEnd/service-discovery-server
     container_name: service-discovery-server
     ports:
       - "8761:8761"
@@ -120,6 +121,7 @@ services:
       - opnet
   api-gateway:
     image: api-gateway:latest
+    build: BackEnd/api-gateway
     container_name: api-gateway
     environment:
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
@@ -132,6 +134,7 @@ services:
   ## Product-Service Docker Compose Config
   recensione-service:
     container_name: recensione-service
+    build: BackEnd/recensione-service
     image: recensione-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -151,6 +154,7 @@ services:
 
   authentication-service:
     container_name: authentication-service
+    build: BackEnd/authentication-service
     image: authentication-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -164,6 +168,7 @@ services:
 
   user-service:
     container_name: user-service
+    build: BackEnd/user-service
     image: user-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -182,6 +187,7 @@ services:
 
   shop-service:
     container_name: shop-service
+    build: BackEnd/shop-service
     image: shop-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -200,6 +206,7 @@ services:
 
   bike-service:
     container_name: bike-service
+    build: BackEnd/bike-service
     image: bike-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -218,6 +225,7 @@ services:
 
   ad-service:
     container_name: ad-service
+    build: BackEnd/ad-service
     image: ad-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -235,6 +243,7 @@ services:
       - opnet
   booking-service:
     container_name: booking-service
+    build: BackEnd/booking-service
     image: booking-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -252,6 +261,7 @@ services:
       - opnet
   appointment-service:
     container_name: appointment-service
+    build: BackEnd/appointment-service
     image: appointment-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker

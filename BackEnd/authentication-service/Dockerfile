@@ -1,14 +1,11 @@
-# FROM openjdk:21
-# VOLUME /tmp
-# EXPOSE 8080
-# ARG DEPENDENCY=target
-# ADD ${DEPENDENCY}/*.jar api-gateway.jar
-# ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/api-gateway.jar"]
-# docker build -t api-gateway .
-# docker run -d -p 8080:8080 --name="api-gateway" api-gateway
 
-FROM openjdk:21-jdk
+FROM maven:latest AS build
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
+WORKDIR /usr/src/app
+RUN mvn -DskipTests=true clean package
+
+FROM openjdk:21
+COPY --from=build /usr/src/app/target/*.jar app.jar
 EXPOSE 8090
-COPY target/*.jar app.jar
-ENTRYPOINT ["java",  "-jar", "/app.jar"]
-
+ENTRYPOINT ["java", "-jar", "/app.jar"]
