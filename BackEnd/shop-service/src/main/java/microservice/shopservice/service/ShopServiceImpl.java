@@ -51,6 +51,14 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
+    public List<Shop> getAllShopsForUser(long id) {
+        List<Shop> shops = new ArrayList<>();
+        repository.getAllShopForUser(id).forEach(shops::add);
+        return shops;
+    }
+
+    @Override
+    @Transactional
     public Optional<Shop> getShopById(long id) {
         return repository.findById(id);
     }

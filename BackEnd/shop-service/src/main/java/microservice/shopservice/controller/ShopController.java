@@ -48,6 +48,16 @@ public class ShopController {
         return shop;
     }
 
+    @GetMapping("/all/user/{id}")
+    @Transactional
+    public List<Shop> getAllShopsForUser(@PathVariable("id") long id) {
+
+        System.out.println("Get all shops for User...");
+        List<Shop> shop = new ArrayList<>();
+        shop = shopService.getAllShopsForUser(id);
+        return shop;
+    }
+
     @GetMapping("/{id}/user")
     public User getUserFromShop(@PathVariable("id") long id) {
         User user = new User();

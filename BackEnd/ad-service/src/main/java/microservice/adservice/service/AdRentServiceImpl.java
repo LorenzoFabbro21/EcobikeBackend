@@ -49,6 +49,15 @@ public class AdRentServiceImpl implements AdRentService {
         return adsRent;
     }
 
+
+    @Override
+    public List<AdRent> getAllAdsRentForUser(long id) {
+        List<AdRent> adsRent = new ArrayList<>();
+        repository.getAllAdRentForUser(id).forEach(adsRent::add);
+        return adsRent;
+    }
+
+
     @Override
     public Optional<AdRent> getAdRentById(long id) {
         return repository.findById(id);

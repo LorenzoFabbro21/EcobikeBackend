@@ -42,6 +42,14 @@ public class AdRentController {
         return adRent;
     }
 
+    @GetMapping("/all/user/{id}")
+    public List<AdRent> getAllAdsRentForUser(@PathVariable("id") long id) {
+        System.out.println("Get all adsRent for User...");
+        List<AdRent> adRent = new ArrayList<>();
+        adRent = adRentService.getAllAdsRentForUser(id);
+        return adRent;
+    }
+
     @GetMapping("/bikes")
     public List<Bike> getBikesToRent() {
         System.out.println("Get bikes to rent...");

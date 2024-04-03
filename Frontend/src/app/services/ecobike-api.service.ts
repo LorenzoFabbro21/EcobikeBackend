@@ -54,16 +54,43 @@ export class EcobikeApiService {
   }
 
   /**
-  * Restituisce l'elenco dei noleggi
+  * Restituisce l'elenco delle vendite
   *
   * Endpoint Rest: adsell
   */
   public elenco_vendite(): Observable<adSell[]> {
+  
     return this.httpClient.get<adSell[]>(`${this.url}/adsell`);
   }
 
+  public elenco_vendite_logged_user(idUser: number | undefined, token: string | any): Observable<adSell[]> {
+  
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+  }); 
+
+  let options = { headers: headers };
+
+    return this.httpClient.get<adSell[]>(`${this.url}/adsell/all/user/${idUser}`, options);
+  }
+
+
+  public elenco_noleggi_logged_user(idUser: number | undefined, token: string | any): Observable<adRent[]> {
+  
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+  }); 
+
+  let options = { headers: headers };
+
+    return this.httpClient.get<adRent[]>(`${this.url}/adrent/all/user/${idUser}`, options);
+  }
+
+
 /**
- * Restitusice la bicicletta selezionata
+ * Restitusice la bicicletta selezionata in base all'id
  *
  * Endpoint Rest: bike/{bikeNo}
  */
@@ -324,23 +351,6 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
   }
 
 
-  handleError(error: any) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    window.alert(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
-  }
-
-
-
   /**
    * Restituisce l'elenco degli shops
   *
@@ -364,6 +374,37 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
     });
     return this.httpClient.get<Shop>(`${this.url}/shop/` + id, {headers}); 
   }
+
+
+  public list_shops_for_user(id: number, token: string): Observable<Shop[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.httpClient.get<Shop[]>(`${this.url}/shop/all/user/${id}`, {headers}); 
+  }
+
+
+
+
+
+  handleError(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
+  }
+
+
+
+
 
 }
 

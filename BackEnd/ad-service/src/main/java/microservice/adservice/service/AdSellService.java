@@ -15,6 +15,8 @@ public interface AdSellService {
 
         List<AdSell> getAllAdsSell();
 
+        List<AdSell> getAllAdsSellForUser(long id);
+
         Optional<AdSell> getAdSellById(long id);
 
         ResponseEntity<?> deleteAdSell(long id);

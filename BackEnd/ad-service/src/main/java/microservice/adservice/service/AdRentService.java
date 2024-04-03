@@ -17,6 +17,8 @@ public interface AdRentService {
 
     List<AdRent> getAllAdsRent();
 
+    List<AdRent> getAllAdsRentForUser(long id);
+
     Optional<AdRent> getAdRentById(long id);
 
     ResponseEntity<?> deleteAdRent(long id);

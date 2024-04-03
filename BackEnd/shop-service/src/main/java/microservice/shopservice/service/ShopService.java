@@ -14,6 +14,8 @@ public interface ShopService {
 
     List<Shop> getAllShops();
 
+    List<Shop> getAllShopsForUser(long id);
+
     Optional<Shop> getShopById(long id);
 
     ResponseEntity<?> deleteShop(long id);

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { bikeRentSell } from 'src/app/interfaces/bikeRentSell';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
+import { UserLoggedService } from 'src/app/services/user-logged.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event| any;
@@ -35,44 +37,88 @@ export class VenditaComponent {
   mostraSpinner:boolean = true;
   bikesNull = false;
   spinnerFilter: boolean= false;
+  user: LoggedUser | null = null; 
 
-  constructor (private ebService: EcobikeApiService) {
+  constructor (private ebService: EcobikeApiService, private userService: UserLoggedService) {
 
-    this.ebService.elenco_vendite().subscribe({
-      next: (response:adSell[]) => {
+    this.user = this.userService.userLogged;
 
-        if (response.length != 0) {
-          this.sells = response
-
-          this.ebService.elenco_bici_vendita().subscribe({
-            next: (response:Bicicletta[]) => {
-      
-              if (response != null) {
-                this.bikesVendita= response;
-      
-                this.sells.forEach(rent => {
-                  this.bikesVendita.forEach(bike => {
-                    if(rent.idBike == bike.id) {
-                      const obj: bikeRentSell= {
-                        bike: bike,
-                        price: rent.price ? rent.price : 0
-                      };
-                      this.bikeSellPrice.push(obj);
-                    }
+    if(this.user == null) {
+      this.ebService.elenco_vendite().subscribe({
+        next: (response:adSell[]) => {
+  
+          if (response.length != 0) {
+            this.sells = response
+  
+            this.ebService.elenco_bici_vendita().subscribe({
+              next: (response:Bicicletta[]) => {
+        
+                if (response != null) {
+                  this.bikesVendita= response;
+        
+                  this.sells.forEach(rent => {
+                    this.bikesVendita.forEach(bike => {
+                      if(rent.idBike == bike.id) {
+                        const obj: bikeRentSell= {
+                          bike: bike,
+                          price: rent.price ? rent.price : 0
+                        };
+                        this.bikeSellPrice.push(obj);
+                      }
+                    });
                   });
-                });
-                this.createFilters();
-                this.mostraSpinner = false;
+                  this.createFilters();
+                  this.mostraSpinner = false;
+                }
               }
-            }
-          });
+            });
+          }
+          else {
+            this.mostraSpinner = false;
+            this.bikesNull = true;
+          }
         }
-        else {
-          this.mostraSpinner = false;
-          this.bikesNull = true;
+      });
+    }
+    else {
+      this.ebService.elenco_vendite_logged_user(this.user.id, this.user.token).subscribe({
+        next: (response:adSell[]) => {
+  
+          if (response.length != 0) {
+            this.sells = response
+  
+            this.ebService.elenco_bici_vendita().subscribe({
+              next: (response:Bicicletta[]) => {
+        
+                if (response != null) {
+                  this.bikesVendita= response;
+        
+                  this.sells.forEach(rent => {
+                    this.bikesVendita.forEach(bike => {
+                      if(rent.idBike == bike.id) {
+                        const obj: bikeRentSell= {
+                          bike: bike,
+                          price: rent.price ? rent.price : 0
+                        };
+                        this.bikeSellPrice.push(obj);
+                      }
+                    });
+                  });
+                  this.createFilters();
+                  this.mostraSpinner = false;
+                }
+              }
+            });
+          }
+          else {
+            this.mostraSpinner = false;
+            this.bikesNull = true;
+          }
         }
-      }
-    });
+      });
+    }
+
+    
   }
 
   createFilters() {

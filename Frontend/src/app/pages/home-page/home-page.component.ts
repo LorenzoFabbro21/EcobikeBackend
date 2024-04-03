@@ -24,7 +24,8 @@ export class HomePageComponent {
   constructor (private ebService: EcobikeApiService, private userService: UserLoggedService ) {
     
     this.user = this.userService.userLogged;
-    if ( this.user == null || this.user != null && this.user.type == 'p') {
+
+    if(this.user == null) {
       this.ebService.elenco_noleggi().subscribe({
         next: (response:adRent[]) => {
 
@@ -52,36 +53,129 @@ export class HomePageComponent {
           }
         }
       });
-    }
-    
-    this.ebService.elenco_vendite().subscribe({
-      next: (response:adSell[]) => {
 
-        if (response != null) {
-          this.sells = response
-          this.ebService.elenco_bici_vendita().subscribe({
-            next: (response:Bicicletta[]) => {
-      
-              if (response != null) {
-                this.bikesVendita= response;
-      
-                this.sells.forEach(rent => {
-                  this.bikesVendita.forEach(bike => {
-                    if(rent.idBike == bike.id) {
-                      const obj: bikeRentSell= {
-                        bike: bike,
-                        price: rent.price ? rent.price : 0
-                      };
-                      this.bikeSellPrice.push(obj);
-                    }
+      this.ebService.elenco_vendite().subscribe({
+        next: (response:adSell[]) => {
+  
+          if (response != null) {
+            this.sells = response
+            this.ebService.elenco_bici_vendita().subscribe({
+              next: (response:Bicicletta[]) => {
+        
+                if (response != null) {
+                  this.bikesVendita= response;
+        
+                  this.sells.forEach(rent => {
+                    this.bikesVendita.forEach(bike => {
+                      if(rent.idBike == bike.id) {
+                        const obj: bikeRentSell= {
+                          bike: bike,
+                          price: rent.price ? rent.price : 0
+                        };
+                        this.bikeSellPrice.push(obj);
+                      }
+                    });
                   });
-                });
+                }
               }
-            }
-          });
+            });
+          }
         }
+      });
+    }
+    else if(this.user != null && this.user.type == 'p') {
+      //entrambe le chiamate
+
+        this.ebService.elenco_noleggi_logged_user(this.user.id, this.user.token).subscribe({
+          next: (response:adRent[]) => {
+  
+            if (response != null) {
+              this.rents = response;
+              this.ebService.elenco_bici_noleggio().subscribe({
+                next: (response:Bicicletta[]) => {
+          
+                  if (response != null) {
+                    this.bikesNoleggio= response;
+                    this.rents.forEach(rent => {
+                      this.bikesNoleggio.forEach(bike => {
+                        if(rent.idBike == bike.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: rent.price ? rent.price : 0
+                          };
+                          this.bikeRentPrice.push(obj);
+                        }
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
+
+
+        this.ebService.elenco_vendite_logged_user(this.user.id, this.user.token).subscribe({
+          next: (response:adSell[]) => {
+    
+            if (response != null) {
+              this.sells = response
+              this.ebService.elenco_bici_vendita().subscribe({
+                next: (response:Bicicletta[]) => {
+          
+                  if (response != null) {
+                    this.bikesVendita= response;
+          
+                    this.sells.forEach(rent => {
+                      this.bikesVendita.forEach(bike => {
+                        if(rent.idBike == bike.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: rent.price ? rent.price : 0
+                          };
+                          this.bikeSellPrice.push(obj);
+                        }
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
+    }
+    else if(this.user != null && this.user.type == 'd') {
+      //solo chiamata rent
+
+  
+        this.ebService.elenco_noleggi_logged_user(this.user.id, this.user.token).subscribe({
+          next: (response:adRent[]) => {
+  
+            if (response != null) {
+              this.rents = response;
+              this.ebService.elenco_bici_noleggio().subscribe({
+                next: (response:Bicicletta[]) => {
+          
+                  if (response != null) {
+                    this.bikesNoleggio= response;
+                    this.rents.forEach(rent => {
+                      this.bikesNoleggio.forEach(bike => {
+                        if(rent.idBike == bike.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: rent.price ? rent.price : 0
+                          };
+                          this.bikeRentPrice.push(obj);
+                        }
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
       }
-    });
     
   }
-}
+  }

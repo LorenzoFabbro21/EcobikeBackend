@@ -11,4 +11,7 @@ import java.util.List;
 public interface AdRentRepository extends JpaRepository<AdRent, Long> {
     @Query("SELECT b FROM AdRent b WHERE " + " b.idUser = ?1")
     public List<AdRent> getAllRentByUser (long id);
+
+    @Query("SELECT b FROM AdRent b WHERE " + " b.idUser != ?1")
+    public List<AdRent> getAllAdRentForUser (long id);
 }

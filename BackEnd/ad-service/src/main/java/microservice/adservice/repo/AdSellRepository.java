@@ -10,4 +10,7 @@ import java.util.List;
 public interface AdSellRepository extends JpaRepository<AdSell, Long> {
     @Query("SELECT b FROM AdSell b WHERE " + " b.idUser = ?1")
     public List<AdSell> getAllAdSellByUser (long id);
+
+    @Query("SELECT b FROM AdSell b WHERE " + " b.idUser != ?1")
+    public List<AdSell> getAllAdSellForUser (long id);
 }

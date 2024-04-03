@@ -48,6 +48,13 @@ public class AdSellServiceImpl implements AdSellService {
     }
 
     @Override
+    public List<AdSell> getAllAdsSellForUser(long id) {
+        List<AdSell> adsSell = new ArrayList<>();
+        repository.getAllAdSellForUser(id).forEach(adsSell::add);
+        return adsSell;
+    }
+
+    @Override
     public Optional<AdSell> getAdSellById(long id) {
         return repository.findById(id);
     }
