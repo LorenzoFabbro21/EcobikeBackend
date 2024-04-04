@@ -148,24 +148,24 @@ export class HomePageComponent {
       //solo chiamata rent
 
   
-        this.ebService.elenco_noleggi_logged_user(this.user.id, this.user.token).subscribe({
-          next: (response:adRent[]) => {
+        this.ebService.elenco_vendite_logged_user(this.user.id, this.user.token).subscribe({
+          next: (response:adSell[]) => {
   
             if (response != null) {
               this.rents = response;
-              this.ebService.elenco_bici_noleggio().subscribe({
+              this.ebService.elenco_bici_vendita().subscribe({
                 next: (response:Bicicletta[]) => {
           
                   if (response != null) {
-                    this.bikesNoleggio= response;
+                    this.bikesVendita= response;
                     this.rents.forEach(rent => {
-                      this.bikesNoleggio.forEach(bike => {
+                      this.bikesVendita.forEach(bike => {
                         if(rent.idBike == bike.id) {
                           const obj: bikeRentSell= {
                             bike: bike,
                             price: rent.price ? rent.price : 0
                           };
-                          this.bikeRentPrice.push(obj);
+                          this.bikeSellPrice.push(obj);
                         }
                       });
                     });
