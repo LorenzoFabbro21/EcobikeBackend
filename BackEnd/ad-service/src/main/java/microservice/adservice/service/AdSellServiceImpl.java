@@ -6,13 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import microservice.adservice.dto.*;
 import microservice.adservice.model.*;
 import microservice.adservice.repo.*;
+import org.hibernate.dialect.identity.HSQLIdentityColumnSupport;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,9 +46,31 @@ public class AdSellServiceImpl implements AdSellService {
 
     @Override
     public List<AdSell> getAllAdsSell() {
+
+        //Get di tutti gli appointment
+        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                "http://appointment-service/api/appointment",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Appointment>>() {}
+        );
+        List<Appointment> appointments = response.getBody();
+        //Get degli annunci di vendita
         List<AdSell> adsSell = new ArrayList<>();
         repository.findAll().forEach(adsSell::add);
-        return adsSell;
+
+        //Crea lista con gli idAnnouncement di tutti gli appointment
+        List<Long> appointmentAdSellIds = appointments.stream()
+                .map(Appointment::getIdAnnouncement)
+                .collect(Collectors.toList());
+
+        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+        List<AdSell> filteredAdSell = adsSell.stream()
+                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                .collect(Collectors.toList());
+
+
+        return filteredAdSell;
     }
 
     @Override
