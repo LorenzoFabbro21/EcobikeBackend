@@ -1,18 +1,11 @@
 <div (click)="clickShop()">
     <p-card>
         <ng-template pTemplate="header">
-            <!-- <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="firstImage" class="image"/> -->
+            <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop!.img" class="image"/>
         </ng-template>
         <ng-template pTemplate="footer" class="footerStyle">
             <div ><br>Shop {{shop?.id}}</div>
             <span class="details">{{shop?.name}} , {{shop?.city}} </span>
-           <!--  <div class="idBike">E-Bike {{bicicletta?.id}}</div>
-
-            <div class="dettagliPrezzo">
-                <span class="details">{{bicicletta?.brand}}, {{bicicletta?.model}}, {{bicicletta?.color}}</span>
-                <br>
-                <span>{{prezzo}} €</span>
-            </div> -->
         </ng-template>
     </p-card>
 </div>

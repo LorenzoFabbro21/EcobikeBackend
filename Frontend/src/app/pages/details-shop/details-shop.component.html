@@ -5,11 +5,11 @@
       <div #body >
         <div class="info">
             <div>
-                img
+                <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop?.img" class="imagePrincipale"/>
             </div>
             <div class = "details">
                 <h1 class = "name">
-                    Welcome to {{shop?.name}}'shop! 
+                    Welcome to {{shop?.name}}!
                 </h1>
                 <h2 class = "otherDetails"> 
                     <label>City:</label>  
