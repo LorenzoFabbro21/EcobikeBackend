@@ -39,6 +39,18 @@ public class BikeController {
         return bike;
     }
 
+
+    @GetMapping("/brand/{brand}")
+    public List<Bike> getSimilarBike(@PathVariable String brand) {
+
+        System.out.println("Get similar bike to " + brand + "...");
+        List<Bike> bike;
+        bike = bikeService.getBikeByBrand(brand);
+        System.out.println("return bike");
+        return bike;
+    }
+
+
     @GetMapping("")
     public List<Bike> getAllBikes() {
 

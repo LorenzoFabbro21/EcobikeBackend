@@ -114,7 +114,7 @@ export class BiciclettaNoleggioComponent {
       }
     });
 
-    this.ebService.get_bookings().subscribe({
+    this.ebService.get_bookings(this.userLogged?.token).subscribe({
       next: (response:Booking[]) => {
         if ( response) {
           response.forEach(booking => {

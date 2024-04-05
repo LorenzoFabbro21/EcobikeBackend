@@ -56,10 +56,12 @@
           <h2>Prodotti Simili</h2>
         </div>
         <div class="view">
-          <div *ngFor=" let bike of bikesSimili;  let i=index" >
-            <div *ngIf="i<4">
-              <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
-            </div>
+          <div *ngFor=" let x of bikesSimili;  let i=index" *ngIf="x.bike.id != bicicletta?.id" >
+            
+                <div *ngIf="i<4">
+                    <app-ebike [bicicletta]="x.bike" [prezzo]="x.price"></app-ebike>
+                </div>
+            
           </div>
         </div>
       </div>

@@ -50,6 +50,13 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
+    @Transactional
+    public List<Bike> getBikeByBrand(String brand) {
+        List<Bike> bike = repository.findBikeByBrand(brand);
+        return  bike;
+    }
+
+    @Override
     public ResponseEntity<?> deleteBike(long id) {
         repository.deleteById(id);
         Map<String, String> body = new HashMap<>();

@@ -5,6 +5,7 @@ import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Appointment } from 'src/app/interfaces/appointment';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
+import { bikeRentSell } from 'src/app/interfaces/bikeRentSell';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 import { UserLoggedService } from 'src/app/services/user-logged.service';
 
@@ -19,7 +20,9 @@ export class BiciclettaVenditaComponent implements OnInit{
   bicicletta?: Bicicletta;
   prezzo?: number;
   prezzo_noTax?: number;
-  bikesSimili: Bicicletta[]= [];
+  bikesSimili: bikeRentSell[] = [];
+  bikesList: Bicicletta[] = [];
+  sellList: adSell[] = [];
   images: string[]= [];
   imagePrincipal: string= "";
   idAnnuncio?: number;
@@ -27,55 +30,20 @@ export class BiciclettaVenditaComponent implements OnInit{
   mostraSpinner: boolean = false;
   disabledDates: Date[] = [];
   date: Date | undefined;
+  brand: string | undefined;
 
   constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService, private router: Router) {
+    
     this.userLogged = this.userService.userLogged;
-
+    
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     this.disabledDates.push(oggi);
-
     const datePrecedenti = this.generateDateArrayBefore(oggi);
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
-    this.bikesSimili= [
-      {
-      id: 1,
-      model: 'RX1-Sport',
-      brand: 'Olmo',
-      color: 'Rosso e bianco',
-      size: Taglia.TagliaS,
-      type: 'Mountain Bike',
-      img:  'ebike.jpg'
-      },
-      {
-        id: 2,
-        model:'CV5-Sport',
-        brand:'Thor',
-        color: 'Rosso e nero',
-        size:  Taglia.TagliaM,
-        type: 'Mountain Bike',
-        img: 'ebike.jpg'
-        },
-        {
-          id: 3,
-          model:'BN8-Trial',
-          brand:'Prova',
-          color: 'Rosso e bianco',
-          size:  Taglia.TagliaS,
-          type: 'Trial',
-          img: 'ebike.jpg'
-          },
-          {
-            id: 4,
-            model: 'TopModel',
-            brand: 'Brabus',
-            color: 'Verde',
-            size: Taglia.TagliaL,
-            type: 'Mountain Bike',
-            img: 'ebike.jpg'
-            }
-    ];
+    
   }
+
   ngOnInit() {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     this.route.queryParams.subscribe(params => {
@@ -87,10 +55,11 @@ export class BiciclettaVenditaComponent implements OnInit{
 
         if (response != null) {
           this.bicicletta= response;
+          this.brand = this.bicicletta?.brand;
           if(this.bicicletta !== undefined && this.bicicletta.img !== undefined) {
             const splittedStrings = this.bicicletta.img.split('data:image/jpeg;base64');
             splittedStrings.forEach((image: string) => {
-              if ( image !== "") {
+              if (image !== "") {
                 this.images.push('data:image/jpeg;base64'+ image);
               }
               
@@ -132,7 +101,40 @@ export class BiciclettaVenditaComponent implements OnInit{
       const tax = (this.prezzo / 100) * 22;
       this.prezzo_noTax = this.prezzo - tax;
     }
+
+
+    this.ebService.get_similar_bike("b").subscribe({
+      next: (response: Bicicletta[]) => {
+        if(response) {
+          this.bikesList = response;
+
+          this.ebService.elenco_vendite().subscribe({
+            next: (response:adSell[]) => {
+    
+              if (response) {
+                this.sellList = response;
+                
+                this.bikesList.forEach(bike => {
+                  this.sellList.forEach(sell => {
+                    if(sell.idBike == bike.id) {
+                      const obj: bikeRentSell= {
+                        bike: bike,
+                        price: sell.price ? sell.price : 0
+                      };
+                      this.bikesSimili.push(obj);
+                    }
+                  });
+                });
+              }
+            }
+          });
+        }
+      }
+    });
   }
+          
+
+   
 
 
   private generateDateArrayBefore(date: Date): Date[] {

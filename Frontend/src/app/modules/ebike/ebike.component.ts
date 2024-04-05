@@ -28,6 +28,8 @@ export class EbikeComponent implements OnInit{
 
   }
   ngOnInit(): void {
+
+
     if(this.bicicletta!== undefined && this.bicicletta.img !== undefined){
       const splittedStrings = this.bicicletta.img.split('data:image/jpeg;base64');
       const images : string[] = [];

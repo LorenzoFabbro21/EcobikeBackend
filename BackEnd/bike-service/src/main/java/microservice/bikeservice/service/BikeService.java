@@ -15,6 +15,8 @@ public interface BikeService {
 
     Optional<Bike> getBikeById(long id);
 
+    List<Bike> getBikeByBrand(String brand);
+
     ResponseEntity<?> deleteBike(long id);
 
     ResponseEntity<?> deleteAllBikes();
