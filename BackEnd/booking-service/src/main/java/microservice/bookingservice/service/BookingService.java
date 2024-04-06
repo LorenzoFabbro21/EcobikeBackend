@@ -25,4 +25,6 @@ public interface BookingService {
     List<Booking> getAllBookingsByPrivate(long id);
 
     List<BikeUser> getAllBikesRented(long id);
+
+    List<BikeUser> getPersonalRent(long id);
 }

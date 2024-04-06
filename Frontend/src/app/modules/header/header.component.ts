@@ -47,6 +47,11 @@ export class HeaderComponent implements OnInit{
             label: 'Informazioni personali',
             icon: 'pi pi-fw pi-users',
             routerLink: 'personal_area'
+          },
+          {
+            label: 'personal rent(da cambiare posizione)',
+            icon: 'pi pi-fw pi-users',
+            routerLink: 'personal-rent'
           }
         ]
       }

@@ -26,6 +26,7 @@ import { DetailsBikeToRentModule } from './pages/details-bike-to-rent/details-bi
 import { ShopsModule } from './pages/shops/shops.module';
 import { BikesRentedModule } from './pages/bikes-rented/bikes-rented.module';
 import { DetailsShopModule } from './pages/details-shop/details-shop.module';
+import { PersonalRentModule } from './pages/personal-rent/personal-rent.module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { DetailsShopModule } from './pages/details-shop/details-shop.module';
     DetailsBikeToRentModule,
     ShopsModule,
     BikesRentedModule,
-    DetailsShopModule
+    DetailsShopModule,
+    PersonalRentModule
   ],
   providers: [],
   bootstrap: [AppComponent]

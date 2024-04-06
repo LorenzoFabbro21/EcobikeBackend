@@ -406,6 +406,18 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
 
 
 
+  public list_bikes_personal_rent(id : number, token: string): Observable<userBikeRentInfo[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.httpClient.get<userBikeRentInfo[]>(`${this.url}/booking/personal/user/` + id + "/bikes", {headers}); 
+  }
+
+
+
+
+
+
 }
 
 
