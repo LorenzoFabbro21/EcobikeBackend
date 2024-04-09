@@ -21,6 +21,8 @@ import { ShopsComponent } from './pages/shops/shops.component';
 import { BikesRentedComponent } from './pages/bikes-rented/bikes-rented.component';
 import { DetailsShopComponent } from './pages/details-shop/details-shop.component';
 import { PersonalRentComponent } from './pages/personal-rent/personal-rent.component';
+import { PersonalBuyComponent } from './pages/personal-buy/personal-buy.component';
+
 const routes: Routes = [
   {
     title: '',
@@ -121,12 +123,16 @@ const routes: Routes = [
     title: "details-shop",
     path: 'details-shop',
     component: DetailsShopComponent
-  }
-  ,
+  },
   {
     title: "personal-rent",
     path: 'personal-rent',
     component: PersonalRentComponent
+  },
+  {
+    title: "personal-buy",
+    path: 'personal-buy',
+    component: PersonalBuyComponent
   }
 ];
 @NgModule({

@@ -25,4 +25,6 @@ public interface AppointmentService {
 
     List<BikeUser> getAllBikesSold(long id);
 
+    List<BikeUser> getPersonalBuy(long id);
+
 }
