@@ -103,34 +103,45 @@ export class BiciclettaVenditaComponent implements OnInit{
     }
 
 
-    this.ebService.get_similar_bike("b").subscribe({
-      next: (response: Bicicletta[]) => {
-        if(response) {
-          this.bikesList = response;
-
-          this.ebService.elenco_vendite().subscribe({
-            next: (response:adSell[]) => {
+    this.ebService.get_bicicletta(this.id).subscribe({
+      next: (response:Bicicletta) => {
+        this.ebService.get_similar_bike(response.brand).subscribe({
+          next: (response: Bicicletta[]) => {
+            if(response) {
+              this.bikesList = response;
     
-              if (response) {
-                this.sellList = response;
-                
-                this.bikesList.forEach(bike => {
-                  this.sellList.forEach(sell => {
-                    if(sell.idBike == bike.id) {
-                      const obj: bikeRentSell= {
-                        bike: bike,
-                        price: sell.price ? sell.price : 0
-                      };
-                      this.bikesSimili.push(obj);
-                    }
-                  });
-                });
-              }
+              this.ebService.elenco_vendite().subscribe({
+                next: (response:adSell[]) => {
+        
+                  if (response) {
+                    this.sellList = response;
+                    
+                    this.bikesList.forEach(bike => {
+                      this.sellList.forEach(sell => {
+                        if(sell.idBike == bike.id && sell.idUser != this.userLogged?.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: sell.price ? sell.price : 0
+                          };
+                          this.bikesSimili.push(obj);
+                        }
+                      });
+                    });
+    
+                    this.bikesSimili.forEach((bike, index) => {
+                      if(bike.bike.id == this.id)
+                        this.bikesSimili.splice(index, 1);
+                    })
+                  }
+                }
+              });
             }
-          });
-        }
+          }
+        });
       }
     });
+
+    
   }
           
 
