@@ -43,9 +43,14 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
-
     @Override
     public List<AdSell> getAllAdsSell() {
+        List<AdSell> adsSell = new ArrayList<>();
+        repository.findAll().forEach(adsSell::add);
+        return adsSell;
+    }
+    @Override
+    public List<AdSell> getAllAdsSellNotSold() {
 
         //Get di tutti gli appointment
         ResponseEntity<List<Appointment>> response = restTemplate.exchange(
@@ -68,7 +73,6 @@ public class AdSellServiceImpl implements AdSellService {
         List<AdSell> filteredAdSell = adsSell.stream()
                 .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
                 .collect(Collectors.toList());
-
 
         return filteredAdSell;
     }
