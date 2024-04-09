@@ -1,0 +1,81 @@
+.sectionGenerale{
+    height: 30vh;
+    background-color: rgba(31, 89, 92, 0.2);
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    margin-bottom: 4vh;
+}
+
+.textSection {
+    margin: 0 auto;
+    font-size: xx-large;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin: 0 auto;
+    column-gap: 2vw;
+}
+.noleggia {
+    background-color: #01aaa9;
+    color: #fff;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: x-large;
+
+  }
+  .acquista {
+    background-color: transparent;
+    color: #01aaa9;
+    border-radius: 10px;
+    border-color: #01aaa9;
+    font-size: x-large;
+
+  }
+
+  h2 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .view {
+    display: grid;
+    grid-template-columns: repeat(4 , minmax(200px,1fr));
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+
+  .titleMenu {
+    display: flex;
+    flex-direction: row;
+    margin: 0px 40px;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2vh;
+  }
+
+  :host ::ng-deep {
+    .p-card .p-card-content {
+      padding: 0;
+    }
+    .p-card .p-card-body {
+      padding: 0.75rem;
+    }
+    .p-card .p-card-footer {
+      padding: 0;
+    }
+  }
+
+    .p-button:enabled:hover {
+        background: #01aaa9;
+        color: #ffffff;
+        border-color: #01aaa9;
+    }
+  

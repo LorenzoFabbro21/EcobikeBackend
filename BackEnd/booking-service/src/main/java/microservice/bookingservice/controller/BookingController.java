@@ -1,5 +1,6 @@
 package microservice.bookingservice.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import microservice.bookingservice.dto.BikeUser;
@@ -73,4 +74,14 @@ public class BookingController {
         System.out.println("Get all Bikes rented by idPrivate...");
         return bookingService.getAllBikesRented(id);
     }
+
+    @GetMapping("/personal/user/{idPrivate}/bikes")
+    public List<BikeUser> getPersonalRent(@PathVariable("idPrivate") long id) {
+        System.out.println("Get personal rent...");
+        List<BikeUser> list = bookingService.getPersonalRent(id);
+        System.out.println(list);
+        return list;
+    }
 }
+
+
