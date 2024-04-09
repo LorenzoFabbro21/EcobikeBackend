@@ -129,4 +129,24 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return bikeUser;
     }
+
+
+    @Override
+    @Transactional
+    public List<BikeUser> getPersonalBuy(long id) {
+        List<BikeUser> bikeUser = new ArrayList<>();
+        System.out.println("ididididididididid: " + id);
+        List<Appointment> listBookings = repository.getPersonalBuy(id);
+        for (Appointment b : listBookings) {
+            AdSell a = restTemplate.getForObject("http://ad-service/api/adsell/" + b.getIdAnnouncement(), AdSell.class);
+            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
+            User u = restTemplate.getForObject("http://user-service/api/private/" + b.getIdUser(), User.class);
+            BikeUser obj = new BikeUser(u, bike, b, a);
+            bikeUser.add(obj);
+        }
+
+        return bikeUser;
+    }
+
+
 }
