@@ -121,4 +121,27 @@ public class BookingServiceImpl implements BookingService{
         }
         return bikeUser;
     }
+
+
+
+
+
+    @Override
+    @Transactional
+    public List<BikeUser> getPersonalRent(long id) {
+        List<BikeUser> bikeUser = new ArrayList<>();
+        System.out.println("ididididididididid: " + id);
+        List<Booking> listBookings = repository.getPersonalRent(id);
+        for (Booking b : listBookings) {
+            Adrent a = restTemplate.getForObject("http://ad-service/api/adrent/" + b.getIdAnnouncement(), Adrent.class);
+            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
+            User u = restTemplate.getForObject("http://user-service/api/private/" + b.getIdPrivate(), User.class);
+            BikeUser obj = new BikeUser(u, bike, b, a);
+            bikeUser.add(obj);
+        }
+
+        return bikeUser;
+    }
+
+
 }

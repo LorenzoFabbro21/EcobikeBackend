@@ -70,4 +70,13 @@ public class AppointmentController {
         System.out.println("Get all Bikes sold by idUser...");
         return appointmentService.getAllBikesSold(id);
     }
+
+    @GetMapping("/personal/user/{idPrivate}/bikes")
+    public List<BikeUser> getPersonalBuy(@PathVariable("idPrivate") long id) {
+        System.out.println("Get personal buy...");
+        List<BikeUser> list = appointmentService.getPersonalBuy(id);
+        System.out.println(list);
+        return list;
+    }
+
 }
