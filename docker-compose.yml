@@ -277,13 +277,13 @@ services:
       - service-discovery-server
     networks:
       - opnet
-  frontend:
-    build: ./Frontend
-    container_name: frontend
-    ports:
-      - "4200:80"
-    networks:
-      - opnet
+  #frontend:
+  #  build: ./Frontend
+  #  container_name: frontend
+  #  ports:
+  #    - "4200:80"
+  #  networks:
+  #    - opnet
 volumes:
   shop-postgres-data:
   user-postgres-data:
