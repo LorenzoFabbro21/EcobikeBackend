@@ -16,7 +16,7 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:32000")
 @RestController
 @RequestMapping("/api/bike")
 @RequiredArgsConstructor

@@ -5,9 +5,6 @@ spring:
       max-request-size: 10MB
   application:
     name: bike-service
-  cloud:
-    kubernetes:
-      enabled: false
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,7 +13,7 @@ spring:
       hibernate.connection.autocommit: false
 
 server:
-  port: 8088
+  port: 8087
   forward-headers-strategy: framework
   max-http-header-size=8192:
 eureka:

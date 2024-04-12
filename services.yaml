@@ -1,0 +1,331 @@
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: service-discovery-server
+  name: service-discovery-server
+spec:
+  ports:
+    - name: "8761"
+      port: 8761
+      targetPort: 8761
+  selector:
+    io.kompose.service: service-discovery-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  type: NodePort
+  ports:
+    - name: "32080"
+      port: 32080
+      targetPort: 8080
+      nodePort: 32080
+  selector:
+    io.kompose.service: api-gateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: user-service
+  name: user-service
+spec:
+  ports:
+    - name: "8081"
+      port: 8081
+      targetPort: 8081
+  selector:
+    io.kompose.service: user-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: recensione-service
+  name: recensione-service
+spec:
+  ports:
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+  selector:
+    io.kompose.service: recensione-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: shop-service
+  name: shop-service
+spec:
+  ports:
+    - name: "8083"
+      port: 8083
+      targetPort: 8083
+  selector:
+    io.kompose.service: shop-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: ad-service
+  name: ad-service
+spec:
+  ports:
+    - name: "8084"
+      port: 8084
+      targetPort: 8084
+  selector:
+    io.kompose.service: ad-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: booking-service
+  name: booking-service
+spec:
+  ports:
+    - name: "8085"
+      port: 8085
+      targetPort: 8085
+  selector:
+    io.kompose.service: booking-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: appointment-service
+  name: appointment-service
+spec:
+  ports:
+    - name: "8086"
+      port: 8086
+      targetPort: 8086
+  selector:
+    io.kompose.service: appointment-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: bike-service
+  name: bike-service
+spec:
+  ports:
+    - name: "8087"
+      port: 8087
+      targetPort: 8087
+  selector:
+    io.kompose.service: bike-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: authentication
+  name: authentication
+spec:
+  type: NodePort
+  ports:
+    - name: "8090"
+      port: 8090
+      targetPort: 8090
+  selector:
+    io.kompose.service: authentication
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  type: NodePort
+  ports:
+    - name: "32000"
+      port: 32000
+      targetPort: 5000
+      nodePort: 32000
+  selector:
+    io.kompose.service: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-user
+  name: postgres-user
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-review
+  name: postgres-review
+spec:
+  ports:
+    - name: "5433"
+      port: 5433
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-review
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-shop
+  name: postgres-shop
+spec:
+  ports:
+    - name: "5434"
+      port: 5434
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-shop
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-bike
+  name: postgres-bike
+spec:
+  ports:
+    - name: "5435"
+      port: 5435
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-bike
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-ad
+  name: postgres-ad
+spec:
+  ports:
+    - name: "5436"
+      port: 5436
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-ad
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-booking
+  name: postgres-booking
+spec:
+  ports:
+    - name: "5437"
+      port: 5437
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-booking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-appointment
+  name: postgres-appointment
+spec:
+  ports:
+    - name: "5438"
+      port: 5438
+      targetPort: 5432
+  selector:
+    io.kompose.service: postgres-appointment
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  annotations:
+#    kompose.cmd: kompose convert -f compose.yml
+#    kompose.version: 1.31.2
+#  labels:
+#    io.kompose.service: rabbitmq
+#  name: rabbitmq
+#spec:
+#  ports:
+#    - name: "15672"
+#      port: 15672
+#      targetPort: 15672
+#    - name: "5672"
+#      port: 5672
+#      targetPort: 5672
+#  selector:
+#    io.kompose.service: rabbitmq

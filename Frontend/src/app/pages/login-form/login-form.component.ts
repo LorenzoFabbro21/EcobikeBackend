@@ -33,7 +33,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   signupHref() {
-    window.location.href = 'http://localhost:4200/signup';
+    window.location.href = 'http://localhost:32000/signup';
   }
 
   login() {

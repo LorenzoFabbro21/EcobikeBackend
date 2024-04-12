@@ -1,9 +1,6 @@
 spring:
   application:
     name: recensione-service
-  cloud:
-    kubernetes:
-      enabled: false
 server:
   port: 8082
   forward-headers-strategy: framework

@@ -23,7 +23,7 @@ import java.nio.charset.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:32000")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
@@ -43,7 +43,7 @@ public class AuthenticationController {
         //send a message to the user service to create the user
         HttpStatusCode result = authService.googleLogin(user).getStatusCode();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", URLDecoder.decode("http://localhost:4200/authentication", StandardCharsets.UTF_8) + "?token=" + token);
+        headers.add("Location", URLDecoder.decode("http://localhost:32000/authentication", StandardCharsets.UTF_8) + "?token=" + token);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
@@ -71,7 +71,7 @@ public class AuthenticationController {
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, null);
-        String redirectUri = "http://localhost:4200/";
+        String redirectUri = "http://localhost:32000/";
 
         // redirect to the client
         HttpHeaders headers = new HttpHeaders();

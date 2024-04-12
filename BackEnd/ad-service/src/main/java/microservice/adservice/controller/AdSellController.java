@@ -21,7 +21,6 @@ public class AdSellController {
 
     @PostMapping(value = "")
     public ResponseEntity<?> postAdSell(@RequestBody AdSell adSell) {
-
         return adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
     }
 

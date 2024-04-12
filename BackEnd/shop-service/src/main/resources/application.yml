@@ -5,9 +5,6 @@ spring:
       max-request-size: 10MB
   application:
     name: shop-service
-  cloud:
-    kubernetes:
-      enabled: false
   jpa:
     hibernate:
       ddl-auto: update

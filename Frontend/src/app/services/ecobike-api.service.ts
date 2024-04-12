@@ -22,7 +22,7 @@ export class EcobikeApiService {
 
   constructor(protected httpClient: HttpClient) { }
 
-  url="http://localhost:8080/api"
+  url="http://localhost:30080/api"
 
 
   /**

@@ -1,0 +1,888 @@
+# Deployments
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: service-discovery-server
+  name: service-discovery-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: service-discovery-server
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: service-discovery-server
+    spec:
+      containers:
+        - image: service-discovery-server
+          name: service-discovery-server
+          ports:
+            - containerPort: 8761
+              hostPort: 8761
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-gateway
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: api-gateway
+    spec:
+      containers:
+        - env:
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: api-gateway
+          imagePullPolicy: IfNotPresent
+          name: api-gateway
+          ports:
+            - containerPort: 8080
+              hostPort: 30080
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: user-service
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: user-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: user-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-user:5432/user_db
+            - name: DB_SERVER
+              value: postgres-user
+            - name: POSTGRES_DB
+              value: user_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: user-service
+          imagePullPolicy: IfNotPresent
+          name: user-service
+          ports:
+            - containerPort: 8081
+              hostPort: 8081
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: recensione-service
+  name: recensione-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: recensione-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: recensione-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-review:5432/review_db
+            - name: DB_SERVER
+              value: postgres-review
+            - name: POSTGRES_DB
+              value: review_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: recensione-service
+          imagePullPolicy: IfNotPresent
+          name: recensione-service
+          ports:
+            - containerPort: 8082
+              hostPort: 8082
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: shop-service
+  name: shop-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: shop-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: shop-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-shop:5432/shop_db
+            - name: DB_SERVER
+              value: postgres-shop
+            - name: POSTGRES_DB
+              value: shop_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: shop-service
+          imagePullPolicy: IfNotPresent
+          name: shop-service
+          ports:
+            - containerPort: 8083
+              hostPort: 8083
+              protocol: TCP
+      restartPolicy: Always
+---
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: ad-service
+  name: ad-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ad-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: ad-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-ad:5432/ad_db
+            - name: DB_SERVER
+              value: postgres-ad
+            - name: POSTGRES_DB
+              value: ad_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: ad-service
+          imagePullPolicy: IfNotPresent
+          name: ad-service
+          ports:
+            - containerPort: 8084
+              hostPort: 8084
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: booking-service
+  name: booking-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: booking-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: booking-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-booking:5432/booking_db
+            - name: DB_SERVER
+              value: postgres-booking
+            - name: POSTGRES_DB
+              value: booking_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: booking-service
+          imagePullPolicy: IfNotPresent
+          name: booking-service
+
+          ports:
+            - containerPort: 8085
+              hostPort: 8085
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: appointment-service
+  name: appointment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: appointment-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: appointment-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-appointment:5432/appointment_db
+            - name: DB_SERVER
+              value: postgres-appointment
+            - name: POSTGRES_DB
+              value: appointment_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: appointment-service
+          imagePullPolicy: IfNotPresent
+          name: appointment-service
+          ports:
+            - containerPort: 8086
+              hostPort: 8086
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: bike-service
+  name: bike-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: bike-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: bike-service
+    spec:
+      containers:
+        - env:
+            - name: DB_SERVER
+              value: postgres-bike
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-bike:5432/bike_db
+            - name: POSTGRES_DB
+              value: bike_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: spring.profiles.active
+              value: docker
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+            - name: spring.jpa.database-platform
+              value: org.hibernate.dialect.PostgreSQLDialect
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: bike-service
+          imagePullPolicy: IfNotPresent
+          name: bike-service
+          ports:
+            - containerPort: 8087
+              hostPort: 8087
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: authentication-service
+  name: authentication-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: authentication-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: authentication-service
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+            - name: eureka.client.serviceUrl.defaultZone
+              value: http://service-discovery-server:8761/eureka/
+          image: authentication-service
+          imagePullPolicy: IfNotPresent
+          name: authentication-service
+          ports:
+            - containerPort: 8090
+              hostPort: 8090
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - image: frontend
+          imagePullPolicy: IfNotPresent
+          name: frontend
+          ports:
+            - containerPort: 5000
+              hostPort: 32000
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-user
+  name: postgres-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-user
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-user
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: user_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-user
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: user-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: user-postgres-data
+          persistentVolumeClaim:
+            claimName: user-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-review
+  name: postgres-review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-review
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-review
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: review_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-review
+          ports:
+            - containerPort: 5432
+              hostPort: 5433
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: review-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: review-postgres-data
+          persistentVolumeClaim:
+            claimName: review-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-shop
+  name: postgres-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-shop
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-shop
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: shop_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-shop
+          ports:
+            - containerPort: 5432
+              hostPort: 5434
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: shop-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: shop-postgres-data
+          persistentVolumeClaim:
+            claimName: shop-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-bike
+  name: postgres-bike
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-bike
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-bike
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: bike_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-bike
+          ports:
+            - containerPort: 5432
+              hostPort: 5435
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: bike-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: bike-postgres-data
+          persistentVolumeClaim:
+            claimName: bike-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-ad
+  name: postgres-ad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-ad
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-ad
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: ad_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-ad
+          ports:
+            - containerPort: 5432
+              hostPort: 5436
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: ad-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: ad-postgres-data
+          persistentVolumeClaim:
+            claimName: ad-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-booking
+  name: postgres-booking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-booking
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-booking
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: booking_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-booking
+          ports:
+            - containerPort: 5432
+              hostPort: 5437
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: booking-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: booking-postgres-data
+          persistentVolumeClaim:
+            claimName: booking-postgres-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yml
+    kompose.version: 1.31.2
+  labels:
+    io.kompose.service: postgres-appointment
+  name: postgres-appointment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres-appointment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yml
+        kompose.version: 1.31.2
+      labels:
+        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.service: postgres-appointment
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: appointment_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:latest
+          name: postgres-appointment
+          ports:
+            - containerPort: 5432
+              hostPort: 5438
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: appointment-postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: appointment-postgres-data
+          persistentVolumeClaim:
+            claimName: appointment-postgres-data
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  annotations:
+#    kompose.cmd: kompose convert -f compose.yml
+#    kompose.version: 1.31.2
+#  labels:
+#    io.kompose.service: rabbitmq
+#  name: rabbitmq
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      io.kompose.service: rabbitmq
+#  strategy:
+#    type: Recreate
+#  template:
+#    metadata:
+#      annotations:
+#        kompose.cmd: kompose convert -f compose.yml
+#        kompose.version: 1.31.2
+#      labels:
+#        io.kompose.network/sdg-local-delights-apigateway-net: "true"
+#        io.kompose.service: rabbitmq
+#    spec:
+#      containers:
+#        - image: rabbitmq:3-management
+#          name: rabbitmq
+#          ports:
+#            - containerPort: 15672
+#              hostPort: 15672
+#              protocol: TCP
+#            - containerPort: 5672
+#              hostPort: 5672
+#              protocol: TCP
+#          volumeMounts:
+#            - mountPath: /var/lib/rabbitmq
+#              name: data-rabbitmq
+#      restartPolicy: Always
+#      volumes:
+#        - name: data-rabbitmq
+#          persistentVolumeClaim:
+#            claimName: data-rabbitmq
+#
