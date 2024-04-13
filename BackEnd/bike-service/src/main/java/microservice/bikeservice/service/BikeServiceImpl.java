@@ -22,7 +22,7 @@ public class BikeServiceImpl implements BikeService{
 
 
     @Override
-    public ResponseEntity<?> saveBike(Bike bike) {
+    public ResponseEntity<Map<String, String>> saveBike(Bike bike) {
         try {
             Bike bikeCreated = repository.save(bike);
             Map<String, String> body = new HashMap<>();

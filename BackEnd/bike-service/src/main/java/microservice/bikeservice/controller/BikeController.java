@@ -1,15 +1,22 @@
 package microservice.bikeservice.controller;
 
 
+import microservice.bikeservice.dto.AdRent;
+import microservice.bikeservice.dto.AdSell;
 import microservice.bikeservice.model.Bike;
+import microservice.bikeservice.model.BikeAdRentParam;
+import microservice.bikeservice.model.BikeAdSellParam;
+import microservice.bikeservice.rabbitMQ.RabbitMQSender;
 import microservice.bikeservice.service.BikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.*;
@@ -25,11 +32,46 @@ public class BikeController {
 
     private final BikeService bikeService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<?> postBike(@RequestBody Bike bike) {
-        System.out.println("New Bike:"+ bike);
-        return bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+    private final RabbitMQSender rabbitMQSender;
+
+    @PostMapping(value = "/sell")
+    public ResponseEntity<?> postBikeSell(@RequestBody BikeAdSellParam param) {
+        System.out.println("New Bike:"+ param);
+        Bike bike = param.getBike();
+        AdSell adSell = param.getAdSell();
+        System.out.println(adSell);
+
+        ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+
+        Map<String, String> responseBody = response.getBody();
+
+        String id = responseBody.get("id");
+        System.out.println("idBike sopo save: " + id);
+        adSell.setIdBike(Integer.parseInt(id));
+
+
+        rabbitMQSender.sendAddBikeAd(adSell);
+        System.out.println("print dopo sender");
+        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdSell successfully created");
     }
+
+
+    /*@PostMapping(value = "/rent")
+    public ResponseEntity<?> postBikeRent(@RequestBody BikeAdRentParam param) {
+        System.out.println("New Bike:"+ param);
+        Bike bike = param.getBike();
+        AdRent adRent = param.getAdRent();
+
+        ResponseEntity<?> idBike = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+        System.out.println("idBike sopo save: " + idBike);
+        long id = Integer.parseInt(idBike.getBody().toString());
+        adRent.setIdBike(id);
+
+
+        rabbitMQSender.sendAddBikeAd(adRent);
+        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdSell successfully created");
+    }*/
+
     @GetMapping("/{id}")
     public Optional<Bike> getBike(@PathVariable("id") long id) {
 

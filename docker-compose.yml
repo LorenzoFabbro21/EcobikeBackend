@@ -1,5 +1,17 @@
 version: "3"
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672" # Porta per accedere alla console di management
+      - "5672:5672"   # Porta per connessioni client e comunicazione tra servizi
+    networks:
+      - opnet
+    restart: unless-stopped
+    volumes:
+      - data-rabbitmq:/var/lib/rabbitmq
+
   postgres-user:
     container_name: postgres-user
     image: 'postgres:latest'
@@ -215,10 +227,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8088:8088"
     depends_on:
       - postgres-bike
+      - rabbitmq
       - service-discovery-server
     networks:
       - opnet
@@ -234,9 +249,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8084:8084"
     depends_on:
+      - rabbitmq
       - postgres-ad
       - service-discovery-server
     networks:
@@ -292,6 +310,8 @@ volumes:
   booking-postgres-data:
   appointment-postgres-data:
   bike-postgres-data:
+  data-rabbitmq:
+
 
 networks:
   opnet:
