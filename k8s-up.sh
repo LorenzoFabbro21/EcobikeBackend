@@ -7,8 +7,6 @@ NC='\033[0m'
 
 DIRECTORY="."
 
-docker-compose build
-
 for FILE in $DIRECTORY/*.yaml; do
     echo -e "${YELLOW}Applying $FILE...${NC}"
     kubectl apply -f $FILE

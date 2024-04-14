@@ -14,7 +14,6 @@ services:
       - '5432:5432'
     networks:
       - opnet
-
   postgres-review:
     container_name: postgres-review
     image: 'postgres:latest'
@@ -43,7 +42,6 @@ services:
       - '5434:5432'
     networks:
       - opnet
-
   postgres-bike:
     container_name: postgres-bike
     image: 'postgres:latest'
@@ -58,7 +56,6 @@ services:
       - '5435:5432'
     networks:
       - opnet
-
   postgres-ad:
     container_name: postgres-ad
     image: 'postgres:latest'
@@ -73,7 +70,6 @@ services:
       - '5436:5432'
     networks:
       - opnet
-
   postgres-booking:
     container_name: postgres-booking
     image: 'postgres:latest'
@@ -88,7 +84,6 @@ services:
       - '5437:5432'
     networks:
       - opnet
-
   postgres-appointment:
     container_name: postgres-appointment
     image: 'postgres:latest'
@@ -105,7 +100,7 @@ services:
       - opnet
   ## Eureka Server
   service-discovery-server:
-    image: service-discovery-server:latest
+    image: lorenzofabbro/service-discovery-server
     build: BackEnd/service-discovery-server
     container_name: service-discovery-server
     ports:
@@ -113,7 +108,7 @@ services:
     networks:
       - opnet
   api-gateway:
-    image: api-gateway:latest
+    image: lorenzofabbro/api-gateway
     build: BackEnd/api-gateway
     container_name: api-gateway
     environment:
@@ -128,16 +123,13 @@ services:
   recensione-service:
     container_name: recensione-service
     build: BackEnd/recensione-service
-    image: recensione-service:latest
+    image: lorenzofabbro/recensione-service:latest
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-review:5432/review_db
-      - DB_SERVER=postgres-review
-      - POSTGRES_DB=recensione_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8082:8082"
@@ -151,7 +143,7 @@ services:
   authentication-service:
     container_name: authentication-service
     build: BackEnd/authentication-service
-    image: authentication-service
+    image: lorenzofabbro/authentication-service
     environment:
       - spring.profiles.active=docker
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
@@ -165,16 +157,13 @@ services:
   user-service:
     container_name: user-service
     build: BackEnd/user-service
-    image: user-service
+    image: lorenzofabbro/user-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5432/user_db
-      - DB_SERVER=postgres-user
-      - POSTGRES_DB=user_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8081:8081"
@@ -187,16 +176,13 @@ services:
   shop-service:
     container_name: shop-service
     build: BackEnd/shop-service
-    image: shop-service
+    image: lorenzofabbro/shop-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-shop:5432/shop_db
-      - DB_SERVER=postgres-shop
-      - POSTGRES_DB=shop_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8083:8083"
@@ -209,16 +195,13 @@ services:
   bike-service:
     container_name: bike-service
     build: BackEnd/bike-service
-    image: bike-service
+    image: lorenzofabbro/bike-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-bike:5432/bike_db
-      - DB_SERVER=postgres-bike
-      - POSTGRES_DB=bike_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8087:8087"
@@ -231,16 +214,13 @@ services:
   ad-service:
     container_name: ad-service
     build: BackEnd/ad-service
-    image: ad-service
+    image: lorenzofabbro/ad-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-ad:5432/ad_db
-      - DB_SERVER=postgres-ad
-      - POSTGRES_DB=ad_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8084:8084"
@@ -252,16 +232,13 @@ services:
   booking-service:
     container_name: booking-service
     build: BackEnd/booking-service
-    image: booking-service
+    image: lorenzofabbro/booking-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-booking:5432/booking_db
-      - DB_SERVER=postgres-booking
-      - POSTGRES_DB=booking_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8085:8085"
@@ -273,16 +250,13 @@ services:
   appointment-service:
     container_name: appointment-service
     build: BackEnd/appointment-service
-    image: appointment-service
+    image: lorenzofabbro/appointment-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-appointment:5432/appointment_db
-      - DB_SERVER=postgres-appointment
-      - POSTGRES_DB=appointment_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
       - "8086:8086"
@@ -293,7 +267,7 @@ services:
       - opnet
   frontend:
     build: ./Frontend
-    image: frontend
+    image: lorenzofabbro/frontend
     container_name: frontend
     ports:
       - "32000:5000"
