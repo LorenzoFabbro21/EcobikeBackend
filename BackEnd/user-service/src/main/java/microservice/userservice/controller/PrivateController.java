@@ -1,5 +1,8 @@
 package microservice.userservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.userservice.model.*;
@@ -25,6 +28,10 @@ public class PrivateController {
 
     private final PrivateService privateService;
 
+    @Operation(summary = "Create a new private", description = "Create a new private")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @PostMapping(value = "")
     public ResponseEntity<String> postPrivate(@RequestBody Private user) {
         ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
@@ -32,6 +39,10 @@ public class PrivateController {
 
     }
 
+    @Operation(summary = "Get a private", description = "Create a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @GetMapping("/{id}")
     public Optional<Private> getPrivate(@PathVariable("id") long id) {
         System.out.println("Get Private...");
@@ -40,6 +51,10 @@ public class PrivateController {
         return userprivate;
     }
 
+    @Operation(summary = "Get all privates", description = "Get all privates")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Privates found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @GetMapping("")
     public List<Private> getAllPrivate() {
         System.out.println("Get all Privates...");
@@ -48,6 +63,10 @@ public class PrivateController {
         return userprivate;
     }
 
+    @Operation(summary = "Get a private", description = "Get a private by email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @GetMapping("/email/{mail}")
     public Optional<Private> getPrivateByMail(@PathVariable String mail) {
         System.out.println("Get private by mail...");
@@ -56,11 +75,19 @@ public class PrivateController {
         return private_user;
     }
 
+    @Operation(summary = "Delete a private", description = "Delete a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrivate(@PathVariable("id") long id) {
         System.out.println("Delete Private with ID = " + id + "...");
         return privateService.deletePrivate(id);
     }
+    @Operation(summary = "Delete all privates", description = "Delete all privates")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Privates deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllPrivates() {
         System.out.println("Delete All Privates...");
@@ -68,6 +95,10 @@ public class PrivateController {
 
     }
 
+    @Operation(summary = "Update a private", description = "Update a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
         System.out.println("Update Private with ID = " + id + "...");
@@ -80,7 +111,11 @@ public class PrivateController {
 
         return privateService.verifyParams(email, password);
     }
-   
+
+    @Operation(summary = "Get all bookings", description = "Get all bookings by a idDealer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bookings found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @GetMapping("/{idPrivate}/booking")
     public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bookings by idPrivate...");
@@ -89,8 +124,12 @@ public class PrivateController {
         return bookings;
         
     }
-    
 
+
+    @Operation(summary = "Get all appointments", description = "Get all appointments by a idPrivate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @GetMapping("/{idPrivate}/appointments")
     public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Appointements by idPrivate...");
