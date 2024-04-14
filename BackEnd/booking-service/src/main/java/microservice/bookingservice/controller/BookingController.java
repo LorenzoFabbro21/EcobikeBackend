@@ -7,6 +7,9 @@ import microservice.bookingservice.model.Booking;
 import microservice.bookingservice.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +21,22 @@ import java.util.List;
 public class BookingController {
     private final BookingService bookingService;
 
+    @Operation(summary = "Create a new booking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking created"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request")
+    })
     @PostMapping(value = "")
     public ResponseEntity<?> postBooking(@RequestBody Booking booking) {
         return  bookingService.saveBooking(new Booking(booking.getId(), booking.getIdPrivate(), booking.getIdAnnouncement(),booking.getStartdate(), booking.getEnddate()));
     }
 
+    @Operation(summary = "Get a booking by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
     @GetMapping("/{id}")
     public Booking getBooking(@PathVariable("id") long id) {
         System.out.println("Get Booking...");
@@ -33,6 +47,12 @@ public class BookingController {
             return null;
     }
 
+    @Operation(summary = "Get all bookings")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bookings found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bookings not found")
+    })
     @GetMapping("")
     public List<Booking> getAllBooking() {
         System.out.println("Get all Bookings...");
@@ -41,6 +61,12 @@ public class BookingController {
         return bookings;
     }
 
+    @Operation(summary = "Get all bookings by idPrivate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bookings found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bookings not found")
+    })
     @GetMapping("/user/{idPrivate}")
     public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bookings by idPrivate...");
@@ -49,11 +75,23 @@ public class BookingController {
         return bookings;
     }
 
+    @Operation(summary = "Delete a booking by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBooking(@PathVariable("id") long id) {
         System.out.println("Delete Booking with ID = " + id + "...");
         return bookingService.deleteBooking(id);
     }
+    @Operation(summary = "Delete all bookings")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bookings deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bookings not found")
+    })
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllBookings() {
         System.out.println("Delete all Bookings...");
@@ -61,6 +99,12 @@ public class BookingController {
 
     }
 
+    @Operation(summary = "Update a booking by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable("id") long id, @RequestBody Booking booking) {
         System.out.println("Update Booking with ID = " + id + "...");
@@ -68,6 +112,12 @@ public class BookingController {
         return response;
     }
 
+    @Operation(summary = "Get all Bike rented by idPrivate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bikes rented found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes rented not found")
+    })
     @GetMapping("/user/{idPrivate}/bikes")
     public List<BikeUser> getAllBikesRented(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bikes rented by idPrivate...");

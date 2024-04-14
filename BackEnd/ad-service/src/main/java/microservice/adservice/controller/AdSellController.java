@@ -36,7 +36,8 @@ public class AdSellController {
     @Operation(summary = "Get a sale by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sale found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sale not found")
     })
     @GetMapping("/{id}")
     public Optional<AdSell> getAdSell(@PathVariable("id") long id) {
@@ -49,7 +50,8 @@ public class AdSellController {
     @Operation(summary = "Get all sales")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sales found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sales not found")
     })
     @GetMapping("")
     public List<AdSell> getAllAdsSell() {
@@ -62,7 +64,8 @@ public class AdSellController {
     @Operation(summary = "Get all sales not yours")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sales found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sales not found")
     })
     @GetMapping("/all/user/{id}")
     public List<AdSell> getAllAdsSellForUser(@PathVariable("id") long id) {
@@ -75,7 +78,8 @@ public class AdSellController {
     @Operation(summary = "Get all bikes to sell")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "bikes to sell found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes to sell not found")
     })
     @GetMapping("/bikes")
     public List<Bike> getBikesToSell() {
@@ -87,7 +91,8 @@ public class AdSellController {
     @Operation(summary = "Delete a sale by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sale deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sale not found")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdSell(@PathVariable("id") long id) {
@@ -97,7 +102,8 @@ public class AdSellController {
     @Operation(summary = "Delete all sales")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sales deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sales not found")
     })
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllAdsSell() {
@@ -108,7 +114,8 @@ public class AdSellController {
     @Operation(summary = "Update a sale by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "sale updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "sale not found")
     })
     @PutMapping("/{id}")
     public ResponseEntity<AdSell> updateAdSell(@PathVariable("id") long id, @RequestBody AdSell adSell) {
@@ -117,16 +124,23 @@ public class AdSellController {
         return response;
     }
 
-    @Operation(summary = "Get all sales by id")
+    @Operation(summary = "Get all adSell by idUser")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "sale deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "200", description = "AdSell found"),
+            @ApiResponse(responseCode = "400", description = "Invalid AdSell request"),
+            @ApiResponse(responseCode = "404", description = "AdSell not found")
     })
     @GetMapping("/user/{id}")
-    public List<AdSell> getAllAdsRentByUser(@PathVariable("id") long id) {
+    public List<AdSell> getAllAdsSellByUser(@PathVariable("id") long id) {
         System.out.println("Get all Ads to rent by user...");
         return adSellService.getAllAdSellByUser(id);
     }
+    @Operation(summary = "Get all bikes to sell by idUser")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bikes to sell found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Bikes to sell not found")
+    })
     @GetMapping("user/{id}/bikes")
     public List<Bike> getAllBikeToSellByUser(@PathVariable("id") long id) {
         System.out.println("Get all Bike to Sell by user...");

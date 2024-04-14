@@ -34,7 +34,9 @@ public class DealerController {
     @Operation(summary = "Get dealer", description = "Get a dealer by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
+    })
     @GetMapping("/{id}")
     public Optional<Dealer> getDealer(@PathVariable long id) {
         System.out.println("Get dealer...");
@@ -47,7 +49,9 @@ public class DealerController {
     @Operation(summary = "Get dealer", description = "Get dealer by email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
+    })
     @GetMapping("/email/{mail}")
     public Optional<Dealer> getDealerByMail(@PathVariable String mail) {
         System.out.println("Get dealer by mail...");
@@ -59,7 +63,9 @@ public class DealerController {
     @Operation(summary = "Get all dealer", description = "Get all dealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the dealers"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealers not found")
+    })
     @GetMapping("")
     public List<Dealer> getAllDealer() {
         System.out.println("Get all dealers...");
@@ -71,7 +77,9 @@ public class DealerController {
     @Operation(summary = "Delete dealer", description = "Delete dealer by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDealer(@PathVariable("id") long id) {
         System.out.println("Delete Dealer with ID = " + id + "...");
@@ -81,7 +89,8 @@ public class DealerController {
     @Operation(summary = "Delete all dealers", description = "Delete all dealers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealers deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request")
+    })
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllDealers() {
         System.out.println("Delete All Dealers...");
@@ -94,7 +103,9 @@ public class DealerController {
     @Operation(summary = "Update a dealer", description = "Update a dealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Dealer> updateDealer(@PathVariable("id") long id, @RequestBody Dealer dealer) {
         System.out.println("Update Dealer with ID = " + id + "...");
@@ -113,7 +124,9 @@ public class DealerController {
     @Operation(summary = "Get all appointments", description = "Get all appointments by a idDealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Appointments found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
+    })
     @GetMapping("/{idDealer}/appointments")
     public List<Appointment> getAllAppointmentsByDealer(@PathVariable("idDealer") long id) {
         System.out.println("Get all Appointements by idDealer...");

@@ -11,6 +11,9 @@ import microservice.recensioneservice.service.RecensioneService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/review")
@@ -20,11 +23,21 @@ public class RecensioneController  {
 
     private final RecensioneService reviewService;
 
+    @Operation(summary = "Create a new Review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review created"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request")
+    })
     @PostMapping(value = "")
     public ResponseEntity<?> postReview(@RequestBody Recensione review) {
         return reviewService.saveReview(new Recensione(review.getText(), review.getScore(), review.getIdUser(), review.getIdShop()));
     }
-
+    @Operation(summary = "Get a Review by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @GetMapping("/{id}")
     public Optional<Recensione> getReview(@PathVariable("id") long id) {
         System.out.println("Get review...");
@@ -33,6 +46,12 @@ public class RecensioneController  {
         return review;
     }
 
+    @Operation(summary = "Get all Reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviews found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Reviews not found")
+    })
     @GetMapping("")
     public List<Recensione> getAllReview() {
         System.out.println("Get all reviews...");
@@ -43,6 +62,12 @@ public class RecensioneController  {
         return reviews;
     }
 
+    @Operation(summary = "Get User by idReview")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/{id}/user")
     public User getUserFromShop(@PathVariable("id") long id) {
         System.out.println("Get user from review...");
@@ -51,12 +76,23 @@ public class RecensioneController  {
         return user;
     }
 
-
+    @Operation(summary = "Delete a Review by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable("id") long id) {
         System.out.println("Delete review with ID = " + id + "...");
         return  reviewService.deleteReview(id);
     }
+    @Operation(summary = "Delete all Reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviews deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Reviews not found")
+    })
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllReviews() {
         System.out.println("Delete all reviews...");
@@ -64,12 +100,24 @@ public class RecensioneController  {
 
     }
 
+    @Operation(summary = "Update review by idShop")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Shop not found")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Recensione> updateNegozio(@PathVariable("id") long id, @RequestBody Recensione review) {
         System.out.println("Update shop with ID = " + id + "...");
         return reviewService.updateReview(id,review);
     }
 
+    @Operation(summary = "Get all Reviews by idShop")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviews found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Reviews not found")
+    })
     @GetMapping("/idShop/{idShop}")
     public List<Recensione> getAllReviewByidShop(@PathVariable("idShop") long id) {
         return reviewService.getAllReviewByidShop(id);

@@ -31,7 +31,8 @@ public class PrivateController {
     @Operation(summary = "Create a new private", description = "Create a new private")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Private created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request")
+    })
     @PostMapping(value = "")
     public ResponseEntity<String> postPrivate(@RequestBody Private user) {
         ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
@@ -42,7 +43,9 @@ public class PrivateController {
     @Operation(summary = "Get a private", description = "Create a private by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Private found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @GetMapping("/{id}")
     public Optional<Private> getPrivate(@PathVariable("id") long id) {
         System.out.println("Get Private...");
@@ -66,7 +69,9 @@ public class PrivateController {
     @Operation(summary = "Get a private", description = "Get a private by email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Private found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @GetMapping("/email/{mail}")
     public Optional<Private> getPrivateByMail(@PathVariable String mail) {
         System.out.println("Get private by mail...");
@@ -78,7 +83,9 @@ public class PrivateController {
     @Operation(summary = "Delete a private", description = "Delete a private by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Private deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrivate(@PathVariable("id") long id) {
         System.out.println("Delete Private with ID = " + id + "...");
@@ -98,7 +105,9 @@ public class PrivateController {
     @Operation(summary = "Update a private", description = "Update a private by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Private updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
         System.out.println("Update Private with ID = " + id + "...");
@@ -115,7 +124,9 @@ public class PrivateController {
     @Operation(summary = "Get all bookings", description = "Get all bookings by a idDealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bookings found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @GetMapping("/{idPrivate}/booking")
     public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bookings by idPrivate...");
@@ -129,7 +140,9 @@ public class PrivateController {
     @Operation(summary = "Get all appointments", description = "Get all appointments by a idPrivate")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Appointments found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request")})
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found")
+    })
     @GetMapping("/{idPrivate}/appointments")
     public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Appointements by idPrivate...");

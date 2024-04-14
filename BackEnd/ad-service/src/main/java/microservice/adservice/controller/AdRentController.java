@@ -37,7 +37,8 @@ public class AdRentController {
     @Operation(summary = "Get a rent by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rent found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
     })
     @GetMapping("/{id}")
     public Optional<AdRent> getAdRent(@PathVariable("id") long id) {
@@ -49,8 +50,9 @@ public class AdRentController {
 
     @Operation(summary = "Get all rentals")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Rents found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "200", description = "Rentals found"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rentals not found")
     })
     @GetMapping("")
     public List<AdRent> getAllAdsRent() {
@@ -64,7 +66,8 @@ public class AdRentController {
     @Operation(summary = "Get all rentals not yours")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rentals found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
     })
     @GetMapping("/all/user/{id}")
     public List<AdRent> getAllAdsRentForUser(@PathVariable("id") long id) {
@@ -77,7 +80,8 @@ public class AdRentController {
     @Operation(summary = "Get all bikes to rent")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bikes to rent found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes to rent not found")
     })
     @GetMapping("/bikes")
     public List<Bike> getBikesToRent() {
@@ -89,7 +93,8 @@ public class AdRentController {
     @Operation(summary = "Get all bikes to rent by idDealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bikes to rent found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes to rent not found")
     })
     @GetMapping("/user/{id}/bikes")
     public List<Bike> getBikesUser(@PathVariable("id") long id) {
@@ -100,7 +105,8 @@ public class AdRentController {
     @Operation(summary = "Get all rentals by idDealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "rentals found"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rentals not found")
     })
     @GetMapping("/user/{id}")
     public List<AdRent> getAllAdsRentByUser(@PathVariable("id") long id) {
@@ -111,7 +117,8 @@ public class AdRentController {
     @Operation(summary = "Delete a rent by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "rent deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdRent(@PathVariable("id") long id) {
@@ -121,7 +128,8 @@ public class AdRentController {
     @Operation(summary = "Delete all rents")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "rentals deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rentals not found")
     })
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllAdsRent() {
@@ -132,7 +140,8 @@ public class AdRentController {
     @Operation(summary = "Update a rent by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "rent updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid order request")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Rent not found")
     })
     @PutMapping("/{id}")
     public ResponseEntity<AdRent> updateAdRent(@PathVariable("id") long id, @RequestBody AdRent adRent) {

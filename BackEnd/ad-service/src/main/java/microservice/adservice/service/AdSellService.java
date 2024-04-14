@@ -28,4 +28,6 @@ public interface AdSellService {
         List<Bike> getAllBikeToSellByUser(long id);
 
         List<AdSell> getAllAdSellByUser(long id);
+
+
 }
