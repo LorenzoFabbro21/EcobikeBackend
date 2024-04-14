@@ -1,4 +1,4 @@
-package microservice.adservice.rabbitMQ;
+package microservice.userservice.rabbitMQ;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -22,14 +22,16 @@ public class RabbitMQConfig {
     private String host;
 
     @Bean
-    public Queue queueAdSell() {
-        return new Queue("queueAdSell", true);
+    public Queue queue() {
+        return new Queue("queueUser", true);
     }
 
     @Bean
-    public Queue queueAdRent() {
-        return new Queue("queueAdRent", true);
+    @Qualifier("queue")
+    Queue queueDeleteUser() {
+        return new Queue("queueDeleteUser", true);
     }
+
 
     @Bean
     public ConnectionFactory connectionFactory() {

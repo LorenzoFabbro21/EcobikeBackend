@@ -28,8 +28,14 @@ public class RabbitMQConfig {
 
     @Bean
     @Qualifier("queue")
-    Queue queueAd() {
-        return new Queue("queueAd", true);
+    Queue queueAdSell() {
+        return new Queue("queueAdSell", true);
+    }
+
+    @Bean
+    @Qualifier("queue")
+    Queue queueAdRent() {
+        return new Queue("queueAdRent", true);
     }
 
     @Bean

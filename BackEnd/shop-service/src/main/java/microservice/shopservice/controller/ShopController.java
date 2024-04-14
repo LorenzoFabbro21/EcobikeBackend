@@ -1,8 +1,11 @@
 package microservice.shopservice.controller;
 
 import jakarta.transaction.*;
+import microservice.shopservice.dto.Bike;
+import microservice.shopservice.dto.ShopParam;
 import microservice.shopservice.dto.User;
 import microservice.shopservice.model.Shop;
+import microservice.shopservice.rabbitMQ.RabbitMQSender;
 import microservice.shopservice.service.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +25,29 @@ public class ShopController {
 
     private final ShopService shopService;
 
+    private final RabbitMQSender rabbitMQSender;
+
     @PostMapping(value = "")
-    public ResponseEntity<?> postShop(@RequestBody Shop shop) {
+    public ResponseEntity<?> postShop(@RequestBody ShopParam param) {
+        System.out.println("New Shop:"+ param);
+        Shop shop = param.getShop();
+        Private user = param.getUser();
+        String token = param.getToken();
+
+        rabbitMQSender.sendDeleteUser(user);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getImg(), shop.getIdUser()));
     }

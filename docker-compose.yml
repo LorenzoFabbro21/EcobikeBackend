@@ -189,11 +189,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8081:8081"
     depends_on:
       - postgres-user
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 
@@ -208,11 +211,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8083:8083"
     depends_on:
       - postgres-shop
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 

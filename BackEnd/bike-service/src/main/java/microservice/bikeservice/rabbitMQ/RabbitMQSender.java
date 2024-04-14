@@ -1,5 +1,6 @@
 package microservice.bikeservice.rabbitMQ;
 
+import microservice.bikeservice.dto.AdRent;
 import microservice.bikeservice.dto.AdSell;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -14,17 +15,27 @@ public class RabbitMQSender {
     @Autowired
     private final RabbitTemplate rabbitTemplate;
 
-    @Qualifier("queueAd")
+    @Qualifier("queueAdSell")
     @Autowired
-    private final Queue queueAd;
+    private final Queue queueAdSell;
 
 
-    public RabbitMQSender(RabbitTemplate rabbitTemplate, @Qualifier("queueAd") Queue queueAd) {
+    @Qualifier("queueAdRent")
+    @Autowired
+    private final Queue queueAdRent;
+
+
+    public RabbitMQSender(RabbitTemplate rabbitTemplate, @Qualifier("queueAdSell") Queue queueAdSell, @Qualifier("queueAdRent") Queue queueAdRent) {
         this.rabbitTemplate = rabbitTemplate;
-        this.queueAd = queueAd;
+        this.queueAdSell = queueAdSell;
+        this.queueAdRent = queueAdRent;
     }
 
-    public void sendAddBikeAd(AdSell adSell) {
-        rabbitTemplate.convertAndSend(this.queueAd.getName(), adSell);
+    public void sendAddBikeAdSell(AdSell adSell) {
+        rabbitTemplate.convertAndSend(this.queueAdSell.getName(), adSell);
+    }
+
+    public void sendAddBikeAdRent(AdRent adRent) {
+        rabbitTemplate.convertAndSend(this.queueAdRent.getName(), adRent);
     }
 }

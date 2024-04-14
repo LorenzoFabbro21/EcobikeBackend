@@ -46,31 +46,39 @@ public class BikeController {
         Map<String, String> responseBody = response.getBody();
 
         String id = responseBody.get("id");
-        System.out.println("idBike sopo save: " + id);
+        System.out.println("idBike dopo save: " + id);
         adSell.setIdBike(Integer.parseInt(id));
 
 
-        rabbitMQSender.sendAddBikeAd(adSell);
+        rabbitMQSender.sendAddBikeAdSell(adSell);
         System.out.println("print dopo sender");
         return ResponseEntity.status(HttpStatus.OK).body("Bike and AdSell successfully created");
     }
 
-
-    /*@PostMapping(value = "/rent")
+    @PostMapping(value = "/rent")
     public ResponseEntity<?> postBikeRent(@RequestBody BikeAdRentParam param) {
         System.out.println("New Bike:"+ param);
         Bike bike = param.getBike();
         AdRent adRent = param.getAdRent();
+        System.out.println(adRent);
 
-        ResponseEntity<?> idBike = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
-        System.out.println("idBike sopo save: " + idBike);
-        long id = Integer.parseInt(idBike.getBody().toString());
-        adRent.setIdBike(id);
+        ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+
+        Map<String, String> responseBody = response.getBody();
+
+        String id = responseBody.get("id");
+        System.out.println("idBike dopo save: " + id);
+        adRent.setIdBike(Integer.parseInt(id));
 
 
-        rabbitMQSender.sendAddBikeAd(adRent);
-        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdSell successfully created");
-    }*/
+        rabbitMQSender.sendAddBikeAdRent(adRent);
+        System.out.println("print dopo sender");
+        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdRent successfully created");
+    }
+
+
+
+
 
     @GetMapping("/{id}")
     public Optional<Bike> getBike(@PathVariable("id") long id) {
