@@ -6,9 +6,6 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo -e "${YELLOW}Deleting deployments${NC}"
-kubectl delete -f deployment.yaml
-echo -e "${YELLOW}Deleting services${NC}"
-kubectl delete -f services.yaml
-
+kubectl delete -f kubernetes.yaml
 
 echo -e "${YELLOW}All files have been deleted.${NC}"

@@ -148,7 +148,7 @@ services:
       - spring.profiles.active=docker
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
     ports:
-      - "8090:8090"
+      - "30090:8090"
     depends_on:
       - service-discovery-server
     networks:

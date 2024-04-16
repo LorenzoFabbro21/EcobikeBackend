@@ -193,7 +193,7 @@ export class EcobikeApiService {
       'Content-Type': 'application/json'
     }); 
     let options = { headers: headers,  };
-    return this.httpClient.post<loginRequest>(`http://localhost:8090/auth/login`, login, options);
+    return this.httpClient.post<loginRequest>(`http://localhost:30090/auth/login`, login, options);
   }
 
   public signup(signup: signupRequest){
@@ -202,7 +202,7 @@ export class EcobikeApiService {
       'Content-Type': 'application/json'
     }); 
     let options = { headers: headers };
-    return this.httpClient.post<signupRequest>(`http://localhost:8090/auth/signup`, signup, options);
+    return this.httpClient.post<signupRequest>(`http://localhost:30090/auth/signup`, signup, options);
   }
 
   /**

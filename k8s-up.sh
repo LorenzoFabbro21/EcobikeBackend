@@ -12,4 +12,5 @@ for FILE in $DIRECTORY/*.yaml; do
     kubectl apply -f $FILE
 done
 
+
 echo -e "${YELLOW}All files have been applied.${NC}"
