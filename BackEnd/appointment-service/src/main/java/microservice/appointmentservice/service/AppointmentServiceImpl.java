@@ -105,14 +105,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<BikeUser> getAllBikesSold(long id) {
         List<BikeUser> bikeUser = new ArrayList<>();
         List<AdSell> adsells = restTemplate.exchange(
-                "http://ad-service/api/adsell/user/" + id,
+                "http://ad-service:8084/api/adsell/user/" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<AdSell>>() {}
         ).getBody();
         for (AdSell a: adsells) {
             List<Appointment> appointments = repository.getAllAppointmentsByAnnouncement(a.getId());
-            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
+            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
             for(Appointment b: appointments){
                 Optional<User> userprivate = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/private/" + b.getIdUser(), User.class));
                 if(userprivate.isPresent()) {
@@ -120,7 +120,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     bikeUser.add(obj);
                 }
                 else {
-                    Optional<User> dealer = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/dealer/" + b.getIdUser(), User.class));
+                    Optional<User> dealer = Optional.ofNullable(restTemplate.getForObject("http://user-service:8081/api/dealer/" + b.getIdUser(), User.class));
                     BikeUser obj = new BikeUser(dealer.get(), bike, b, a);
                     bikeUser.add(obj);
                 }
@@ -135,12 +135,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public List<BikeUser> getPersonalBuy(long id) {
         List<BikeUser> bikeUser = new ArrayList<>();
-        System.out.println("ididididididididid: " + id);
         List<Appointment> listBookings = repository.getPersonalBuy(id);
         for (Appointment b : listBookings) {
-            AdSell a = restTemplate.getForObject("http://ad-service/api/adsell/" + b.getIdAnnouncement(), AdSell.class);
-            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
-            User u = restTemplate.getForObject("http://user-service/api/private/" + b.getIdUser(), User.class);
+            AdSell a = restTemplate.getForObject("http://ad-service:8084/api/adsell/" + b.getIdAnnouncement(), AdSell.class);
+            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
+            User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdUser(), User.class);
             BikeUser obj = new BikeUser(u, bike, b, a);
             bikeUser.add(obj);
         }

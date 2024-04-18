@@ -54,7 +54,7 @@ public class AdSellServiceImpl implements AdSellService {
 
         //Get di tutti gli appointment
         ResponseEntity<List<Appointment>> response = restTemplate.exchange(
-                "http://appointment-service/api/appointment",
+                "http://appointment-service:8086/api/appointment",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Appointment>>() {}
@@ -127,7 +127,7 @@ public class AdSellServiceImpl implements AdSellService {
         if (!adsSell.isEmpty()) {
             List<Bike> bikes = new ArrayList<>();
             for (AdSell elem : adsSell) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;
@@ -148,7 +148,7 @@ public class AdSellServiceImpl implements AdSellService {
         {
             List<Bike> bikes = new ArrayList<>();
             for ( AdSell elem : adSells) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;

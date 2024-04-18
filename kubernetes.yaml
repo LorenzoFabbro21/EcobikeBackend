@@ -79,7 +79,7 @@ spec:
   ports:
     - name: "30090"
       port: 30090
-      targetPort: 8080
+      targetPort: 8090
       nodePort: 30090
   selector:
     io.kompose.service: authentication-service

@@ -29,7 +29,7 @@ export class LoginFormComponent implements OnInit {
  }
     
   googleLogin() {
-    window.location.href = 'http://localhost:8090/oauth2/authorization/google';
+    window.location.href = 'http://localhost:30090/oauth2/authorization/google';
   }
 
   signupHref() {

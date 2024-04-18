@@ -23,7 +23,7 @@ import java.nio.charset.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:32000")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
@@ -42,6 +42,7 @@ public class AuthenticationController {
         String token = JWT.create().withSubject(user.getAttribute("email")).withClaim("name", (String) user.getAttribute("given_name")).withClaim("last_name", (String) user.getAttribute("family_name")).withClaim("picture", (String) user.getAttribute("picture")).withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
         //send a message to the user service to create the user
         HttpStatusCode result = authService.googleLogin(user).getStatusCode();
+        System.out.println("RESUL GOOGLE="+ result);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", URLDecoder.decode("http://localhost:32000/authentication", StandardCharsets.UTF_8) + "?token=" + token);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);

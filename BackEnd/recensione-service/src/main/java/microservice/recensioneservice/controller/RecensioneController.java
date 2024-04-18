@@ -11,7 +11,7 @@ import microservice.recensioneservice.service.RecensioneService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://localhost:32000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/review")
 @RequiredArgsConstructor

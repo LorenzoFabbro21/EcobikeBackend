@@ -31,7 +31,7 @@ public class PrivateServiceImpl implements PrivateService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> savePrivate(Private userObj) {
+    public ResponseEntity<?> savePrivate(Private userObj) {
         if (!userObj.getGoogleCheck()) {
             String response = validateRequest(userObj);
             if (!response.equals("ok")) {
@@ -62,8 +62,11 @@ public class PrivateServiceImpl implements PrivateService {
 
         }
         else {
-            repository.save(userObj);
-            return ResponseEntity.status(HttpStatus.OK).body("Client successfully created");
+             Private userResponse = repository.save(userObj);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Private has been deleted!");
+            body.put("id", String.valueOf(userResponse.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(body);
         }
 
     }

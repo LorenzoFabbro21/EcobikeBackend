@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @EnableEurekaServer
-@CrossOrigin(origins = "http://localhost:32000")
+@CrossOrigin(origins = "*")
 public class ServiceDiscoveryServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceDiscoveryServerApplication.class, args);

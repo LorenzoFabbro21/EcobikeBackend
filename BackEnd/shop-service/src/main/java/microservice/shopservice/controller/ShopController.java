@@ -13,7 +13,7 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 
 import javax.swing.text.html.*;
-@CrossOrigin(origins = "http://localhost:32000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/shop")
 @RequiredArgsConstructor

@@ -105,16 +105,16 @@ public class BookingServiceImpl implements BookingService{
     public List<BikeUser> getAllBikesRented(long id) {
         List<BikeUser> bikeUser = new ArrayList<>();
         List<Adrent> adrents = restTemplate.exchange(
-                "http://ad-service/api/adrent/user/" + id,
+                "http://ad-service:8084/api/adrent/user/" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Adrent>>() {}
         ).getBody();
         for (Adrent a: adrents) {
             List<Booking> bookings = repository.getAllBookingsByAnnouncement(a.getId());
-            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
+            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
             for(Booking b: bookings){
-                User user = restTemplate.getForObject("http://user-service/api/private/" + b.getIdPrivate(), User.class);
+                User user = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
                 BikeUser obj = new BikeUser(user, bike, b, a);
                 bikeUser.add(obj);
             }
@@ -133,9 +133,9 @@ public class BookingServiceImpl implements BookingService{
         System.out.println("ididididididididid: " + id);
         List<Booking> listBookings = repository.getPersonalRent(id);
         for (Booking b : listBookings) {
-            Adrent a = restTemplate.getForObject("http://ad-service/api/adrent/" + b.getIdAnnouncement(), Adrent.class);
-            Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + a.getIdBike(), Bike.class);
-            User u = restTemplate.getForObject("http://user-service/api/private/" + b.getIdPrivate(), User.class);
+            Adrent a = restTemplate.getForObject("http://ad-service:8084/api/adrent/" + b.getIdAnnouncement(), Adrent.class);
+            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
+            User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
             BikeUser obj = new BikeUser(u, bike, b, a);
             bikeUser.add(obj);
         }
