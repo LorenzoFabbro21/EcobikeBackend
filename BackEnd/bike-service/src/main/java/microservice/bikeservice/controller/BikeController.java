@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -52,7 +49,9 @@ public class BikeController {
 
         rabbitMQSender.sendAddBikeAdSell(adSell);
         System.out.println("print dopo sender");
-        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdSell successfully created");
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Sell successfully created");
+        return new ResponseEntity<Map>(body, HttpStatus.OK);
     }
 
     @PostMapping(value = "/rent")
@@ -73,7 +72,9 @@ public class BikeController {
 
         rabbitMQSender.sendAddBikeAdRent(adRent);
         System.out.println("print dopo sender");
-        return ResponseEntity.status(HttpStatus.OK).body("Bike and AdRent successfully created");
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Rent successfully created");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 

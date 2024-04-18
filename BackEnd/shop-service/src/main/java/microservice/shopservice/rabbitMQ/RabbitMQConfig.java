@@ -33,6 +33,12 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    @Qualifier("queue")
+    Queue queueCreateDealer() {
+        return new Queue("queueCreateDealer", true);
+    }
+
+    @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
         cachingConnectionFactory.setUsername(username);

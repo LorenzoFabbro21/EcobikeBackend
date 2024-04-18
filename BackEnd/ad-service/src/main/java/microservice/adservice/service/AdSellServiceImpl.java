@@ -169,7 +169,7 @@ public class AdSellServiceImpl implements AdSellService {
     public List<Bike> getAllBikeToSellByUser(long id) {
         List<AdSell> adSells = new ArrayList<>();
         adSells= this.getAllAdSellByUser(id);
-        List<AdRent> response = new ArrayList<>();
+
         if ( !adSells.isEmpty())
         {
             List<Bike> bikes = new ArrayList<>();

@@ -32,6 +32,12 @@ public class RabbitMQConfig {
         return new Queue("queueDeleteUser", true);
     }
 
+    @Bean
+    @Qualifier("queue")
+    Queue queueCreateDealer() {
+        return new Queue("queueCreateDealer", true);
+    }
+
 
     @Bean
     public ConnectionFactory connectionFactory() {
