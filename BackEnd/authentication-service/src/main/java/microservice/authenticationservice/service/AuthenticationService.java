@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.core.user.*;
 
 public interface AuthenticationService {
 
-    ResponseEntity<String> googleLogin(OAuth2User auth);
+    void googleLogin(OAuth2User auth);
 
     ResponseEntity<?> signup(UserDetails userDetails);
 

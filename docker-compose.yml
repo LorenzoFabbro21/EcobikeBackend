@@ -171,10 +171,13 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8090:8090"
     depends_on:
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.authenticationservice.dto.*;
 import microservice.authenticationservice.model.*;
+import microservice.authenticationservice.rabbitMQ.RabbitMQSender;
 import net.minidev.json.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -27,8 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    private final RabbitMQSender rabbitMQSender;
+
     @Override
-    public ResponseEntity<String> googleLogin(OAuth2User user) {
+    public void googleLogin(OAuth2User user) {
+        System.out.println("auth service 11111111111111");
         //send a message to the user service to create the user
         User userDetails = new User();
         userDetails.setMail(user.getAttribute("email"));
@@ -38,9 +43,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDetails.setPassword("");
         userDetails.setPhoneNumber("");
 
-        try {
+        System.out.println("Auth service 2222222222222222 prima di rabbit" + userDetails.getName() + "  " + userDetails.getLastName() + "  " + userDetails.getMail() + "  " + userDetails.getPassword() + "  " + userDetails.getPhoneNumber() + "  ");
+        rabbitMQSender.sendCreateUser(userDetails);
+        System.out.println("Auth service 333333333333333333 dopo rabbit");
 
+
+            /*
+            try {
             HttpStatusCode user_response = restTemplate.postForEntity("http://user-service/api/private", userDetails, String.class).getStatusCode();
+
             if (user_response != HttpStatus.OK) {
                 return ResponseEntity.status(user_response).body("Invalid request");
             }
@@ -50,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
         }
-
+        */
     }
 
     @Override

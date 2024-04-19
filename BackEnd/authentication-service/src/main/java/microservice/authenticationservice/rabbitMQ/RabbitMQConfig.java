@@ -1,4 +1,4 @@
-package microservice.userservice.rabbitMQ;
+package microservice.authenticationservice.rabbitMQ;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
+
     @Value("${spring.rabbitmq.username}")
     private String username;
     @Value("${spring.rabbitmq.password}")
@@ -28,22 +29,9 @@ public class RabbitMQConfig {
 
     @Bean
     @Qualifier("queue")
-    Queue queueDeleteUser() {
-        return new Queue("queueDeleteUser", true);
-    }
-
-    @Bean
-    @Qualifier("queue")
-    Queue queueCreateDealer() {
-        return new Queue("queueCreateDealer", true);
-    }
-
-    @Bean
-    @Qualifier("queue")
     Queue queueCreateUser() {
         return new Queue("queueCreateUser", true);
     }
-
 
     @Bean
     public ConnectionFactory connectionFactory() {

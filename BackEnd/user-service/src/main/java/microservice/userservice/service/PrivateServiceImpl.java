@@ -32,6 +32,7 @@ public class PrivateServiceImpl implements PrivateService {
     @Override
     @Transactional
     public ResponseEntity<String> savePrivate(Private userObj) {
+        System.out.println("Print nel service" + userObj);
         if (!userObj.getGoogleCheck()) {
             String response = validateRequest(userObj);
             if (!response.equals("ok")) {

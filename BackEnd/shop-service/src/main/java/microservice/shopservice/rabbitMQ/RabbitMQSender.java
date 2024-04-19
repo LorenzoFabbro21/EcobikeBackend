@@ -37,6 +37,7 @@ public class RabbitMQSender {
     }
 
     public void sendCreateDealer(Private user) {
+        System.out.println("Print in rabbit sender create dealer");
         rabbitTemplate.convertAndSend(this.queueCreateDealer.getName(), user);
     }
 
