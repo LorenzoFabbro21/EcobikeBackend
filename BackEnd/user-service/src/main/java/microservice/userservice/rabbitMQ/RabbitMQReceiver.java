@@ -53,4 +53,15 @@ public class RabbitMQReceiver {
             System.err.println(e);
         }
     }
+
+    @RabbitListener(queues = "queueSignUp")
+    public void receiveSignUp(User user) {
+        try {
+            Private p = new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(), user.getGoogleCheck());
+            System.out.println("receiver 111111111111111111111" + p);
+            privateService.savePrivate(p);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
 }

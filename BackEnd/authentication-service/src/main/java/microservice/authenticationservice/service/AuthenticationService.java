@@ -10,7 +10,7 @@ public interface AuthenticationService {
 
     void googleLogin(OAuth2User auth);
 
-    ResponseEntity<?> signup(UserDetails userDetails);
+    void signup(UserDetails userDetails);
 
     ResponseEntity<?> login(LoginRequest loginRequest);
 }

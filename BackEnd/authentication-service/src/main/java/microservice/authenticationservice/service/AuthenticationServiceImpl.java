@@ -47,27 +47,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         rabbitMQSender.sendCreateUser(userDetails);
         System.out.println("Auth service 333333333333333333 dopo rabbit");
 
-
-            /*
-            try {
-            HttpStatusCode user_response = restTemplate.postForEntity("http://user-service/api/private", userDetails, String.class).getStatusCode();
-
-            if (user_response != HttpStatus.OK) {
-                return ResponseEntity.status(user_response).body("Invalid request");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("User add request sent successfully");
-        }catch (HttpClientErrorException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }
-        */
     }
 
     @Override
-    public ResponseEntity<?> signup(UserDetails userDetails) {
+    public void signup(UserDetails userDetails) {
         userDetails.setGoogleCheck(false);
 
+        User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck());
+
+        rabbitMQSender.sendSignUp(u);
+
+
+        /*
         try {
             HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service/api/private", userDetails,String.class).getStatusCode();
 
@@ -83,6 +74,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
         }
+        */
+
     }
 
     @Override

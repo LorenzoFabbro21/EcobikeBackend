@@ -34,6 +34,12 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    @Qualifier("queue")
+    Queue queueSignUp() {
+        return new Queue("queueSignUp", true);
+    }
+
+    @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
         cachingConnectionFactory.setUsername(username);

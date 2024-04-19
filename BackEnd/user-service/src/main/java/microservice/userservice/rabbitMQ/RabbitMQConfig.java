@@ -44,6 +44,12 @@ public class RabbitMQConfig {
         return new Queue("queueCreateUser", true);
     }
 
+    @Bean
+    @Qualifier("queue")
+    Queue queueSignUp() {
+        return new Queue("queueSignUp", true);
+    }
+
 
     @Bean
     public ConnectionFactory connectionFactory() {

@@ -57,8 +57,9 @@ public class AuthenticationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserDetails userDetails) {
-        return authService.signup(userDetails);
+    public boolean signup(@RequestBody UserDetails userDetails) {
+        authService.signup(userDetails);
+        return true;
     }
 
 

@@ -20,9 +20,14 @@ public class RabbitMQSender {
     @Autowired
     private final Queue queueCreateUser;
 
-    public RabbitMQSender(RabbitTemplate rabbitTemplate, @Qualifier("queueCreateUser") Queue queueCreateUser) {
+    @Qualifier("queueSignUp")
+    @Autowired
+    private final Queue queueSignUp;
+
+    public RabbitMQSender(RabbitTemplate rabbitTemplate, @Qualifier("queueCreateUser") Queue queueCreateUser, @Qualifier("queueSignUp") Queue queueSignUp) {
         this.rabbitTemplate = rabbitTemplate;
         this.queueCreateUser = queueCreateUser;
+        this.queueSignUp = queueSignUp;
 
     }
 
@@ -30,6 +35,12 @@ public class RabbitMQSender {
         System.out.println("sender auth prima di rabbit" + user.getName() + "  " + user.getLastName() + "  " + user.getMail() + "  " + user.getPassword() + "  " + user.getPhoneNumber() + "  ");
 
         rabbitTemplate.convertAndSend(this.queueCreateUser.getName(), user);
+    }
+
+    public void sendSignUp(User user) {
+        System.out.println("sender auth prima di rabbit" + user.getName() + "  " + user.getLastName() + "  " + user.getMail() + "  " + user.getPassword() + "  " + user.getPhoneNumber() + "  ");
+
+        rabbitTemplate.convertAndSend(this.queueSignUp.getName(), user);
     }
 
 
