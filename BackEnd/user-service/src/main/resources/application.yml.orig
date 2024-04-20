@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: user-service
+<<<<<<< HEAD
+=======
+  rabbitmq:
+    host: localhost
+    password: guest
+    port: 5672
+    username: guest
+  cloud:
+    kubernetes:
+      enabled: false
+>>>>>>> EcobikeBackend/rabbitMQ_
+server:
+  port: 8081
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    register-with-eureka: true
+    refresh:
+      enable: true
+  instance:
+    prefer-ip-address: true

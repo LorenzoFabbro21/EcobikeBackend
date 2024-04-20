@@ -1,5 +1,16 @@
 version: "3"
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672" # Porta per accedere alla console di management
+      - "5672:5672"   # Porta per connessioni client e comunicazione tra servizi
+    networks:
+      - opnet
+    restart: unless-stopped
+    volumes:
+      - data-rabbitmq:/var/lib/rabbitmq
   postgres-user:
     container_name: postgres-user
     image: 'postgres:latest'
@@ -147,10 +158,13 @@ services:
     environment:
       - spring.profiles.active=docker
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "30090:8090"
     depends_on:
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 
@@ -165,11 +179,14 @@ services:
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8081:8081"
     depends_on:
       - postgres-user
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 
@@ -184,11 +201,14 @@ services:
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8083:8083"
     depends_on:
       - postgres-shop
       - service-discovery-server
+      - rabbitmq
     networks:
       - opnet
 
@@ -203,10 +223,13 @@ services:
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8087:8087"
     depends_on:
       - postgres-bike
+      - rabbitmq
       - service-discovery-server
     networks:
       - opnet
@@ -222,9 +245,12 @@ services:
       - spring.profiles.active=docker
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
     ports:
       - "8084:8084"
     depends_on:
+      - rabbitmq
       - postgres-ad
       - service-discovery-server
     networks:
@@ -266,13 +292,14 @@ services:
     networks:
       - opnet
   frontend:
-    build: ./Frontend
-    image: lorenzofabbro/frontend
-    container_name: frontend
-    ports:
-      - "32000:5000"
-    networks:
-      - opnet
+      build: ./Frontend
+      image: lorenzofabbro/frontend
+      container_name: frontend
+      ports:
+        - "32000:5000"
+      networks:
+        - opnet
+
 volumes:
   shop-postgres-data:
   user-postgres-data:
@@ -281,6 +308,8 @@ volumes:
   booking-postgres-data:
   appointment-postgres-data:
   bike-postgres-data:
+  data-rabbitmq:
+
 
 networks:
   opnet:

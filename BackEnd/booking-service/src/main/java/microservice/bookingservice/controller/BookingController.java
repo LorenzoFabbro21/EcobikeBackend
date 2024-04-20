@@ -42,6 +42,14 @@ public class BookingController {
         return bookings;
     }
 
+    @GetMapping("/notprotected")
+    public List<Booking> getAllBookingNotProtected() {
+        System.out.println("Get all Bookings...");
+        List<Booking> bookings = new ArrayList<>();
+        bookingService.getAllBookings().forEach(bookings::add);
+        return bookings;
+    }
+
     @GetMapping("/user/{idPrivate}")
     public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
         System.out.println("Get all Bookings by idPrivate...");

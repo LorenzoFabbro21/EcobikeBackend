@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.authenticationservice.dto.*;
 import microservice.authenticationservice.model.*;
+import microservice.authenticationservice.rabbitMQ.RabbitMQSender;
 import net.minidev.json.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Value("${user-service.url}")
     String userServiceUrl;
+    
+    private final RabbitMQSender rabbitMQSender;
+
     @Override
-    public ResponseEntity<String> googleLogin(OAuth2User user) {
+    public void googleLogin(OAuth2User user) {
         //send a message to the user service to create the user
         User userDetails = new User();
         userDetails.setMail(user.getAttribute("email"));
@@ -41,34 +45,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDetails.setGoogleCheck(true);
         userDetails.setPassword("");
         userDetails.setPhoneNumber("");
-        try {
-            final String url = userServiceUrl + "/api/private";
-            System.out.println("PROVA BEFORE POST");
-            ResponseEntity<String> user_response = restTemplate.postForEntity(url, userDetails, String.class);
-            System.out.println("USER="+user_response.getBody());
-            if (user_response.getStatusCode() != HttpStatus.OK) {
-                return ResponseEntity.status(user_response.getStatusCode()).body("Invalid request");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("User add request sent successfully");
-        }catch (HttpClientErrorException e) {
-            System.out.println("EXCEPTION"+e.getMessage());
-            System.out.println("Causa"+e.getCause());
-            e.fillInStackTrace();
 
-            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
-        } catch (Exception e) {
-            System.out.println("EXCEPTION"+e.getMessage());
-            System.out.println("Causa"+e.getCause());
-            e.fillInStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }
+        rabbitMQSender.sendCreateUser(userDetails);
 
     }
 
     @Override
-    public ResponseEntity<?> signup(UserDetails userDetails) {
+    public void signup(UserDetails userDetails) {
         userDetails.setGoogleCheck(false);
 
+        User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck());
+
+        rabbitMQSender.sendSignUp(u);
+
+
+        /*
         try {
             HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service:8081/api/private", userDetails,String.class).getStatusCode();
 
@@ -83,7 +74,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }
+        }        */
+
     }
 
     @Override

@@ -36,9 +36,9 @@ public class Shop {
     private String img;
 
     @Column(name = "idUser")
-    private int idUser;
+    private long idUser;
 
-    public Shop( String name, String city, String address, String phoneNumber, String img, int idUser) {
+    public Shop( String name, String city, String address, String phoneNumber, String img, long idUser) {
         this.name = name;
         this.city = city;
         this.address = address;

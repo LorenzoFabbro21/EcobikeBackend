@@ -79,9 +79,35 @@ public class AdSellServiceImpl implements AdSellService {
 
     @Override
     public List<AdSell> getAllAdsSellForUser(long id) {
+
+        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                "http://appointment-service/api/appointment",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Appointment>>() {}
+        );
+        List<Appointment> appointments = response.getBody();
+        //Get degli annunci di vendita
         List<AdSell> adsSell = new ArrayList<>();
         repository.getAllAdSellForUser(id).forEach(adsSell::add);
-        return adsSell;
+
+        //Crea lista con gli idAnnouncement di tutti gli appointment
+        List<Long> appointmentAdSellIds = appointments.stream()
+                .map(Appointment::getIdAnnouncement)
+                .collect(Collectors.toList());
+
+        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+        List<AdSell> filteredAdSell = adsSell.stream()
+                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                .collect(Collectors.toList());
+
+        return filteredAdSell;
+
+
+
+        //List<AdSell> adsSell = new ArrayList<>();
+        //repository.getAllAdSellForUser(id).forEach(adsSell::add);
+        //return adsSell;
     }
 
     @Override
@@ -143,7 +169,7 @@ public class AdSellServiceImpl implements AdSellService {
     public List<Bike> getAllBikeToSellByUser(long id) {
         List<AdSell> adSells = new ArrayList<>();
         adSells= this.getAllAdSellByUser(id);
-        List<AdRent> response = new ArrayList<>();
+
         if ( !adSells.isEmpty())
         {
             List<Bike> bikes = new ArrayList<>();

@@ -421,7 +421,14 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
     return this.httpClient.get<userBikeRentInfo[]>(`${this.url}/appointment/personal/user/` + id + "/bikes", {headers}); 
   }
 
-
+  /**
+   * Restitusice le biciclette della stesa marca
+   *
+   * Endpoint Rest: bike/brand/{brand}
+   */
+  public get_similar_bike(brand: string | undefined): Observable<Bicicletta[]> {
+    return this.httpClient.get<Bicicletta[]>(`${this.url}/bike/brand/` + brand);
+  }
 
 
 

@@ -7,6 +7,7 @@ import microservice.authenticationservice.model.UserDetails;
 import com.auth0.jwt.*;
 import com.auth0.jwt.algorithms.*;
 import jakarta.servlet.http.*;
+import microservice.authenticationservice.rabbitMQ.RabbitMQSender;
 import microservice.authenticationservice.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,16 +34,18 @@ public class AuthenticationController {
     private final String SECRET_KEY = "secret";
 
     private final AuthenticationService authService;
+
+    private final RabbitMQSender rabbitMQSender;
     @GetMapping("/google")
     public ResponseEntity<String> successLogin(Authentication auth ) {
-        //return authService.googleLogin(auth);
+
+
 
         OAuth2User user = (OAuth2User) auth.getPrincipal();
         //make jwt token
         String token = JWT.create().withSubject(user.getAttribute("email")).withClaim("name", (String) user.getAttribute("given_name")).withClaim("last_name", (String) user.getAttribute("family_name")).withClaim("picture", (String) user.getAttribute("picture")).withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXP)).sign(Algorithm.HMAC256(SECRET_KEY));
         //send a message to the user service to create the user
-        HttpStatusCode result = authService.googleLogin(user).getStatusCode();
-        System.out.println("RESUL GOOGLE="+ result);
+        authService.googleLogin(user);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", URLDecoder.decode("http://localhost:32000/authentication", StandardCharsets.UTF_8) + "?token=" + token);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
@@ -50,8 +53,9 @@ public class AuthenticationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserDetails userDetails) {
-        return authService.signup(userDetails);
+    public boolean signup(@RequestBody UserDetails userDetails) {
+        authService.signup(userDetails);
+        return true;
     }
 
 
