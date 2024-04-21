@@ -305,7 +305,6 @@ metadata:
   annotations:
     kompose.cmd: C:\Users\fabbr\AppData\Local\Microsoft\WinGet\Packages\Kubernetes.kompose_Microsoft.Winget.Source_8wekyb3d8bbwe\kompose.exe convert -f compose.yml --out kubernetes.yaml
     kompose.version: 1.31.2 (a92241f79)
-  creationTimestamp: null
   labels:
     io.kompose.service: rabbitmq
   name: rabbitmq
@@ -542,10 +541,6 @@ spec:
               value: http://service-discovery-server:8761/eureka/
             - name: spring.profiles.active
               value: docker
-            - name: spring.rabbitmq.host
-              value: rabbitmq
-            - name: spring.rabbitmq.port
-              value: "5672"
           image: lorenzofabbro/appointment-service
           name: appointment-service
           ports:
@@ -699,10 +694,6 @@ spec:
               value: http://service-discovery-server:8761/eureka/
             - name: spring.profiles.active
               value: docker
-            - name: spring.rabbitmq.host
-              value: rabbitmq
-            - name: spring.rabbitmq.port
-              value: "5672"
           image: lorenzofabbro/booking-service
           name: booking-service
           ports:
@@ -1427,6 +1418,11 @@ spec:
               value: http://service-discovery-server:8761/eureka/
             - name: spring.profiles.active
               value: docker
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.port
+              value: "5672"
+
           image: lorenzofabbro/shop-service
           name: shop-service
           ports:
@@ -1478,6 +1474,11 @@ spec:
               value: http://service-discovery-server:8761/eureka/
             - name: spring.profiles.active
               value: docker
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.port
+              value: "5672"
+
           image: lorenzofabbro/user-service
           name: user-service
           ports:

@@ -8,7 +8,6 @@ spring:
     username: guest
 server:
   port: 8084
-  forward-headers-strategy: framework
 eureka:
   client:
     serviceUrl:
