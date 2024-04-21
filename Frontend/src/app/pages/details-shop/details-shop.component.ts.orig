@@ -55,9 +55,14 @@ export class DetailsShopComponent {
       this.id = JSON.parse(params['idShop']);
       this.idUser = JSON.parse(params['idUser']);
     });
+<<<<<<< HEAD
     if ( this.userService.userLogged?.id !== undefined && this.userService.userLogged?.token !== undefined) {
       const token: string = this.userService.userLogged?.token;
+=======
+    
+    
       
+>>>>>>> origin/shop
       this.ebService.get_shop(this.id).subscribe ({
         next: (response: Shop) => {
           if (response != null)
@@ -95,8 +100,16 @@ export class DetailsShopComponent {
             this.mostraSpinner = false;
             this.tosellNull = true;
           }
+<<<<<<< HEAD
+          
+        }
+      });
+    }
+=======
         }
       })
+>>>>>>> origin/shop
+
 
       this.ebService.list_reviews_fromidShop(this.id).subscribe ({
         next: (listReviews: Review[]) => {
@@ -133,8 +146,8 @@ export class DetailsShopComponent {
 
       this.userLogged = this.userService.userLogged;
 
+
   }
-}
   send(){
     let review: Review;
     if( this.userService.userLogged?.token !== undefined) {
@@ -186,7 +199,5 @@ export class DetailsShopComponent {
   }
   loadPagedReviewUser() {
     this.pagedReviewUser = this.reviewUser.slice(this.first, this.first + this.rows);
-  }
 }
-
-
+}

@@ -1,7 +1,10 @@
 .info {
     display: flex;
     flex-direction: row;
+<<<<<<< HEAD
     height: 40vh;
+=======
+>>>>>>> 2741a64c05a8477f134863d6afa81a4ad29131a0
     margin: 0 80px;
     justify-content: flex-start;
     column-gap: 10vw;
@@ -10,8 +13,8 @@
     margin-top: 1vh;
   }
 .name{
-    
-    font-size: xx-large;
+  margin: 0px 40px;
+  margin-bottom: 2vh;
 }
 .otherDetails{
     
@@ -25,13 +28,22 @@
     align-items: center;
     justify-content: center;
   }
-.view {
+  .view {
     display: grid;
-    grid-template-columns: repeat(5 , minmax(150px,1fr));
+    grid-template-columns: repeat(4 , minmax(200px,1fr));
     column-gap: 2vw;
     align-items: center;
     margin: 0px 40px;
     row-gap: 4vh;
+  }
+
+  .titleMenu {
+    display: flex;
+    flex-direction: row;
+    margin: 0px 40px;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2vh;
   }
 :host ::ng-deep {
 
@@ -107,6 +119,7 @@
   width: 25vw;
   object-fit: cover;
 }
+<<<<<<< HEAD
 
 .view.spinner-active .content-below-spinner{
   opacity: 0.5;
@@ -180,4 +193,8 @@
   flex-direction: row;
   column-gap: 3vw;
   justify-content: center;
+=======
+.spanStyle {
+  font-size: larger;
+>>>>>>> 2741a64c05a8477f134863d6afa81a4ad29131a0
 }

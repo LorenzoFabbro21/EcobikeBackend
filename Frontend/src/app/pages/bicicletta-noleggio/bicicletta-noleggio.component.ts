@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adRent } from 'src/app/interfaces/adRent';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
+import { bikeRentSell } from 'src/app/interfaces/bikeRentSell';
 import { Booking } from 'src/app/interfaces/booking';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 import { UserLoggedService } from 'src/app/services/user-logged.service';
@@ -18,14 +19,18 @@ export class BiciclettaNoleggioComponent {
   bicicletta?: Bicicletta;
   prezzo?: number;
   prezzo_noTax?: number;
-  bikesSimili: Bicicletta[]= [];
   images: string[]= [];
   imagePrincipal: string= "";
   date: Date | undefined;
   idAnnuncio?:number;
   disabledDates: Date[] = [];
   userLogged: LoggedUser | null = null;
-  constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService) {
+  mostraSpinner= false;
+  bikesSimili: bikeRentSell[] = [];
+  bikesList: Bicicletta[] = [];
+  sellList: adRent[] = [];
+
+  constructor ( private router: Router, private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService) {
     this.userLogged = this.userService.userLogged;
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
@@ -36,45 +41,6 @@ export class BiciclettaNoleggioComponent {
 
     // Aggiunge le date al array delle date disabilitate
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
-
-    this.bikesSimili= [
-      {
-      id: 1,
-      model: 'RX1-Sport',
-      brand: 'Olmo',
-      color: 'Rosso e bianco',
-      size: Taglia.TagliaS,
-      type: 'Mountain Bike',
-      img:  'ebike.jpg'
-      },
-      {
-        id: 2,
-        model:'CV5-Sport',
-        brand:'Thor',
-        color: 'Rosso e nero',
-        size:  Taglia.TagliaM,
-        type: 'Mountain Bike',
-        img: 'ebike.jpg'
-        },
-        {
-          id: 3,
-          model:'BN8-Trial',
-          brand:'Prova',
-          color: 'Rosso e bianco',
-          size:  Taglia.TagliaS,
-          type: 'Trial',
-          img: 'ebike.jpg'
-          },
-          {
-            id: 4,
-            model: 'TopModel',
-            brand: 'Brabus',
-            color: 'Verde',
-            size: Taglia.TagliaL,
-            type: 'Mountain Bike',
-            img: 'ebike.jpg'
-            }
-    ];
   }
   ngOnInit() {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -113,18 +79,20 @@ export class BiciclettaNoleggioComponent {
         }
       }
     });
-
-    this.ebService.get_bookings(this.userLogged?.token).subscribe({
-      next: (response:Booking[]) => {
-        if ( response) {
-          response.forEach(booking => {
-            if( booking.idAnnouncement == this.idAnnuncio && booking.startdate !== undefined) {
-              this.disabledDates.push(new Date(booking.startdate));
-            }
-          });
+    if ( this.userService.userLogged?.token !== undefined) {
+      let token: string = this.userService.userLogged?.token;
+      this.ebService.get_bookings(token).subscribe({
+        next: (response:Booking[]) => {
+          if ( response) {
+            response.forEach(booking => {
+              if( booking.idAnnouncement == this.idAnnuncio && booking.startdate !== undefined) {
+                this.disabledDates.push(new Date(booking.startdate));
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    }
 
 
 
@@ -132,7 +100,45 @@ export class BiciclettaNoleggioComponent {
       const tax = (this.prezzo / 100) * 22;
       this.prezzo_noTax = this.prezzo - tax;
     }
+
+    this.ebService.get_bicicletta(this.id).subscribe({
+      next: (response: Bicicletta) => {
+        this.ebService.get_similar_bike(response.brand).subscribe({
+          next: (response: Bicicletta[]) => {
+            if(response) {
+              this.bikesList = response;
+              this.ebService.elenco_noleggi().subscribe({
+                next: (response:adRent[]) => {
+        
+                  if (response) {
+                    this.sellList = response;
+                    
+                    this.bikesList.forEach(bike => {
+                      this.sellList.forEach(sell => {
+                        if(sell.idBike == bike.id && sell.idUser != this.userLogged?.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: sell.price ? sell.price : 0
+                          };
+                          this.bikesSimili.push(obj);
+                        }
+                      });
+                    });
+    
+                    this.bikesSimili.forEach((bike, index) => {
+                      if(bike.bike.id == this.id)
+                        this.bikesSimili.splice(index, 1);
+                    })
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    });
   }
+
 
   private generateDateArrayBefore(date: Date): Date[] {
     const oggi = new Date();
@@ -165,10 +171,15 @@ export class BiciclettaNoleggioComponent {
     }
     if ( this.userService.userLogged?.token !== undefined) {
       let token: string = this.userService.userLogged?.token;
+      this.mostraSpinner= true;
       this.ebService.new_booking(booking, token).subscribe({
         next: (response:Booking) => {
           if ( response) {
             console.log(response);
+            setTimeout(() => {
+              this.mostraSpinner = false;
+              this.router.navigate(['/']);
+            }, 3500);
           }
         }
       });

@@ -14,7 +14,7 @@ export class DetailsBikeToRentComponent {
   typeAd: string="";
   id: number = 0;
   bicicletta?: Bicicletta;
-  prezzo?: number;
+  price?: number;
   prezzo_noTax?: number;
   images: string[]= [];
   imagePrincipal: string= "";
@@ -43,17 +43,17 @@ export class DetailsBikeToRentComponent {
               
             });
             this.imagePrincipal = this.images[0];
-            this.ebService.elenco_vendite().subscribe({
+            this.ebService.elenco_noleggi().subscribe({
               next: (response:adRent[]) => {
                 if ( response) {
                   response.forEach(rent => {
                     if( rent.idBike == this.bicicletta?.id) {
                       this.idAnnuncio= rent.id;
-                      this.prezzo = rent.price;
+                      this.price = rent.price;
                     }
-                    if ( this.prezzo) {
-                      const tax = (this.prezzo / 100) * 22;
-                      this.prezzo_noTax = this.prezzo - tax;
+                    if ( this.price) {
+                      const tax = (this.price / 100) * 22;
+                      this.prezzo_noTax = this.price - tax;
                     }
                   });
                 }

@@ -43,6 +43,8 @@ export class LoginFormComponent implements OnInit {
     }
     this.ebService.login(login).subscribe({
       next: (response:any) => { 
+        //setTimeout(() => {
+        //}, 3500);
         const token = response.token; // Supponendo che il token sia contenuto all'interno dell'oggetto di risposta con la chiave 'token'
         const decoded : any = jwtDecode(token);
         this.ebService.getPrivateUser(decoded.sub).subscribe({

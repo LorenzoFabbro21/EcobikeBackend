@@ -33,17 +33,16 @@ export class BiciclettaVenditaComponent implements OnInit{
   brand: string | undefined;
 
   constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService, private router: Router) {
-    
     this.userLogged = this.userService.userLogged;
-    
+
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     this.disabledDates.push(oggi);
+
     const datePrecedenti = this.generateDateArrayBefore(oggi);
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
     
   }
-
   ngOnInit() {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     this.route.queryParams.subscribe(params => {
@@ -55,11 +54,10 @@ export class BiciclettaVenditaComponent implements OnInit{
 
         if (response != null) {
           this.bicicletta= response;
-          this.brand = this.bicicletta?.brand;
           if(this.bicicletta !== undefined && this.bicicletta.img !== undefined) {
             const splittedStrings = this.bicicletta.img.split('data:image/jpeg;base64');
             splittedStrings.forEach((image: string) => {
-              if (image !== "") {
+              if ( image !== "") {
                 this.images.push('data:image/jpeg;base64'+ image);
               }
               
@@ -71,7 +69,7 @@ export class BiciclettaVenditaComponent implements OnInit{
       }
     });
 
-    this.ebService.elenco_vendite().subscribe({
+    this.ebService.elenco_vendite_not_sold().subscribe({
       next: (response:adSell[]) => {
         if ( response) {
           response.forEach(rent => {
@@ -103,13 +101,47 @@ export class BiciclettaVenditaComponent implements OnInit{
     }
 
 
-    this.ebService.get_bicicletta(this.id).subscribe({
-      next: (response:Bicicletta) => {
-        this.ebService.get_similar_bike(response.brand).subscribe({
+   /* this.ebService.get_bicicletta(this.id).subscribe({
+      next: (bike: Bicicletta) => {
+        this.ebService.get_similar_bike(bike.brand).subscribe({
           next: (response: Bicicletta[]) => {
             if(response) {
               this.bikesList = response;
     
+              this.ebService.elenco_vendite_not_sold().subscribe({
+                next: (response:adSell[]) => {
+        
+                  if (response) {
+                    this.sellList = response;
+                    
+                    this.bikesList.forEach(bike => {
+                      this.sellList.forEach(sell => {
+                        if(sell.idBike == bike.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: sell.price ? sell.price : 0
+                          };
+                          this.bikesSimili.push(obj);
+                        }
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    });*/
+    
+  
+
+    this.ebService.get_bicicletta(this.id).subscribe({
+      next: (response: Bicicletta) => {
+        this.ebService.get_similar_bike(response.brand).subscribe({
+          next: (response: Bicicletta[]) => {
+            if(response) {
+              this.bikesList = response;
               this.ebService.elenco_vendite().subscribe({
                 next: (response:adSell[]) => {
         
@@ -140,12 +172,12 @@ export class BiciclettaVenditaComponent implements OnInit{
         });
       }
     });
-
-    
   }
-          
 
-   
+
+
+
+  
 
 
   private generateDateArrayBefore(date: Date): Date[] {
@@ -173,7 +205,7 @@ export class BiciclettaVenditaComponent implements OnInit{
     let d = new Date();
     let id = this.userService.userLogged?.id;
     
-    this.ebService.elenco_vendite().subscribe({
+    this.ebService.elenco_vendite_not_sold().subscribe({
       next: (response:adSell[]) => {
         if ( response) {
           response.forEach(sell => {
@@ -190,10 +222,15 @@ export class BiciclettaVenditaComponent implements OnInit{
           
               if( this.userService.userLogged?.token !== undefined) {
                 let token : string = this.userService.userLogged?.token;
+                this.mostraSpinner= true;
                 this.ebService.new_appointment(appointment, token).subscribe({
-                  next: (response: Appointment) => {
+                  next: (response: any) => {
                   if( response && response.id) {
                     console.log(response);
+                    setTimeout(() => {
+                      this.mostraSpinner = false;
+                      this.router.navigate(['/']);
+                    }, 3500);
                   }
                 }
                 });

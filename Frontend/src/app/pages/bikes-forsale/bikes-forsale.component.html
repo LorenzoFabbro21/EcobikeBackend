@@ -11,8 +11,8 @@
             <h2>E-Bike in vendita</h2>
           </div>
                 <div class="view">
-                <div *ngFor="let bike of bikesVendita" >
-                    <app-ebike [bicicletta]="bike" [owned] = "true"></app-ebike>
+                <div *ngFor="let bike of bikeSellPrice" >
+                    <app-ebike [bicicletta]="bike.bike" [prezzo]="bike.price" [owned] = "true"></app-ebike>
                 </div>
                 </div>
         </div>
