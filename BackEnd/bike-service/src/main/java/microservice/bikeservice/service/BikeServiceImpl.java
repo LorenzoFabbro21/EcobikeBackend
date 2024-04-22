@@ -22,7 +22,7 @@ public class BikeServiceImpl implements BikeService{
 
 
     @Override
-    public ResponseEntity<?> saveBike(Bike bike) {
+    public ResponseEntity<Map<String, String>> saveBike(Bike bike) {
         try {
             Bike bikeCreated = repository.save(bike);
             Map<String, String> body = new HashMap<>();
@@ -47,6 +47,13 @@ public class BikeServiceImpl implements BikeService{
     @Override
     public Optional<Bike> getBikeById(long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<Bike> getBikeByBrand(String brand) {
+        List<Bike> bike = repository.findBikeByBrand(brand);
+        return  bike;
     }
 
     @Override

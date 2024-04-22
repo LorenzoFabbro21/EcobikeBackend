@@ -1,0 +1,101 @@
+<div class="spinner" *ngIf="mostraSpinner">
+    <p-progressSpinner ></p-progressSpinner>
+</div>
+  <div *ngIf="mostraSpinner==false">
+      <div #body >
+        <div class="info">
+            <div>
+                <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop.img" class="imagePrincipale"/>
+            </div>
+            <div class = "details">
+                <div>
+                    <h2>City</h2>
+                    <span class="spanStyle">{{shop?.city}}</span>
+                </div>
+                <div>
+                    <h2>Address</h2>
+                    <span class="spanStyle">{{shop?.address}}</span>
+                </div>
+                <div>
+                    <h2>Phone Number</h2>
+                    <span class="spanStyle">{{shop?.phoneNumber}}</span>
+                </div>
+            </div>
+        </div>
+<<<<<<< HEAD
+=======
+          <div *ngIf="torentNull == true" >
+            <div class = "titleMenu">
+                <h2>Bikes to rent</h2>
+            </div>
+            <div class = "noBikes">
+                <h4>Non sono presenti biciclette in noleggio</h4>
+            </div>
+          </div>
+>>>>>>> 2741a64c05a8477f134863d6afa81a4ad29131a0
+          <div *ngIf="mostraSpinner==false && !torentNull">
+            <div class="titleMenu">
+                <h2>Bikes to rent</h2>
+            </div>
+<<<<<<< HEAD
+=======
+            <div class="view">
+            <div *ngFor="let bike of bikestorent" >
+                <app-ebike [bicicletta]="bike" ></app-ebike>
+            </div>
+            </div>
+        </div>
+          <div *ngIf="tosellNull == true">
+            <div class = "titleMenu">
+                <h2>Bikes to sell</h2>
+            </div>
+            <div class = "noBikes">
+                <h4>Non sono presenti biciclette in vendita</h4>
+            </div>
+              
+>>>>>>> 2741a64c05a8477f134863d6afa81a4ad29131a0
+          </div>
+          <div *ngIf="mostraSpinner==false && !tosellNull">
+
+            <div class="titleMenu">
+                <h2>Bikes to sell</h2>
+              </div>
+              <div class="view">
+                <div *ngFor="let bike of bikestosell" >
+                    <app-ebike [bicicletta]="bike" ></app-ebike>
+                </div>
+            </div>
+
+          </div>
+
+        <div *ngIf="reviewUser !== null && reviewUser.length != 0">
+            <div class="paginator">
+                <div class="prova">
+                    <div *ngFor="let obj of pagedReviewUser;">
+                        <app-review [reviewUser]="obj"></app-review>
+                    </div>
+                </div>
+                <p-paginator [first]="first" [rows]="3" [totalRecords]="reviewUser.length" (onPageChange)="onPageChange($event)" [showJumpToPageDropdown]="true" [showPageLinks]="false"></p-paginator>
+            </div>
+        </div>
+        
+        <div *ngIf="userLogged && userLogged.type == 'p'">
+            <div class="reviewButton">
+                <div class="review">
+                    <div class="feedback">
+                        <label>Write your feedback</label>
+                        <textarea type="text" [(ngModel)]="text" rows="5" class="textArea"></textarea>
+                    </div>
+                    
+                    <div class="rating">
+                        <label>Rate</label>
+                        <p-rating [(ngModel)]="score" [cancel]="false"></p-rating>
+                    </div>
+                </div>
+                <div class="submit">
+                    <button pButton  label="Invia" class="button" (click)="send()"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

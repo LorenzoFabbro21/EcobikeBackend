@@ -5,6 +5,7 @@ import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Appointment } from 'src/app/interfaces/appointment';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
+import { bikeRentSell } from 'src/app/interfaces/bikeRentSell';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 import { UserLoggedService } from 'src/app/services/user-logged.service';
 
@@ -19,7 +20,9 @@ export class BiciclettaVenditaComponent implements OnInit{
   bicicletta?: Bicicletta;
   prezzo?: number;
   prezzo_noTax?: number;
-  bikesSimili: Bicicletta[]= [];
+  bikesSimili: bikeRentSell[] = [];
+  bikesList: Bicicletta[] = [];
+  sellList: adSell[] = [];
   images: string[]= [];
   imagePrincipal: string= "";
   idAnnuncio?: number;
@@ -27,6 +30,7 @@ export class BiciclettaVenditaComponent implements OnInit{
   mostraSpinner: boolean = false;
   disabledDates: Date[] = [];
   date: Date | undefined;
+  brand: string | undefined;
 
   constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService, private router: Router) {
     this.userLogged = this.userService.userLogged;
@@ -37,44 +41,7 @@ export class BiciclettaVenditaComponent implements OnInit{
 
     const datePrecedenti = this.generateDateArrayBefore(oggi);
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
-    this.bikesSimili= [
-      {
-      id: 1,
-      model: 'RX1-Sport',
-      brand: 'Olmo',
-      color: 'Rosso e bianco',
-      size: Taglia.TagliaS,
-      type: 'Mountain Bike',
-      img:  'ebike.jpg'
-      },
-      {
-        id: 2,
-        model:'CV5-Sport',
-        brand:'Thor',
-        color: 'Rosso e nero',
-        size:  Taglia.TagliaM,
-        type: 'Mountain Bike',
-        img: 'ebike.jpg'
-        },
-        {
-          id: 3,
-          model:'BN8-Trial',
-          brand:'Prova',
-          color: 'Rosso e bianco',
-          size:  Taglia.TagliaS,
-          type: 'Trial',
-          img: 'ebike.jpg'
-          },
-          {
-            id: 4,
-            model: 'TopModel',
-            brand: 'Brabus',
-            color: 'Verde',
-            size: Taglia.TagliaL,
-            type: 'Mountain Bike',
-            img: 'ebike.jpg'
-            }
-    ];
+    
   }
   ngOnInit() {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -102,7 +69,7 @@ export class BiciclettaVenditaComponent implements OnInit{
       }
     });
 
-    this.ebService.elenco_vendite().subscribe({
+    this.ebService.elenco_vendite_not_sold().subscribe({
       next: (response:adSell[]) => {
         if ( response) {
           response.forEach(rent => {
@@ -132,7 +99,85 @@ export class BiciclettaVenditaComponent implements OnInit{
       const tax = (this.prezzo / 100) * 22;
       this.prezzo_noTax = this.prezzo - tax;
     }
+
+
+   /* this.ebService.get_bicicletta(this.id).subscribe({
+      next: (bike: Bicicletta) => {
+        this.ebService.get_similar_bike(bike.brand).subscribe({
+          next: (response: Bicicletta[]) => {
+            if(response) {
+              this.bikesList = response;
+    
+              this.ebService.elenco_vendite_not_sold().subscribe({
+                next: (response:adSell[]) => {
+        
+                  if (response) {
+                    this.sellList = response;
+                    
+                    this.bikesList.forEach(bike => {
+                      this.sellList.forEach(sell => {
+                        if(sell.idBike == bike.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: sell.price ? sell.price : 0
+                          };
+                          this.bikesSimili.push(obj);
+                        }
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    });*/
+    
+  
+
+    this.ebService.get_bicicletta(this.id).subscribe({
+      next: (response: Bicicletta) => {
+        this.ebService.get_similar_bike(response.brand).subscribe({
+          next: (response: Bicicletta[]) => {
+            if(response) {
+              this.bikesList = response;
+              this.ebService.elenco_vendite().subscribe({
+                next: (response:adSell[]) => {
+        
+                  if (response) {
+                    this.sellList = response;
+                    
+                    this.bikesList.forEach(bike => {
+                      this.sellList.forEach(sell => {
+                        if(sell.idBike == bike.id && sell.idUser != this.userLogged?.id) {
+                          const obj: bikeRentSell= {
+                            bike: bike,
+                            price: sell.price ? sell.price : 0
+                          };
+                          this.bikesSimili.push(obj);
+                        }
+                      });
+                    });
+    
+                    this.bikesSimili.forEach((bike, index) => {
+                      if(bike.bike.id == this.id)
+                        this.bikesSimili.splice(index, 1);
+                    })
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    });
   }
+
+
+
+
+  
 
 
   private generateDateArrayBefore(date: Date): Date[] {
@@ -160,7 +205,7 @@ export class BiciclettaVenditaComponent implements OnInit{
     let d = new Date();
     let id = this.userService.userLogged?.id;
     
-    this.ebService.elenco_vendite().subscribe({
+    this.ebService.elenco_vendite_not_sold().subscribe({
       next: (response:adSell[]) => {
         if ( response) {
           response.forEach(sell => {
@@ -177,10 +222,15 @@ export class BiciclettaVenditaComponent implements OnInit{
           
               if( this.userService.userLogged?.token !== undefined) {
                 let token : string = this.userService.userLogged?.token;
+                this.mostraSpinner= true;
                 this.ebService.new_appointment(appointment, token).subscribe({
-                  next: (response: Appointment) => {
+                  next: (response: any) => {
                   if( response && response.id) {
                     console.log(response);
+                    setTimeout(() => {
+                      this.mostraSpinner = false;
+                      this.router.navigate(['/']);
+                    }, 3500);
                   }
                 }
                 });

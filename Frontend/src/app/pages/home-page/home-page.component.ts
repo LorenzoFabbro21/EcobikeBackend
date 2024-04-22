@@ -54,7 +54,7 @@ export class HomePageComponent {
         }
       });
 
-      this.ebService.elenco_vendite().subscribe({
+      this.ebService.elenco_vendite_not_sold().subscribe({
         next: (response:adSell[]) => {
   
           if (response != null) {

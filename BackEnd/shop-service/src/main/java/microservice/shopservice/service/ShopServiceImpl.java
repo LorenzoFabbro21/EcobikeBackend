@@ -106,9 +106,9 @@ public class ShopServiceImpl implements ShopService {
         Optional<Shop> shopData = repository.findById(id);
         if (shopData.isPresent()) {
             Shop _shop = shopData.get();
-            User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + _shop.getIdUser(), User.class);
+            User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" + _shop.getIdUser(), User.class);
             if (dealer == null) {
-                User privateUser = restTemplate.getForObject("http://user-service/api/private/" + _shop.getIdUser(), User.class);
+                User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _shop.getIdUser(), User.class);
                 if (privateUser == null) {
                     return null;
                 } else {

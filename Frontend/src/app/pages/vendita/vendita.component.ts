@@ -44,24 +44,23 @@ export class VenditaComponent {
     this.user = this.userService.userLogged;
 
     if(this.user == null) {
-      this.ebService.elenco_vendite().subscribe({
+      this.ebService.elenco_vendite_not_sold().subscribe({
         next: (response:adSell[]) => {
   
           if (response.length != 0) {
             this.sells = response
-  
+            
             this.ebService.elenco_bici_vendita().subscribe({
               next: (response:Bicicletta[]) => {
         
                 if (response != null) {
                   this.bikesVendita= response;
-        
-                  this.sells.forEach(rent => {
+                  this.sells.forEach(sell => {
                     this.bikesVendita.forEach(bike => {
-                      if(rent.idBike == bike.id) {
+                      if(sell.idBike == bike.id) {
                         const obj: bikeRentSell= {
                           bike: bike,
-                          price: rent.price ? rent.price : 0
+                          price: sell.price ? sell.price : 0
                         };
                         this.bikeSellPrice.push(obj);
                       }
@@ -69,6 +68,10 @@ export class VenditaComponent {
                   });
                   this.createFilters();
                   this.mostraSpinner = false;
+                }
+                else {
+                  this.mostraSpinner = false;
+                  this.bikesNull = true;
                 }
               }
             });
@@ -83,22 +86,19 @@ export class VenditaComponent {
     else {
       this.ebService.elenco_vendite_logged_user(this.user.id, this.user.token).subscribe({
         next: (response:adSell[]) => {
-  
           if (response.length != 0) {
             this.sells = response
-  
             this.ebService.elenco_bici_vendita().subscribe({
-              next: (response:Bicicletta[]) => {
-        
-                if (response != null) {
-                  this.bikesVendita= response;
-        
+              next: (response: Bicicletta[]) => {
+
+                if (response.length != 0 && response != null) {
+                  this.bikesVendita = response;
                   this.sells.forEach(rent => {
                     this.bikesVendita.forEach(bike => {
                       if(rent.idBike == bike.id) {
                         const obj: bikeRentSell= {
                           bike: bike,
-                          price: rent.price ? rent.price : 0
+                          price: rent.price ? rent.price : 0,
                         };
                         this.bikeSellPrice.push(obj);
                       }
@@ -106,6 +106,10 @@ export class VenditaComponent {
                   });
                   this.createFilters();
                   this.mostraSpinner = false;
+                } 
+                else {
+                  this.mostraSpinner = false;
+                  this.bikesNull = true;
                 }
               }
             });
@@ -191,42 +195,42 @@ export class VenditaComponent {
     this.coloreFiltered = filtered;
   }
 
-  setBrandValue(value:any) {
-    this.marcaValue= value.code;
+  setBrandValue(obj:any) {
+    this.marcaValue= obj.value.code;
     this.getBikesFiltered();
   }
 
-  setColorValue(value:any) {
-    this.coloreValue= value.code;
+  setColorValue(obj:any) {
+    this.coloreValue= obj.value.code;
     this.getBikesFiltered();
   }
 
-  setSizeValue(value:any) {
-    this.tagliaValue= value.code;
+  setSizeValue(obj:any) {
+    this.tagliaValue= obj.value.code;
     this.getBikesFiltered();
   }
   
   getBikesFiltered(){
     this.spinnerFilter = true;
     this.ebService.findFilteredBikes(this.marcaValue,this.coloreValue,this.tagliaValue).subscribe({
-      next: (response:Bicicletta[]) => {
+      next: (bikesFiltered:Bicicletta[]) => {
         this.bikeSellPrice.splice(0,this.bikeSellPrice.length);
-        if (response != null) {
-          this.sells.forEach(sells => {
-            response.forEach(bike => {
-              if(sells.idBike == bike.id) {
-                const obj: bikeRentSell= {
-                  bike: bike,
-                  price: sells.price ? sells.price : 0
-                };
-                this.bikeSellPrice.push(obj);
-              }
+        if (bikesFiltered != null) {
+            this.sells.forEach(rent => {
+              bikesFiltered.forEach(bike => {
+                if(rent.idBike == bike.id) {
+                  const obj: bikeRentSell= {
+                    bike: bike,
+                    price: rent.price ? rent.price : 0,
+                  };
+                  this.bikeSellPrice.push(obj);
+                }
+              });
             });
-          });
           this.spinnerFilter = false;
         }
       }
-    })
+    });
   }
 
   viewAll() {

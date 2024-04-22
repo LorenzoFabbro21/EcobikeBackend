@@ -1,22 +1,26 @@
 package microservice.bikeservice.controller;
 
 
+import microservice.bikeservice.dto.AdRent;
+import microservice.bikeservice.dto.AdSell;
 import microservice.bikeservice.model.Bike;
+import microservice.bikeservice.model.BikeAdRentParam;
+import microservice.bikeservice.model.BikeAdSellParam;
+import microservice.bikeservice.rabbitMQ.RabbitMQSender;
 import microservice.bikeservice.service.BikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/bike")
 @RequiredArgsConstructor
@@ -25,11 +29,58 @@ public class BikeController {
 
     private final BikeService bikeService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<?> postBike(@RequestBody Bike bike) {
-        System.out.println("New Bike:"+ bike);
-        return bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+    private final RabbitMQSender rabbitMQSender;
+
+    @PostMapping(value = "/sell")
+    public ResponseEntity<?> postBikeSell(@RequestBody BikeAdSellParam param) {
+        System.out.println("New Bike:"+ param);
+        Bike bike = param.getBike();
+        AdSell adSell = param.getAdSell();
+        System.out.println(adSell);
+
+        ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+
+        Map<String, String> responseBody = response.getBody();
+
+        String id = responseBody.get("id");
+        System.out.println("idBike dopo save: " + id);
+        adSell.setIdBike(Integer.parseInt(id));
+
+
+        rabbitMQSender.sendAddBikeAdSell(adSell);
+        System.out.println("print dopo sender");
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Sell successfully created");
+        return new ResponseEntity<Map>(body, HttpStatus.OK);
     }
+
+    @PostMapping(value = "/rent")
+    public ResponseEntity<?> postBikeRent(@RequestBody BikeAdRentParam param) {
+        System.out.println("New Bike:"+ param);
+        Bike bike = param.getBike();
+        AdRent adRent = param.getAdRent();
+        System.out.println(adRent);
+
+        ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+
+        Map<String, String> responseBody = response.getBody();
+
+        String id = responseBody.get("id");
+        System.out.println("idBike dopo save: " + id);
+        adRent.setIdBike(Integer.parseInt(id));
+
+
+        rabbitMQSender.sendAddBikeAdRent(adRent);
+        System.out.println("print dopo sender");
+        Map<String, String> body = new HashMap<>();
+        body.put("messageResponse", "Rent successfully created");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+
+
+
+
     @GetMapping("/{id}")
     public Optional<Bike> getBike(@PathVariable("id") long id) {
 
@@ -38,6 +89,18 @@ public class BikeController {
         bike = bikeService.getBikeById(id);
         return bike;
     }
+
+
+    @GetMapping("/brand/{brand}")
+    public List<Bike> getSimilarBike(@PathVariable String brand) {
+
+        System.out.println("Get similar bike to " + brand + "...");
+        List<Bike> bike;
+        bike = bikeService.getBikeByBrand(brand);
+        System.out.println("return bike");
+        return bike;
+    }
+
 
     @GetMapping("")
     public List<Bike> getAllBikes() {

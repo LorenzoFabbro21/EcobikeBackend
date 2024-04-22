@@ -6,8 +6,10 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.authenticationservice.dto.*;
 import microservice.authenticationservice.model.*;
+import microservice.authenticationservice.rabbitMQ.RabbitMQSender;
 import net.minidev.json.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.*;
 import org.springframework.security.oauth2.core.user.*;
@@ -27,8 +29,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Value("${user-service.url}")
+    String userServiceUrl;
+    
+    private final RabbitMQSender rabbitMQSender;
+
     @Override
-    public ResponseEntity<String> googleLogin(OAuth2User user) {
+    public void googleLogin(OAuth2User user) {
         //send a message to the user service to create the user
         User userDetails = new User();
         userDetails.setMail(user.getAttribute("email"));
@@ -38,27 +46,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDetails.setPassword("");
         userDetails.setPhoneNumber("");
 
-        try {
-
-            HttpStatusCode user_response = restTemplate.postForEntity("http://user-service/api/private", userDetails, String.class).getStatusCode();
-            if (user_response != HttpStatus.OK) {
-                return ResponseEntity.status(user_response).body("Invalid request");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("User add request sent successfully");
-        }catch (HttpClientErrorException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }
+        rabbitMQSender.sendCreateUser(userDetails);
 
     }
 
     @Override
-    public ResponseEntity<?> signup(UserDetails userDetails) {
+    public void signup(UserDetails userDetails) {
         userDetails.setGoogleCheck(false);
 
+        User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck());
+
+        rabbitMQSender.sendSignUp(u);
+
+
+        /*
         try {
-            HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service/api/private", userDetails,String.class).getStatusCode();
+            HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service:8081/api/private", userDetails,String.class).getStatusCode();
 
             if (responseStatusCode != HttpStatus.OK) {
                 return ResponseEntity.status(responseStatusCode).body("Invalid request");
@@ -71,23 +74,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }
+        }        */
+
     }
 
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
 
-            Optional<User> private_user = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/private/email/" + loginRequest.getEmail(), User.class));
-            Optional<User> dealer = Optional.ofNullable(restTemplate.getForObject("http://user-service/api/dealer/email/" + loginRequest.getEmail(), User.class));
+            Optional<User> private_user = Optional.ofNullable(restTemplate.getForObject("http://user-service:8081/api/private/email/" + loginRequest.getEmail(), User.class));
+            Optional<User> dealer = Optional.ofNullable(restTemplate.getForObject("http://user-service:8081/api/dealer/email/" + loginRequest.getEmail(), User.class));
             if (private_user.isPresent()) {
                 try {
-                    HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service/api/private/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
+                    HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service:8081/api/private/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
                     if (responseStatusCode != HttpStatus.OK) {
                         Map<String, String> body = new HashMap<>();
                         body.put("Message", "Invalid credentials");
                         return ResponseEntity.status(responseStatusCode).body(body);
                     }
-                    ResponseEntity<User> response = restTemplate.getForEntity("http://user-service/api/private/email/" + loginRequest.getEmail(), User.class);
+                    ResponseEntity<User> response = restTemplate.getForEntity("http://user-service:8081/api/private/email/" + loginRequest.getEmail(), User.class);
                     if (response.getBody() == null) {
                         Map<String, String> body = new HashMap<>();
                         body.put("Message", "Server error occurred");
@@ -109,13 +113,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 }
         } else if (dealer.isPresent()){
                 try {
-                    HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service/api/dealer/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
+                    HttpStatusCode responseStatusCode = restTemplate.getForEntity("http://user-service:8081/api/dealer/verify?email=" + loginRequest.getEmail() + "&password=" + loginRequest.getPassword(), String.class).getStatusCode();
                     if (responseStatusCode != HttpStatus.OK) {
                         Map<String, String> body = new HashMap<>();
                         body.put("Message", "Invalid credentials");
                         return ResponseEntity.status(responseStatusCode).body(body);
                     }
-                    ResponseEntity<User> response = restTemplate.getForEntity("http://user-service/api/dealer/email/" + loginRequest.getEmail(), User.class);
+                    ResponseEntity<User> response = restTemplate.getForEntity("http://user-service:8081/api/dealer/email/" + loginRequest.getEmail(), User.class);
 
                     if (response.getBody() == null) {
                         Map<String, String> body = new HashMap<>();

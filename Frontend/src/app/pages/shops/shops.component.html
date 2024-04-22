@@ -1,7 +1,10 @@
 <div class="spinner" *ngIf="mostraSpinner==true">
     <p-progressSpinner ></p-progressSpinner>
 </div>
-  <div *ngIf="mostraSpinner==false">
+<div *ngIf="shopNull == true" class="noShop">
+    <h2>Non sono presenti negozi</h2>
+</div>
+  <div *ngIf="mostraSpinner==false && !shopNull">
         <div>
             <div class="titleMenu">
               <h2>Shops</h2>

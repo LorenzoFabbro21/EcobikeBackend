@@ -13,10 +13,11 @@ import { EbikeModule } from 'src/app/modules/ebike/ebike.module';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { CalendarModule } from 'primeng/calendar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [BiciclettaNoleggioComponent],
-  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, FileUploadModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,EbikeModule, CardModule, AccordionModule,CalendarModule],
+  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, FileUploadModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,EbikeModule, CardModule, AccordionModule,CalendarModule, ProgressSpinnerModule],
   exports: [BiciclettaNoleggioComponent]
 })
 export class BiciclettaNoleggioModule {}

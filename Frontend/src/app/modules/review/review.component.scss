@@ -1,0 +1,27 @@
+.review {
+    display: flex ;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    font-size: large;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 2vh; /* regola secondo necessità */
+}
+
+
+.rating {
+    margin-top: 2vh; /* regola secondo necessità */
+}
+
+.score {
+    text-align: center;
+}
+.img {
+    width: 3vw; /* Adjust width as needed */
+    margin-left: -4vw
+}

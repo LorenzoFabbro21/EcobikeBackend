@@ -23,7 +23,7 @@
         <div *ngIf="userLogged !== null" class = "user-info-login"> 
             
             <span class="card">
-                <p-menubar [model]="items" styleClass="custom-menubar"></p-menubar>
+                <p-menubar [model]="filteredItems" styleClass="custom-menubar"></p-menubar>
             </span>
             
             <button pButton  label="Logout" class="signup" (click)="logout()"></button>

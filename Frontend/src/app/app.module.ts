@@ -27,6 +27,7 @@ import { ShopsModule } from './pages/shops/shops.module';
 import { BikesRentedModule } from './pages/bikes-rented/bikes-rented.module';
 import { DetailsShopModule } from './pages/details-shop/details-shop.module';
 import { PersonalRentModule } from './pages/personal-rent/personal-rent.module';
+import { ReviewModule } from './modules/review/review.module';
 import { PersonalBuyModule } from './pages/personal-buy/personal-buy.module';
 
 
@@ -61,6 +62,7 @@ import { PersonalBuyModule } from './pages/personal-buy/personal-buy.module';
     BikesRentedModule,
     DetailsShopModule,
     PersonalRentModule,
+    ReviewModule,
     PersonalBuyModule
   ],
   providers: [],

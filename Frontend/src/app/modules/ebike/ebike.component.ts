@@ -12,7 +12,6 @@ import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
   styleUrls: ['./ebike.component.scss']
 })
 export class EbikeComponent implements OnInit{
-
   @Input()
     bicicletta?: Bicicletta
 
@@ -24,6 +23,7 @@ export class EbikeComponent implements OnInit{
 
   typeAd: string = "";
   firstImage:string = "";
+  id: string = "";
   constructor ( private router: Router, private ebService: EcobikeApiService) {
 
   }
@@ -71,9 +71,11 @@ export class EbikeComponent implements OnInit{
         idBike: this.bicicletta?.id
       }
     };
+    
     if (this.owned == false){
       if ( this.typeAd == "R") {
         this.router.navigate(['/dettagli_noleggio'], navigationExtras);
+
       }
       else {
         this.router.navigate(['/dettagli_vendita'], navigationExtras);
@@ -89,3 +91,4 @@ export class EbikeComponent implements OnInit{
     }
   }
 }
+

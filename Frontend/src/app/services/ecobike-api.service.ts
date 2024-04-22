@@ -13,6 +13,8 @@ import { User } from '../classes/user';
 import { Shop } from '../interfaces/shop';
 import { Appointment } from '../interfaces/appointment';
 import { userBikeRentInfo } from '../interfaces/userBikeRentInfo';
+import { Private } from '../interfaces/private';
+import { Review } from '../interfaces/review';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class EcobikeApiService {
 
   constructor(protected httpClient: HttpClient) { }
 
-  url="http://localhost:8080/api"
+  url="http://localhost:30080/api"
 
 
   /**
@@ -58,10 +60,20 @@ export class EcobikeApiService {
   *
   * Endpoint Rest: adsell
   */
-  public elenco_vendite(): Observable<adSell[]> {
+  public elenco_vendite_not_sold(): Observable<adSell[]> {
   
-    return this.httpClient.get<adSell[]>(`${this.url}/adsell`);
+    return this.httpClient.get<adSell[]>(`${this.url}/adsell/notSold`);
   }
+
+    /**
+  * Restituisce l'elenco delle vendite
+  *
+  * Endpoint Rest: adsell
+  */
+    public elenco_vendite(): Observable<adSell[]> {
+  
+      return this.httpClient.get<adSell[]>(`${this.url}/adsell`);
+    }
 
   public elenco_vendite_logged_user(idUser: number | undefined, token: string | any): Observable<adSell[]> {
   
@@ -70,10 +82,14 @@ export class EcobikeApiService {
       'Authorization': `Bearer ${token}`
   }); 
 
+  
+
   let options = { headers: headers };
 
     return this.httpClient.get<adSell[]>(`${this.url}/adsell/all/user/${idUser}`, options);
   }
+
+
 
 
   public elenco_noleggi_logged_user(idUser: number | undefined, token: string | any): Observable<adRent[]> {
@@ -108,16 +124,38 @@ export class EcobikeApiService {
 /**
  * Inserisce una nuova bicicletta
  *
- * Endpoint Rest: bike
+ * Endpoint Rest: bike/sell
  */
-  public new_bike(bike: Bicicletta | any, token: string){
+  public new_bike_sell(bike: Bicicletta | any, adSell: adSell, token: string){
    let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-  }); 
+    }); 
 
-  let options = { headers: headers };
-    return this.httpClient.post<any>(`${this.url}/bike`,bike, options);
+    let options = { headers: headers };
+    let param = { bike: bike, adSell: adSell };
+
+
+    return this.httpClient.post<any>(`${this.url}/bike/sell`, param, options);
+  }
+
+
+  /**
+ * Inserisce una nuova bicicletta
+ *
+ * Endpoint Rest: bike/rent
+ */
+  public new_bike_rent(bike: Bicicletta | any, adRent: adRent, token: string){
+    let headers = new HttpHeaders({
+       'Content-Type': 'application/json',
+       'Authorization': `Bearer ${token}`
+    }); 
+ 
+    let options = { headers: headers };
+    let param = { bike: bike, adRent: adRent };
+ 
+ 
+     return this.httpClient.post<any>(`${this.url}/bike/rent`, param, options);
   }
 
   public new_appointment(appointment: Appointment | any, token: string) {
@@ -177,13 +215,17 @@ export class EcobikeApiService {
     return this.httpClient.post<Booking>(`${this.url}/booking`, booking, options);
   }
 
-  public get_bookings (): Observable<Booking[]> {
-    return  this.httpClient.get<Booking[]>(`${this.url}/booking`);
+  public get_bookings (token: string): Observable<Booking[]> {
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+  }); 
+    return  this.httpClient.get<Booking[]>(`${this.url}/booking`, {headers});
   }
 
 
 
   public get_appointments (): Observable<Appointment[]> {
+  
     return  this.httpClient.get<Appointment[]>(`${this.url}/appointment`);
   }
 
@@ -193,7 +235,7 @@ export class EcobikeApiService {
       'Content-Type': 'application/json'
     }); 
     let options = { headers: headers,  };
-    return this.httpClient.post<loginRequest>(`http://localhost:8090/auth/login`, login, options);
+    return this.httpClient.post<loginRequest>(`http://localhost:30090/auth/login`, login, options);
   }
 
   public signup(signup: signupRequest){
@@ -202,7 +244,7 @@ export class EcobikeApiService {
       'Content-Type': 'application/json'
     }); 
     let options = { headers: headers };
-    return this.httpClient.post<signupRequest>(`http://localhost:8090/auth/signup`, signup, options);
+    return this.httpClient.post<signupRequest>(`http://localhost:30090/auth/signup`, signup, options);
   }
 
   /**
@@ -260,6 +302,10 @@ export class EcobikeApiService {
     return this.httpClient.get<User>(`${this.url}/dealer/` + id, {headers});
   }
 
+  getPrivateById(id: number | undefined) {
+    return this.httpClient.get<User>(`${this.url}/private/` + id);
+  }
+
 
  /**
   * Restituisce l'elenco delle vendite di un utente
@@ -287,11 +333,9 @@ public list_bikes_rented_by_user(id : number, token: string): Observable<userBik
 *
 * Endpoint Rest: adsell/user/{id}/bikes
 */
-public list_bikes_forsale_by_user(id : number, token: string): Observable<Bicicletta[]> {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.httpClient.get<Bicicletta[]>(`${this.url}/adsell/user/` + id + `/bikes`, {headers}); 
+public list_bikes_forsale_by_user(id : number): Observable<Bicicletta[]> {
+
+  return this.httpClient.get<Bicicletta[]>(`${this.url}/adsell/user/` + id + `/bikes`); 
 }
 
 /**
@@ -299,11 +343,9 @@ public list_bikes_forsale_by_user(id : number, token: string): Observable<Bicicl
 *
 * Endpoint Rest: adrent/user/{id}/bikes
 */
-public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicletta[]> {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.httpClient.get<Bicicletta[]>(`${this.url}/adrent/user/` + id + `/bikes`, {headers}); 
+public list_bikes_forRent_by_user(id : number): Observable<Bicicletta[]> {
+
+  return this.httpClient.get<Bicicletta[]>(`${this.url}/adrent/user/` + id + `/bikes`); 
 }
   /**
  * Inserisce un nuovo shop
@@ -319,6 +361,29 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
     let options = { headers: headers };
     return this.httpClient.post<any>(`${this.url}/shop`, shop, options);
   }
+
+
+    /**
+ * Inserisce un nuovo shop
+ *
+ * Endpoint Rest: shop
+ */
+    public new_shop_rabbit(shop: Shop, user: User, token: string){
+
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }); 
+      let options = { headers: headers };
+
+      //let p = user as User as Private;
+
+      let param = { shop: shop, user: user};
+
+      console.log(param)
+
+      return this.httpClient.post<any>(`${this.url}/shop`, param, options);
+    }
 
   /**
  * Elimina un utente privato
@@ -356,11 +421,8 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
   *
   * Endpoint Rest: shop
   */
-  public list_shops(token: string): Observable<Shop[]> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.httpClient.get<Shop[]>(`${this.url}/shop`, {headers}); 
+  public list_shops(): Observable<Shop[]> {
+    return this.httpClient.get<Shop[]>(`${this.url}/shop`);
   }
 
   /**
@@ -368,11 +430,9 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
   *
   * Endpoint Rest: shop
   */
-  public get_shop(id: number, token: string): Observable<Shop> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.httpClient.get<Shop>(`${this.url}/shop/` + id, {headers}); 
+  public get_shop(id: number): Observable<Shop> {
+    
+    return this.httpClient.get<Shop>(`${this.url}/shop/` + id); 
   }
 
 
@@ -382,6 +442,11 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
     });
     return this.httpClient.get<Shop[]>(`${this.url}/shop/all/user/${id}`, {headers}); 
   }
+
+
+
+
+
 
 
 
@@ -414,6 +479,22 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
   }
 
 
+/**
+ * Inserisce una nuova review
+ *
+ * Endpoint Rest: review
+ */
+public new_review(review: Review | any, token: string){
+  let headers = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': `Bearer ${token}`
+ }); 
+  let options = { headers: headers };
+   return this.httpClient.post<any>(`${this.url}/review`,review, options);
+ }
+ 
+ 
+ 
   public list_bikes_personal_buy(id : number, token: string): Observable<userBikeRentInfo[]> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -423,9 +504,25 @@ public list_bikes_forRent_by_user(id : number, token: string): Observable<Bicicl
 
 
 
+  /**
+   * Restitusice le biciclette della stesa marca
+   *
+   * Endpoint Rest: bike/brand/{brand}
+   */
+  public get_similar_bike(brand: string | undefined): Observable<Bicicletta[]> {
+    return this.httpClient.get<Bicicletta[]>(`${this.url}/bike/brand/` + brand);
+  }
 
 
-
+  /**
+   * Ottiene la lista review di uno shop
+   *
+   * Endpoint Rest: review
+   */
+  public list_reviews_fromidShop(idShop?: number): Observable<Review[]>{
+    return this.httpClient.get<Review[]>(`${this.url}/review/idShop/` + idShop); 
+  }
 }
+
 
 

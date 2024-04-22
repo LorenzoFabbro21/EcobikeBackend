@@ -5,9 +5,11 @@ spring:
       max-request-size: 10MB
   application:
     name: bike-service
-  cloud:
-    kubernetes:
-      enabled: false
+  rabbitmq:
+    host: localhost
+    password: guest
+    port: 5672
+    username: guest
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,10 +18,15 @@ spring:
       hibernate.connection.autocommit: false
 
 server:
-  port: 8088
+  port: 8087
   forward-headers-strategy: framework
   max-http-header-size=8192:
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    register-with-eureka: true
+    refresh:
+      enable: true
+  instance:
+    prefer-ip-address: true

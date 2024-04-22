@@ -17,8 +17,7 @@ export class BikesForRentComponent {
   constructor (private ebService: EcobikeApiService, private userService: UserLoggedService) {
 
     if ( this.userService.userLogged?.id !== undefined && this.userService.userLogged?.token !== undefined) {
-      const token: string = this.userService.userLogged?.token;
-      this.ebService.list_bikes_forRent_by_user(this.userService.userLogged?.id, token).subscribe({
+      this.ebService.list_bikes_forRent_by_user(this.userService.userLogged?.id).subscribe({
         next:(response: Bicicletta[]) => {
           if(response.length != 0) {
             this.mostraSpinner = false;

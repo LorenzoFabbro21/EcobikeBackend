@@ -1,9 +1,14 @@
 package microservice.shopservice.controller;
 
 import jakarta.transaction.*;
+import microservice.shopservice.dto.Private;
+import microservice.shopservice.dto.ShopParam;
 import microservice.shopservice.dto.User;
 import microservice.shopservice.model.Shop;
+import microservice.shopservice.rabbitMQ.RabbitMQSender;
+import microservice.shopservice.repo.ShopRepository;
 import microservice.shopservice.service.ShopService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +16,10 @@ import java.util.*;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.swing.text.html.*;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/shop")
 @RequiredArgsConstructor
@@ -22,11 +28,34 @@ public class ShopController {
 
     private final ShopService shopService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<?> postShop(@RequestBody Shop shop) {
+    private final RabbitMQSender rabbitMQSender;
 
-        return shopService.saveShop(new Shop(shop.getName(), shop.getCity(), shop.getAddress(), shop.getPhoneNumber(), shop.getImg(), shop.getIdUser()));
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @PostMapping(value = "")
+    public User postShop(@RequestBody ShopParam param) {
+        System.out.println("New Shop:"+ param);
+        Shop shop = param.getShop();
+        Private user = param.getUser();
+        System.out.println("111111111111111111111111111111111111");
+        rabbitMQSender.sendDeleteUser(user);
+        System.out.println("22222222222222222222222222222222222222");
+        rabbitMQSender.sendCreateDealer(user);
+        User d = restTemplate.getForObject("http://user-service/api/dealer/email/" + user.getMail(), User.class);
+        System.out.println("dealerererrere: " + d);
+
+        //Impostare idUser in shop = idDealer appena creato
+        shop.setIdUser(d.getId());
+
+
+        shopService.saveShop(shop);
+        System.out.println("444444444444444444444444444444444");
+        User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + shop.getIdUser(), User.class);
+        System.out.println("5555555555555555555555555555555");
+        return dealer;
     }
+
 
     @GetMapping("/{id}")
     @Transactional

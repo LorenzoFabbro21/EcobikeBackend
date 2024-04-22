@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/booking")
 @RequiredArgsConstructor
@@ -36,6 +36,14 @@ public class BookingController {
 
     @GetMapping("")
     public List<Booking> getAllBooking() {
+        System.out.println("Get all Bookings...");
+        List<Booking> bookings = new ArrayList<>();
+        bookingService.getAllBookings().forEach(bookings::add);
+        return bookings;
+    }
+
+    @GetMapping("/notprotected")
+    public List<Booking> getAllBookingNotProtected() {
         System.out.println("Get all Bookings...");
         List<Booking> bookings = new ArrayList<>();
         bookingService.getAllBookings().forEach(bookings::add);

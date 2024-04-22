@@ -37,9 +37,24 @@ export class SignupComponent {
     this.ebService.signup(signup).subscribe({
       next: (response:any) => { 
         console.log(response);
-        this.router.navigate(['../login-form']);
+        setTimeout(() => {}, 3500);
+        this.ebService.getPrivateUser(this.mail).subscribe({
+          next: (r: any) => {
+            console.log(r);
+            this.router.navigate(['../login-form']);
+          },
+          error: (error: any) => {
+            this.router.navigate(['../']);
+          }
+        })
 
-      },
+        
+
+      }
+      
+      
+      
+      /*,
       error: (error: HttpErrorResponse) => {
         if (error.status === 404) {
           this.errorStatus = "Error:" + error.status.toString();
@@ -78,7 +93,7 @@ export class SignupComponent {
           
           this.showError = true;
         }
-      }
+      }*/
     })
     
   }

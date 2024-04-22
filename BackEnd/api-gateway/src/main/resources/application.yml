@@ -6,8 +6,10 @@ spring:
       globalcors:
           corsConfigurations:
             '[/**]':
-              allowedOrigins: "http://localhost:4200"
-              allowedHeaders: "*"
+              allowedOrigins:
+                - "*"
+              allowedHeaders:
+                - "*"
               allowedMethods:
                 - GET
                 - POST
@@ -19,47 +21,45 @@ spring:
           enabled: true
       routes:
         - id: user-service-dealer
-          uri: lb://user-service
+          uri: http://user-service:8081
           predicates:
             - Path=/api/dealer/**
         - id: user-service-private
-          uri: lb://user-service
+          uri: http://user-service:8081
           predicates:
             - Path=/api/private/**
         - id: recensione-service
-          uri: lb://recensione-service
+          uri: http://recensione-service:8082
           predicates:
             - Path=/api/review/**
         - id: shop-service
-          uri: lb://shop-service
+          uri: http://shop-service:8083
           predicates:
             - Path=/api/shop/**
         - id: ad-service-rent
-          uri: lb://ad-service
+          uri: http://ad-service:8084
           predicates:
             - Path=/api/adrent/**
         - id: ad-service-sell
-          uri: lb://ad-service
+          uri: http://ad-service:8084
           predicates:
             - Path=/api/adsell/**
         - id: bike-service
-          uri: lb://bike-service
+          uri: http://bike-service:8087
           predicates:
             - Path=/api/bike/**
         - id: booking-service
-          uri: lb://booking-service
+          uri: http://booking-service:8085
           predicates:
             - Path=/api/booking/**
         - id: appointment-service
-          uri: lb://appointment-service
+          uri: http://appointment-service:8086
           predicates:
             - Path=/api/appointment/**
         - id: authentication-service
-          uri: lb://authentication-service
+          uri: http://authentication-service:8090
           predicates:
             - Path=/auth/**
-    kubernetes:
-      enabled: false
   application:
     name: api-gateway
 server:

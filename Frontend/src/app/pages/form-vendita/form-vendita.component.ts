@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoggedUser } from 'src/app/classes/user';
+import { Tipologia } from 'src/app/enum/tipologiaEnum';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
@@ -31,7 +32,9 @@ export class FormVenditaComponent {
   colore!:string;
   marca!:string;
   model!:string;
-  tipologia!:string;
+  tipologiaValue!:any;
+  tipologiaFiltered: any[] = [];
+  tipologiaList: any[]= [];
   prezzo!:number;
   misure!:string;
   img?:string= "";
@@ -43,6 +46,13 @@ export class FormVenditaComponent {
       { name: 'S', code: Taglia.TagliaS },
       { name: 'M', code: Taglia.TagliaM },
       { name: 'L', code: Taglia.TagliaL }
+    ];
+    this.tipologiaList = [
+      { name: 'City', code: Tipologia.City },
+      { name: 'Racing', code: Tipologia.Racing },
+      { name: 'Gravel', code: Tipologia.Gravel },
+      { name: 'Mountain Bike', code: Tipologia.Mountain_Bike },
+      { name: 'Foldable', code: Tipologia.Foldable }
     ];
   }
 
@@ -57,6 +67,19 @@ export class FormVenditaComponent {
         }
     }
     this.tagliaFiltered = filtered;
+  }
+
+  filterTipologia(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.tipologiaList as any[]).length; i++) {
+        let tipologia = (this.tipologiaList as any[])[i];
+        if (tipologia.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+            filtered.push(tipologia);
+        }
+    }
+    this.tipologiaFiltered = filtered;
   }
 
   onUpload(event:UploadEvent | any) {
@@ -97,40 +120,35 @@ export class FormVenditaComponent {
       brand: this.marca,
       color: this.colore,
       size: this.tagliaValue.code,
-      type: this.tipologia,
+      type: this.tipologiaValue.code,
       measure: this.misure,
       img: this.img
     }
+
+    let adSell: adSell;
+      adSell = {
+        price:this.prezzo,
+        idBike:0,
+        idUser: this.userService.userLogged?.id
+      }
+
     if ( this.userService.userLogged?.token !== undefined) {
-
       let token : string = this.userService.userLogged?.token;
-      this.ebService.new_bike(bike, token).subscribe(response=>{
-      
-        if( response && response.id) {
-          idBike = response.id;
-  
-          let adSell: adSell;
-          adSell = {
-            price:this.prezzo,
-            idBike:idBike,
-            idUser: this.userService.userLogged?.id
+      this.ebService.new_bike_sell(bike, adSell, token).subscribe({
+        next: (response) => {
+          console.log(response)
+          if(response) {
+                setTimeout(() => {
+                  this.mostraSpinner = false;
+                  this.router.navigate(['/']);
+                }, 3500);
+            }
+          }, error: (err) => {
+              console.error(err);
+              // <insert code for what to do on failure>
           }
-          this.ebService.new_vendita(adSell,token).subscribe({
-            next: (response:adSell) => {
-              console.log(response);
-              
-              setTimeout(() => {
-                this.mostraSpinner = false;
-                this.router.navigate(['/']);
-              }, 3500);
-          }
-          });
-        }
-  
-      });
+ 
+        });
+      }
     }
-    
-    
-
-  }
 }
