@@ -103,7 +103,7 @@ public class AdRentServiceImpl implements AdRentService {
         {
             List<Bike> bikes = new ArrayList<>();
             for ( AdRent elem : adsRent) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;
@@ -124,7 +124,7 @@ public class AdRentServiceImpl implements AdRentService {
         {
             List<Bike> bikes = new ArrayList<>();
             for ( AdRent elem : adsRent) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;

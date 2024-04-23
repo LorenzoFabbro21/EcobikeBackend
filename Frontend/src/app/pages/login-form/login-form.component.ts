@@ -29,11 +29,11 @@ export class LoginFormComponent implements OnInit {
  }
     
   googleLogin() {
-    window.location.href = 'http://localhost:8090/oauth2/authorization/google';
+    window.location.href = 'http://localhost:30090/oauth2/authorization/google';
   }
 
   signupHref() {
-    window.location.href = 'http://localhost:4200/signup';
+    window.location.href = 'http://localhost:32000/signup';
   }
 
   login() {
@@ -43,6 +43,8 @@ export class LoginFormComponent implements OnInit {
     }
     this.ebService.login(login).subscribe({
       next: (response:any) => { 
+        //setTimeout(() => {
+        //}, 3500);
         const token = response.token; // Supponendo che il token sia contenuto all'interno dell'oggetto di risposta con la chiave 'token'
         const decoded : any = jwtDecode(token);
         this.ebService.getPrivateUser(decoded.sub).subscribe({

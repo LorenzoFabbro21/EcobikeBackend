@@ -1,5 +1,8 @@
-<div>
-    <div class="product">
+<div class="container" [ngClass]="{'spinner-active': mostraSpinner}">
+    <div class="spinner" *ngIf="mostraSpinner" >
+        <p-progressSpinner ></p-progressSpinner>
+    </div>
+    <div class="product content-below-spinner">
         <img *ngIf="bicicletta && bicicletta.img !== undefined" alt="Card" [src]="imagePrincipal" class="imagePrincipale"/>
         <div *ngIf="bicicletta" class="details">
             <h1 class="marca">{{bicicletta.brand}}</h1>
@@ -29,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="immaginiPlus"> 
+    <div class="immaginiPlus content-below-spinner"> 
         <div *ngFor="let image of images">
             <img alt="Card" [src]="image" class="image" (click)="imageActualChange(image)"/>
         </div>
@@ -53,14 +56,14 @@
 
     <div>
         <div class="titleMenu">
-          <h2>Prodotti Simili</h2>
+            <h2>Prodotti Simili</h2>
         </div>
         <div class="view">
-          <div *ngFor=" let bike of bikesSimili;  let i=index" >
-            <div *ngIf="i<4">
-              <app-ebike [bicicletta]="bike" [prezzo]="30"></app-ebike>
+            <div *ngFor=" let x of bikesSimili;  let i=index" >
+                <div *ngIf="i<4">
+                    <app-ebike [bicicletta]="x.bike" [prezzo]="x.price"></app-ebike>
+                </div>        
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 </div>

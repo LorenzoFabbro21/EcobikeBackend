@@ -6,13 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import microservice.adservice.dto.*;
 import microservice.adservice.model.*;
 import microservice.adservice.repo.*;
+import org.hibernate.dialect.identity.HSQLIdentityColumnSupport;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,19 +43,71 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
-
     @Override
     public List<AdSell> getAllAdsSell() {
         List<AdSell> adsSell = new ArrayList<>();
         repository.findAll().forEach(adsSell::add);
         return adsSell;
     }
+    @Override
+    public List<AdSell> getAllAdsSellNotSold() {
+
+        //Get di tutti gli appointment
+        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                "http://appointment-service:8086/api/appointment",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Appointment>>() {}
+        );
+        List<Appointment> appointments = response.getBody();
+        //Get degli annunci di vendita
+        List<AdSell> adsSell = new ArrayList<>();
+        repository.findAll().forEach(adsSell::add);
+
+        //Crea lista con gli idAnnouncement di tutti gli appointment
+        List<Long> appointmentAdSellIds = appointments.stream()
+                .map(Appointment::getIdAnnouncement)
+                .collect(Collectors.toList());
+
+        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+        List<AdSell> filteredAdSell = adsSell.stream()
+                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                .collect(Collectors.toList());
+
+        return filteredAdSell;
+    }
 
     @Override
     public List<AdSell> getAllAdsSellForUser(long id) {
+
+        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                "http://appointment-service/api/appointment",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Appointment>>() {}
+        );
+        List<Appointment> appointments = response.getBody();
+        //Get degli annunci di vendita
         List<AdSell> adsSell = new ArrayList<>();
         repository.getAllAdSellForUser(id).forEach(adsSell::add);
-        return adsSell;
+
+        //Crea lista con gli idAnnouncement di tutti gli appointment
+        List<Long> appointmentAdSellIds = appointments.stream()
+                .map(Appointment::getIdAnnouncement)
+                .collect(Collectors.toList());
+
+        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+        List<AdSell> filteredAdSell = adsSell.stream()
+                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                .collect(Collectors.toList());
+
+        return filteredAdSell;
+
+
+
+        //List<AdSell> adsSell = new ArrayList<>();
+        //repository.getAllAdSellForUser(id).forEach(adsSell::add);
+        //return adsSell;
     }
 
     @Override
@@ -97,7 +153,7 @@ public class AdSellServiceImpl implements AdSellService {
         if (!adsSell.isEmpty()) {
             List<Bike> bikes = new ArrayList<>();
             for (AdSell elem : adsSell) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;
@@ -113,12 +169,12 @@ public class AdSellServiceImpl implements AdSellService {
     public List<Bike> getAllBikeToSellByUser(long id) {
         List<AdSell> adSells = new ArrayList<>();
         adSells= this.getAllAdSellByUser(id);
-        List<AdRent> response = new ArrayList<>();
+
         if ( !adSells.isEmpty())
         {
             List<Bike> bikes = new ArrayList<>();
             for ( AdSell elem : adSells) {
-                Bike bike = restTemplate.getForObject("http://bike-service/api/bike/" + elem.getIdBike(), Bike.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                 bikes.add(bike);
             }
             return bikes;

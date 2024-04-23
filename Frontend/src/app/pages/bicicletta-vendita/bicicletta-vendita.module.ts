@@ -12,11 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { EbikeModule } from 'src/app/modules/ebike/ebike.module';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [BiciclettaVenditaComponent],
-  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, FileUploadModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,EbikeModule, CardModule, AccordionModule],
+  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, FileUploadModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,EbikeModule, CardModule, AccordionModule,ProgressSpinnerModule],
   exports: [BiciclettaVenditaComponent]
 })
 export class BiciclettaVenditaModule {}

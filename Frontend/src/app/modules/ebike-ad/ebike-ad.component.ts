@@ -8,6 +8,7 @@ import { Appointment } from 'src/app/interfaces/appointment';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { Booking } from 'src/app/interfaces/booking';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-ebike-ad',
@@ -31,9 +32,12 @@ export class EbikeAdComponent implements OnInit{
   @Input()
     ad?: adRent | adSell
 
+  @Input()
+    owned?: boolean = true;
 
+  typeAd: string = "";
   firstImage:string = "";
-  constructor ( private router: Router, private ebService: EcobikeApiService) {
+  constructor ( private router: Router, private ebService: EcobikeApiService, private location: Location) {
 
   }
 
@@ -48,14 +52,56 @@ export class EbikeAdComponent implements OnInit{
       });
       this.firstImage = images[0];
     } 
+
+
+    this.ebService.elenco_vendite().subscribe({
+      next: (response:adSell[]) => {
+        if (response != null) {
+          response.forEach(ad => {
+            if(ad.idBike == this.bike?.id) {
+              this.typeAd="S";
+            }
+          });
+        }
+      }
+    });
+
+    this.ebService.elenco_noleggi().subscribe({
+      next: (response:adRent[]) => {
+        if (response != null) {
+          response.forEach(ad => {
+            if(ad.idBike == this.bike?.id) {
+              this.typeAd="R";
+            }
+          });
+        }
+      }
+    });
+
   }
 
   clickBike() {
-    const navigationExtras: NavigationExtras = {
-      queryParams:{
-        idBike: this.bike?.id
+      const navigationExtras: NavigationExtras = {
+        queryParams:{
+          idBike: this.bike?.id
+        }
+      };
+      if (this.owned == false){
+        if ( this.typeAd == "R") {
+          this.router.navigate(['/dettagli_noleggio'], navigationExtras);
+        }
+        else {
+          this.router.navigate(['/dettagli_vendita'], navigationExtras);
+        }
       }
-    };
-      this.router.navigate(['/details-bike-to-rent'], navigationExtras);
-  }
+      else {
+        if ( this.typeAd == "R") {
+          this.router.navigate(['/details-bike-to-rent'], navigationExtras);
+        }
+        else {
+          this.router.navigate(['/dettagli-bike-to-sell'], navigationExtras);
+        }
+      }
+     
+    }
 }

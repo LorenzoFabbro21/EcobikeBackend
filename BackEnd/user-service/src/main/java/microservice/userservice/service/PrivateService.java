@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface PrivateService {
 
-        ResponseEntity<String> savePrivate(Private user);
+        ResponseEntity<?> savePrivate(Private user);
 
         List<Private> getAllPrivates();
 

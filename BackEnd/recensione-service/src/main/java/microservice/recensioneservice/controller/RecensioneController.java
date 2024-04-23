@@ -12,9 +12,9 @@ import microservice.recensioneservice.service.RecensioneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+@CrossOrigin(origins = "*")
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/review")
 @RequiredArgsConstructor

@@ -13,23 +13,53 @@ export class ShopsComponent {
 
   shops: Shop[]=[];
   mostraSpinner: boolean= true;
-  user: LoggedUser | null = null; 
-
+  user: LoggedUser | null = null;
+  shopNull: boolean = false;
+ 
   constructor (private ebService: EcobikeApiService, private userService: UserLoggedService) {
 
     this.user = this.userService.userLogged;
 
     if ( this.user?.id !== undefined && this.user?.token !== undefined) {
-      
-
-      this.ebService.list_shops_for_user(this.user.id, this.user.token).subscribe({
-        next: (response: Shop[]) => {
-          if( response != null) {
-            this.shops = response;
+      if(this.user?.type == "p" ){
+        this.ebService.list_shops().subscribe ({
+          next: (response: Shop[]) => {
+            if(response.length != 0 && response != null) {
+              this.shops = response;
+              this.mostraSpinner = false;
+            } else {
+              this.mostraSpinner = false;
+              this.shopNull = true;
+            }
           }
-          this.mostraSpinner = false;
+        })
+      }
+      else {
+        this.ebService.list_shops_for_user(this.user.id, this.user.token).subscribe({
+          next: (response: Shop[]) => {
+            if( response.length != 0 && response != null) {
+              this.shops = response;
+              this.mostraSpinner = false;
+            } else {
+              this.mostraSpinner = false;
+              this.shopNull = true;
+            }
+          }
+        });
+      }
+    } else {
+      this.ebService.list_shops().subscribe ({
+        next: (response: Shop[]) => {
+          if(response.length != 0 && response != null) {
+            this.shops = response;
+            this.mostraSpinner = false;
+          } else {
+            this.mostraSpinner = false;
+            this.shopNull = true;
+          }
+
         }
-      });
+      })
     }
   }
 }

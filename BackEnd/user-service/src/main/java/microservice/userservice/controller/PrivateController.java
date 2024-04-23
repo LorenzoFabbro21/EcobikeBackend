@@ -19,7 +19,7 @@ import java.nio.charset.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/private")
 @RequiredArgsConstructor
@@ -34,8 +34,10 @@ public class PrivateController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @PostMapping(value = "")
-    public ResponseEntity<String> postPrivate(@RequestBody Private user) {
-        ResponseEntity<String> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
+    public ResponseEntity<?> postPrivate(@RequestBody Private user) {
+        System.out.println("ARRIVO CHIAMATA");
+        ResponseEntity<?> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
+
         return resp;
 
     }

@@ -47,7 +47,7 @@ export class NoleggioComponent {
           this.ebService.elenco_bici_noleggio().subscribe({
             next: (response:Bicicletta[]) => {
       
-              if (response.length !=0) {
+              if (response.length !=0 && response != null) {
                 this.bikesNoleggio= response;
                 this.rents.forEach(rent => {
                   this.bikesNoleggio.forEach(bike => {
@@ -64,6 +64,11 @@ export class NoleggioComponent {
                 this.createFilters();
                 this.mostraSpinner = false;
               }
+              else {
+                this.mostraSpinner = false;
+                this.bikesNull = true;
+              }
+
             }
           });
         }
@@ -71,6 +76,7 @@ export class NoleggioComponent {
           this.mostraSpinner = false;
           this.bikesNull = true;
         }
+
       }
     });
 
@@ -150,29 +156,29 @@ export class NoleggioComponent {
     this.coloreFiltered = filtered;
   }
 
-  setBrandValue(value:any) {
-    this.marcaValue= value.code;
+  setBrandValue(obj:any) {
+    this.marcaValue= obj.value.code;
     this.getBikesFiltered();
   }
 
-  setColorValue(value:any) {
-    this.coloreValue= value.code;
+  setColorValue(obj:any) {
+    this.coloreValue= obj.value.code;
     this.getBikesFiltered();
   }
 
-  setSizeValue(value:any) {
-    this.tagliaValue= value.code;
+  setSizeValue(obj:any) {
+    this.tagliaValue= obj.value.code;
     this.getBikesFiltered();
   }
   
   getBikesFiltered(){
     this.spinnerFilter = true;
     this.ebService.findFilteredBikes(this.marcaValue,this.coloreValue,this.tagliaValue).subscribe({
-      next: (response:Bicicletta[]) => {
+      next: (filteredBikes:Bicicletta[]) => {
         this.bikeRentPrice.splice(0,this.bikeRentPrice.length);
-        if (response != null) {
+        if (filteredBikes != null) {
           this.rents.forEach(rent => {
-            response.forEach(bike => {
+            filteredBikes.forEach(bike => {
               if(rent.idBike == bike.id) {
                 const obj: bikeRentSell= {
                   bike: bike,

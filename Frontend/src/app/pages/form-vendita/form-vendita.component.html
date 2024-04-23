@@ -32,7 +32,7 @@
         </div>
         <div class="labelCombo content-below-spinner">
           <label>Tipologia*</label>
-          <input type="text" pInputText placeholder="Inserisci la tipologia" [(ngModel)]="tipologia" class="p-inputtext-lg input"/>
+          <p-autoComplete [(ngModel)]="tipologiaValue" [dropdown]="true" [suggestions]="tipologiaFiltered" (completeMethod)="filterTipologia($event)" field="name"></p-autoComplete>
         </div>
         <div class="labelCombo content-below-spinner">
           <label>Prezzo*</label>

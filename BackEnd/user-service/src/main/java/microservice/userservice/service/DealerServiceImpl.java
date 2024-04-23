@@ -88,7 +88,7 @@ public class DealerServiceImpl implements DealerService {
             ResponseEntity<List<Appointment>> response;
 
             appointments = restTemplate.exchange(
-                    "http://appointment-service/api/appointment/user/" + _dealer.getId(),
+                    "http://appointment-service:8086/api/appointment/user/" + _dealer.getId(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Appointment>>() {}

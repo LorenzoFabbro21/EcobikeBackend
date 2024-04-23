@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface AdSellService {
 
         ResponseEntity<?> saveAdSell(AdSell adSell);
-
         List<AdSell> getAllAdsSell();
+        List<AdSell> getAllAdsSellNotSold();
 
         List<AdSell> getAllAdsSellForUser(long id);
 

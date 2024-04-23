@@ -90,9 +90,9 @@ public class RecensioneServiceImpl implements RecensioneService {
         Optional<Recensione> ReviewData = repository.findById(id);
         if (ReviewData.isPresent()) {
             Recensione _review = ReviewData.get();
-            User dealer = restTemplate.getForObject("http://user-service/api/dealer/" +_review.getIdUser(), User.class);
+            User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" +_review.getIdUser(), User.class);
             if (dealer == null) {
-                User privateUser = restTemplate.getForObject("http://user-service/api/private/" + _review.getIdUser(), User.class);
+                User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _review.getIdUser(), User.class);
                 if (privateUser == null) {
                     return null;
                 } else {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Configuration
 @EnableWebSecurity
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class SecurityConfig {
 

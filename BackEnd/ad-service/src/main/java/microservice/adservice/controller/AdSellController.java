@@ -29,7 +29,6 @@ public class AdSellController {
     })
     @PostMapping(value = "")
     public ResponseEntity<?> postAdSell(@RequestBody AdSell adSell) {
-
         return adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
     }
 
@@ -58,6 +57,14 @@ public class AdSellController {
         System.out.println("Get all adsSell...");
         List<AdSell> adSell = new ArrayList<>();
         adSell = adSellService.getAllAdsSell();
+        return adSell;
+    }
+
+    @GetMapping("/notSold")
+    public List<AdSell> getAllAdsSellNotSold() {
+        System.out.println("Get all adsSell...");
+        List<AdSell> adSell = new ArrayList<>();
+        adSell = adSellService.getAllAdsSellNotSold();
         return adSell;
     }
 

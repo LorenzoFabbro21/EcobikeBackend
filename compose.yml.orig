@@ -1,0 +1,326 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672" # Porta per accedere alla console di management
+      - "5672:5672"   # Porta per connessioni client e comunicazione tra servizi
+    networks:
+      - opnet
+    restart: unless-stopped
+    volumes:
+      - data-rabbitmq:/var/lib/rabbitmq
+  postgres-user:
+    container_name: postgres-user
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=user_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - user-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - opnet
+  postgres-review:
+    container_name: postgres-review
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=review_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - review-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    networks:
+      - opnet
+  postgres-shop:
+    container_name: postgres-shop
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=shop_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - shop-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+    networks:
+      - opnet
+  postgres-bike:
+    container_name: postgres-bike
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=bike_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - bike-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5435:5432'
+    networks:
+      - opnet
+  postgres-ad:
+    container_name: postgres-ad
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=ad_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - ad-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5436:5432'
+    networks:
+      - opnet
+  postgres-booking:
+    container_name: postgres-booking
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=booking_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - booking-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5437:5432'
+    networks:
+      - opnet
+  postgres-appointment:
+    container_name: postgres-appointment
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=appointment_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - appointment-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5438:5432'
+    networks:
+      - opnet
+  ## Eureka Server
+  service-discovery-server:
+    image: lorenzofabbro/service-discovery-server
+    build: BackEnd/service-discovery-server
+    container_name: service-discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - opnet
+  api-gateway:
+    image: lorenzofabbro/api-gateway
+    build: BackEnd/api-gateway
+    container_name: api-gateway
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "30080:8080"
+    depends_on:
+      - service-discovery-server
+    networks:
+      - opnet
+  ## Product-Service Docker Compose Config
+  recensione-service:
+    container_name: recensione-service
+    build: BackEnd/recensione-service
+    image: lorenzofabbro/recensione-service:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-review:5432/review_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-review
+      - service-discovery-server
+    networks:
+      - opnet
+  ## Order-Service Docker Compose Config
+
+  authentication-service:
+    container_name: authentication-service
+    build: BackEnd/authentication-service
+    image: lorenzofabbro/authentication-service
+    environment:
+      - spring.profiles.active=docker
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
+    ports:
+      - "30090:8090"
+    depends_on:
+      - service-discovery-server
+      - rabbitmq
+    networks:
+      - opnet
+
+  user-service:
+    container_name: user-service
+    build: BackEnd/user-service
+    image: lorenzofabbro/user-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5432/user_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-user
+      - service-discovery-server
+      - rabbitmq
+    networks:
+      - opnet
+
+  shop-service:
+    container_name: shop-service
+    build: BackEnd/shop-service
+    image: lorenzofabbro/shop-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-shop:5432/shop_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres-shop
+      - service-discovery-server
+      - rabbitmq
+    networks:
+      - opnet
+
+  bike-service:
+    container_name: bike-service
+    build: BackEnd/bike-service
+    image: lorenzofabbro/bike-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-bike:5432/bike_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
+    ports:
+      - "8087:8087"
+    depends_on:
+      - postgres-bike
+      - rabbitmq
+      - service-discovery-server
+    networks:
+      - opnet
+
+  ad-service:
+    container_name: ad-service
+    build: BackEnd/ad-service
+    image: lorenzofabbro/ad-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-ad:5432/ad_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.port=5672
+    ports:
+      - "8084:8084"
+    depends_on:
+      - rabbitmq
+      - postgres-ad
+      - service-discovery-server
+    networks:
+      - opnet
+  booking-service:
+    container_name: booking-service
+    build: BackEnd/booking-service
+    image: lorenzofabbro/booking-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-booking:5432/booking_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres-booking
+      - service-discovery-server
+    networks:
+      - opnet
+  appointment-service:
+    container_name: appointment-service
+    build: BackEnd/appointment-service
+    image: lorenzofabbro/appointment-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-appointment:5432/appointment_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - spring.profiles.active=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://service-discovery-server:8761/eureka/
+    ports:
+      - "8086:8086"
+    depends_on:
+      - postgres-appointment
+      - service-discovery-server
+    networks:
+      - opnet
+<<<<<<< HEAD:docker-compose.yml
+  #frontend:
+   # build: ./Frontend
+    #container_name: frontend
+    #ports:
+     # - "4200:80"
+    #networks:
+     # - opnet
+=======
+  frontend:
+      build: ./Frontend
+      image: lorenzofabbro/frontend
+      container_name: frontend
+      ports:
+        - "32000:5000"
+      networks:
+        - opnet
+
+>>>>>>> kub_rabbit:compose.yml
+volumes:
+  shop-postgres-data:
+  user-postgres-data:
+  ad-postgres-data:
+  review-postgres-data:
+  booking-postgres-data:
+  appointment-postgres-data:
+  bike-postgres-data:
+  data-rabbitmq:
+
+
+networks:
+  opnet:
+    driver: bridge

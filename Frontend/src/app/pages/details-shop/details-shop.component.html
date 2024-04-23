@@ -5,70 +5,73 @@
       <div #body >
         <div class="info">
             <div>
-                <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop?.img" class="imagePrincipale"/>
+                <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop.img" class="imagePrincipale"/>
             </div>
             <div class = "details">
-                <h1 class = "name">
-                    Welcome to {{shop?.name}}!
-                </h1>
-                <h2 class = "otherDetails"> 
-                    <label>City:</label>  
-                </h2>  
-                    {{shop?.city}}
-                <h2 class = "otherDetails"> 
-                    <label>Address:</label>
-                </h2>
-                    <span> {{shop?.address}}</span>
-                <h2 class = "otherDetails"> 
-                    <label>Phone Number:  </label>
-                </h2>
-                    <span>{{shop?.phoneNumber}}</span>
+                <div>
+                    <h2>City</h2>
+                    <span class="spanStyle">{{shop.city}}</span>
+                </div>
+                <div>
+                    <h2>Address</h2>
+                    <span class="spanStyle">{{shop.address}}</span>
+                </div>
+                <div>
+                    <h2>Phone Number</h2>
+                    <span class="spanStyle">{{shop.phoneNumber}}</span>
+                </div>
             </div>
         </div>
-        <div class = "name">
-            Bikes to rent
-            <div class="view">
-                <div *ngFor="let bike of biciclette" >
-                    <app-ebike [bicicletta]="bike" ></app-ebike>
+          <div *ngIf="mostraSpinner==false && !torentNull">
+            <div class = "name">
+
+                Bikes to rent
+                <div class="view">
+                    <div *ngFor="let bike of bikestorent" >
+                        <app-ebike [bicicletta]="bike" ></app-ebike>
+                    </div>
                 </div>
-            </div>  
+            </div>
+          </div>
+          <div *ngIf="mostraSpinner==false && !tosellNull">
+              <div class = "name">
+                  Bikes to sell
+                  <div class="view">
+                      <div *ngFor="let bike of bikestosell" >
+                          <app-ebike [bicicletta]="bike" ></app-ebike>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        <div *ngIf="reviewUser !== null && reviewUser.length != 0">
+            <div class="paginator">
+                <div class="prova">
+                    <div *ngFor="let obj of pagedReviewUser;">
+                        <app-review [reviewUser]="obj"></app-review>
+                    </div>
+                </div>
+                <p-paginator [first]="first" [rows]="3" [totalRecords]="reviewUser.length" (onPageChange)="onPageChange($event)" [showJumpToPageDropdown]="true" [showPageLinks]="false"></p-paginator>
+            </div>
         </div>
-
-        <h2 id="fh2">WE APPRECIATE YOUR REVIEW!</h2>
-        <h6 id="fh6">Your review will help us to improve our web hosting quality products, and customer services.</h6>
-
         
-
-
-        <form id="feedback" action="">
-            <div class="pinfo">Rate our overall services.</div>
-    
-
-            <div class="form-group">
-                <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-heart"></i></span>
-                <select class="form-control" id="rate">
-                    <option value="1star">1</option>
-                    <option value="2stars">2</option>
-                    <option value="3stars">3</option>
-                    <option value="4stars">4</option>
-                    <option value="5stars">5</option>
-                    </select>
+        <div *ngIf="userLogged && userLogged.type == 'p'">
+            <div class="reviewButton">
+                <div class="review">
+                    <div class="feedback">
+                        <label>Write your feedback</label>
+                        <textarea type="text" [(ngModel)]="text" rows="5" class="textArea"></textarea>
+                    </div>
+                    
+                    <div class="rating">
+                        <label>Rate</label>
+                        <p-rating [(ngModel)]="score" [cancel]="false"></p-rating>
                     </div>
                 </div>
-            </div>
-            <div class="pinfo">Write your feedback.</div>
-            <div class="form-group">
-                <div class="col-md-4 inputGroupContainer">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
-                        <textarea class="form-control" id="review" rows="3"></textarea>
-                
-                    </div>
+                <div class="submit">
+                    <button pButton  label="Invia" class="button" (click)="send()"></button>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
     </div>
   </div>

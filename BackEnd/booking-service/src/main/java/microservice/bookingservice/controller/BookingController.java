@@ -1,5 +1,6 @@
 package microservice.bookingservice.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import microservice.bookingservice.dto.BikeUser;
@@ -13,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.ArrayList;
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/booking")
 @RequiredArgsConstructor
@@ -61,6 +62,13 @@ public class BookingController {
         return bookings;
     }
 
+    @GetMapping("/notprotected")
+    public List<Booking> getAllBookingNotProtected() {
+        System.out.println("Get all Bookings...");
+        List<Booking> bookings = new ArrayList<>();
+        bookingService.getAllBookings().forEach(bookings::add);
+        return bookings;
+    }
     @Operation(summary = "Get all bookings by idPrivate")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bookings found"),
@@ -123,4 +131,14 @@ public class BookingController {
         System.out.println("Get all Bikes rented by idPrivate...");
         return bookingService.getAllBikesRented(id);
     }
+
+    @GetMapping("/personal/user/{idPrivate}/bikes")
+    public List<BikeUser> getPersonalRent(@PathVariable("idPrivate") long id) {
+        System.out.println("Get personal rent...");
+        List<BikeUser> list = bookingService.getPersonalRent(id);
+        System.out.println(list);
+        return list;
+    }
 }
+
+

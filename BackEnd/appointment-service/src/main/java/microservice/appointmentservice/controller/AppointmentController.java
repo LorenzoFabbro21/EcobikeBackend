@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/appointment")
 @RequiredArgsConstructor
@@ -120,4 +120,13 @@ public class AppointmentController {
         System.out.println("Get all Bikes sold by idUser...");
         return appointmentService.getAllBikesSold(id);
     }
+
+    @GetMapping("/personal/user/{idPrivate}/bikes")
+    public List<BikeUser> getPersonalBuy(@PathVariable("idPrivate") long id) {
+        System.out.println("Get personal buy...");
+        List<BikeUser> list = appointmentService.getPersonalBuy(id);
+        System.out.println(list);
+        return list;
+    }
+
 }
