@@ -291,14 +291,14 @@ services:
       - service-discovery-server
     networks:
       - opnet
-  frontend:
-      build: ./Frontend
-      image: lorenzofabbro/frontend
-      container_name: frontend
-      ports:
-        - "32000:5000"
-      networks:
-        - opnet
+  #frontend:
+  #    build: ./Frontend
+  #    image: lorenzofabbro/frontend
+  #    container_name: frontend
+  #    ports:
+  #      - "32000:5000"
+  #    networks:
+  #      - opnet
 
 volumes:
   shop-postgres-data:

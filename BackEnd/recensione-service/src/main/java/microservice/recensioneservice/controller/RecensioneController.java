@@ -70,7 +70,7 @@ public class RecensioneController  {
         return reviewService.updateReview(id,review);
     }
 
-    @GetMapping("/{idShop}")
+    @GetMapping("/idShop/{idShop}")
     public List<Recensione> getAllReviewByidShop(@PathVariable("idShop") long id) {
         return reviewService.getAllReviewByidShop(id);
     }

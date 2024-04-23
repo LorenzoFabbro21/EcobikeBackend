@@ -35,7 +35,7 @@ public class ShopServiceImpl implements ShopService {
         } catch (Exception e) {
 
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to create a shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
 
@@ -43,89 +43,144 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public List<Shop> getAllShops() {
-        List<Shop> shops = new ArrayList<>();
-        repository.findAll().forEach(shops::add);
-        return shops;
+    public ResponseEntity<List<Shop>> getAllShops() {
+        try {
+            List<Shop> shops = new ArrayList<>();
+            repository.findAll().forEach(shops::add);
+            return ResponseEntity.status(HttpStatus.OK).body(shops);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
-    public List<Shop> getAllShopsForUser(long id) {
-        List<Shop> shops = new ArrayList<>();
-        repository.getAllShopForUser(id).forEach(shops::add);
-        return shops;
+    public ResponseEntity<List<Shop>> getAllShopsForUser(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            List<Shop> shops = new ArrayList<>();
+            repository.getAllShopForUser(id).forEach(shops::add);
+            return ResponseEntity.status(HttpStatus.OK).body(shops);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all shops for user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
-    public Optional<Shop> getShopById(long id) {
-        return repository.findById(id);
+    public ResponseEntity<Optional<Shop>> getShopById(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Shop> shop = repository.findById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(shop);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain shop by id");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public ResponseEntity<?> deleteShop(long id) {
-        repository.deleteById(id);
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "Shop has been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-
+    public ResponseEntity<?> deleteShop(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            repository.deleteById(id);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Shop has been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     public ResponseEntity<?> deleteAllShops() {
-        repository.deleteAll();
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "All shops have been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-
+        try {
+            repository.deleteAll();
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "All shops have been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public ResponseEntity<Shop> updateShop(long id, Shop shop) {
-        Optional<Shop> shopData = repository.findById(id);
-
-        if(shopData.isPresent()) {
-            Shop Shop = shopData.get();
-            Shop.setName(shop.getName());
-            Shop.setCity(shop.getCity());
-            Shop.setAddress(shop.getAddress());
-            Shop.setPhoneNumber(shop.getPhoneNumber());
-            Shop.setIdUser(shop.getIdUser());
-            repository.save(Shop);
-            return new ResponseEntity<>(repository.save(Shop), HttpStatus.OK);
+    public ResponseEntity<Shop> updateShop(Long id, Shop shop) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Shop> shopData = repository.findById(id);
+            if(shopData.isPresent()) {
+                Shop Shop = shopData.get();
+                Shop.setName(shop.getName());
+                Shop.setCity(shop.getCity());
+                Shop.setAddress(shop.getAddress());
+                Shop.setPhoneNumber(shop.getPhoneNumber());
+                Shop.setIdUser(shop.getIdUser());
+                repository.save(Shop);
+                return new ResponseEntity<>(repository.save(Shop), HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
     @Override
     @Transactional
-    public User getUserFromShop(long id) {
-        Optional<Shop> shopData = repository.findById(id);
-        if (shopData.isPresent()) {
-            Shop _shop = shopData.get();
-            User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" + _shop.getIdUser(), User.class);
-            if (dealer == null) {
-                User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _shop.getIdUser(), User.class);
-                if (privateUser == null) {
-                    return null;
-                } else {
-                    return privateUser;
-                }
-            } else {
-
-                return dealer;
+    public ResponseEntity<User> getUserFromShop(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Shop> shopData = repository.findById(id);
+            if (shopData.isPresent()) {
+                Shop _shop = shopData.get();
+                User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" + _shop.getIdUser(), User.class);
+                if (dealer == null) {
+                    User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _shop.getIdUser(), User.class);
+                    if (privateUser == null)
+                        return null;
+                    else
+                        return ResponseEntity.status(HttpStatus.OK).body(privateUser);
+                } else
+                    return ResponseEntity.status(HttpStatus.OK).body(dealer);
             }
-        }
-        else {
-            return null;
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain user form shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @Override
-    public Optional<Shop> getShopFromUser(long id) {
-        return repository.findByIdUser(id);
+    public ResponseEntity<Optional<Shop>> getShopFromUser(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Shop> shop = repository.findByIdUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body(shop);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain shop from user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

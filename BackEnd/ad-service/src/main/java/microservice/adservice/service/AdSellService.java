@@ -12,20 +12,20 @@ import java.util.Optional;
 public interface AdSellService {
 
         ResponseEntity<?> saveAdSell(AdSell adSell);
-        List<AdSell> getAllAdsSell();
-        List<AdSell> getAllAdsSellNotSold();
+        ResponseEntity<List<AdSell>> getAllAdsSell();
+        ResponseEntity<List<AdSell>> getAllAdsSellNotSold();
 
-        List<AdSell> getAllAdsSellForUser(long id);
+        ResponseEntity<List<AdSell>> getAllAdsSellForUser(Long id);
 
-        Optional<AdSell> getAdSellById(long id);
+        ResponseEntity<Optional<AdSell>> getAdSellById(Long id);
 
-        ResponseEntity<?> deleteAdSell(long id);
+        ResponseEntity<?> deleteAdSell(Long id);
 
         ResponseEntity<?> deleteAllAdsSell();
 
-        ResponseEntity<AdSell> updateAdSell(long id, @RequestBody AdSell adSell);
-        List<Bike> getBikesToSell();
-        List<Bike> getAllBikeToSellByUser(long id);
+        ResponseEntity<AdSell> updateAdSell(Long id, @RequestBody AdSell adSell);
+        ResponseEntity<List<Bike>> getBikesToSell();
+        ResponseEntity<List<Bike>> getAllBikeToSellByUser(Long id);
 
-        List<AdSell> getAllAdSellByUser(long id);
+        ResponseEntity<List<AdSell>> getAllAdSellByUser(Long id);
 }

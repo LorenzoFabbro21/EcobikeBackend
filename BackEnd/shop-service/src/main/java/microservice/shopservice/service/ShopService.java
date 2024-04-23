@@ -12,19 +12,19 @@ public interface ShopService {
 
     ResponseEntity<?> saveShop(Shop shop);
 
-    List<Shop> getAllShops();
+    ResponseEntity<List<Shop>> getAllShops();
 
-    List<Shop> getAllShopsForUser(long id);
+    ResponseEntity<List<Shop>> getAllShopsForUser(Long id);
 
-    Optional<Shop> getShopById(long id);
+    ResponseEntity<Optional<Shop>> getShopById(Long id);
 
-    ResponseEntity<?> deleteShop(long id);
+    ResponseEntity<?> deleteShop(Long id);
 
     ResponseEntity<?> deleteAllShops();
 
-    ResponseEntity<Shop> updateShop(long id, @RequestBody Shop shop);
+    ResponseEntity<Shop> updateShop(Long id, @RequestBody Shop shop);
 
-    User getUserFromShop(long id);
+    ResponseEntity<User> getUserFromShop(Long id);
 
-    Optional<Shop> getShopFromUser(long id);
+    ResponseEntity<Optional<Shop>> getShopFromUser(Long id);
 }
