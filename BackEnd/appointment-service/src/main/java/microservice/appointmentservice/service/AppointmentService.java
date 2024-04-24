@@ -11,20 +11,20 @@ import java.util.Optional;
 public interface AppointmentService {
     ResponseEntity<?> saveAppointment(Appointment appointment);
 
-    List<Appointment> getAllAppointments();
+    ResponseEntity<List<Appointment>> getAllAppointments();
 
-    Optional<Appointment> getAppointmentById(long id);
+    ResponseEntity<Optional<Appointment>> getAppointmentById(Long id);
 
-    ResponseEntity<?> deleteAppointment(long id);
+    ResponseEntity<?> deleteAppointment(Long id);
 
     ResponseEntity<?> deleteAllAppointments();
 
-    ResponseEntity<Appointment> updateAppointment(long id, @RequestBody Appointment appointment);
+    ResponseEntity<Appointment> updateAppointment(Long id, @RequestBody Appointment appointment);
 
-    public List<Appointment> getAllAppointmentsByUser (long id);
+    ResponseEntity<List<Appointment>> getAllAppointmentsByUser (Long id);
 
-    List<BikeUser> getAllBikesSold(long id);
+    ResponseEntity<List<BikeUser>> getAllBikesSold(Long id);
 
-    List<BikeUser> getPersonalBuy(long id);
+    ResponseEntity<List<BikeUser>> getPersonalBuy(Long id);
 
 }

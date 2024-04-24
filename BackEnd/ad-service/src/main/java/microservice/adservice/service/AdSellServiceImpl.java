@@ -30,6 +30,8 @@ public class AdSellServiceImpl implements AdSellService {
 
     @Override
     public ResponseEntity<?> saveAdSell(AdSell adSell) {
+        if(adSell == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             AdSell adSellCreated = repository.save(adSell);
             Map<String, String> body = new HashMap<>();

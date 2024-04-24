@@ -27,6 +27,8 @@ public class AdRentServiceImpl implements AdRentService {
 
     @Override
     public ResponseEntity<?> saveAdRent(AdRent adRent) {
+        if(adRent == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             AdRent adRentCreated = repository.save(adRent);
             Map<String, String> body = new HashMap<>();

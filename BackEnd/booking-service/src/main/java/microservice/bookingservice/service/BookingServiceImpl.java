@@ -32,6 +32,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Transactional
     public ResponseEntity<?> saveBooking(Booking booking) {
+        if(booking == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             Booking bookingCreated = repository.save(booking);
             Map<String, String> body = new HashMap<>();
@@ -39,7 +41,6 @@ public class BookingServiceImpl implements BookingService{
             body.put("id", String.valueOf(bookingCreated.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
-
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
@@ -48,100 +49,154 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     @Transactional
-    public List<Booking> getAllBookings() {
-        List<Booking> bookings = new ArrayList<>();
-        repository.findAll().forEach(bookings::add);
-        return bookings;
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        try {
+            List<Booking> bookings = new ArrayList<>();
+            repository.findAll().forEach(bookings::add);
+            return ResponseEntity.status(HttpStatus.OK).body(bookings);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
-    public Optional<Booking> getBookingById(long id) {
-        return repository.findById(id);
+    public ResponseEntity<Optional<Booking>> getBookingById(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(repository.findById(id));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
-    public ResponseEntity<?> deleteBooking(long id) {
-        repository.deleteById(id);
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "Booking has been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+    public ResponseEntity<?> deleteBooking(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            repository.deleteById(id);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Booking has been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
     public ResponseEntity<?> deleteAllBookings() {
-        repository.deleteAll();
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "All bookings have been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
-
-    @Override
-    @Transactional
-    public ResponseEntity<Booking> updateBooking(long id, Booking booking) {
-        Optional<Booking> BookingData = repository.findById(id);
-
-        if (BookingData.isPresent()) {
-            Booking _booking = BookingData.get();
-            _booking.setEnddate(booking.getEnddate());
-            _booking.setStartdate(booking.getStartdate());
-            repository.save(_booking);
-            return new ResponseEntity<>(repository.save(_booking), HttpStatus.OK);
+        try {
+            repository.deleteAll();
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "All bookings have been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     @Transactional
-    public List<Booking> getAllBookingsByPrivate(long id) {
-        List<Booking> bookings = repository.getAllBookingsByPrivate(id);
-        return bookings;
+    public ResponseEntity<Booking> updateBooking(Long id, Booking booking) {
+        if(id == null || booking == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Booking> BookingData = repository.findById(id);
+
+            if (BookingData.isPresent()) {
+                Booking _booking = BookingData.get();
+                _booking.setEnddate(booking.getEnddate());
+                _booking.setStartdate(booking.getStartdate());
+                repository.save(_booking);
+                return new ResponseEntity<>(repository.save(_booking), HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public List<BikeUser> getAllBikesRented(long id) {
-        List<BikeUser> bikeUser = new ArrayList<>();
-        List<Adrent> adrents = restTemplate.exchange(
-                "http://ad-service:8084/api/adrent/user/" + id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Adrent>>() {}
-        ).getBody();
-        for (Adrent a: adrents) {
-            List<Booking> bookings = repository.getAllBookingsByAnnouncement(a.getId());
-            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
-            for(Booking b: bookings){
-                User user = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
-                BikeUser obj = new BikeUser(user, bike, b, a);
+    @Transactional
+    public ResponseEntity<List<Booking>> getAllBookingsByPrivate(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            List<Booking> bookings = repository.getAllBookingsByPrivate(id);
+            return ResponseEntity.status(HttpStatus.OK).body(bookings);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<BikeUser>> getAllBikesRented(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            List<BikeUser> bikeUser = new ArrayList<>();
+            List<Adrent> adrents = restTemplate.exchange(
+                    "http://ad-service:8084/api/adrent/user/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Adrent>>() {}
+            ).getBody();
+            for (Adrent a: adrents) {
+                List<Booking> bookings = repository.getAllBookingsByAnnouncement(a.getId());
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
+                for(Booking b: bookings){
+                    User user = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
+                    BikeUser obj = new BikeUser(user, bike, b, a);
+                    bikeUser.add(obj);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+    @Override
+    @Transactional
+    public ResponseEntity<List<BikeUser>> getPersonalRent(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            List<BikeUser> bikeUser = new ArrayList<>();
+            List<Booking> listBookings = repository.getPersonalRent(id);
+            for (Booking b : listBookings) {
+                Adrent a = restTemplate.getForObject("http://ad-service:8084/api/adrent/" + b.getIdAnnouncement(), Adrent.class);
+                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
+                User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
+                BikeUser obj = new BikeUser(u, bike, b, a);
                 bikeUser.add(obj);
             }
+            return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return bikeUser;
     }
-
-
-
-
-
-    @Override
-    @Transactional
-    public List<BikeUser> getPersonalRent(long id) {
-        List<BikeUser> bikeUser = new ArrayList<>();
-        System.out.println("ididididididididid: " + id);
-        List<Booking> listBookings = repository.getPersonalRent(id);
-        for (Booking b : listBookings) {
-            Adrent a = restTemplate.getForObject("http://ad-service:8084/api/adrent/" + b.getIdAnnouncement(), Adrent.class);
-            Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
-            User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdPrivate(), User.class);
-            BikeUser obj = new BikeUser(u, bike, b, a);
-            bikeUser.add(obj);
-        }
-
-        return bikeUser;
-    }
-
-
 }
