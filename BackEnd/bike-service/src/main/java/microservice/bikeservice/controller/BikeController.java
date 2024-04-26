@@ -40,6 +40,7 @@ public class BikeController {
             AdSell adSell = param.getAdSell();
             ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
             Map<String, String> responseBody = response.getBody();
+            System.out.println("idididididididid " + responseBody.get("id"));
 
             String id = responseBody.get("id");
             adSell.setIdBike(Integer.parseInt(id));
@@ -66,14 +67,18 @@ public class BikeController {
             ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
             Map<String, String> responseBody = response.getBody();
 
+            System.out.println("idididididididid " + responseBody.get("id"));
             String id = responseBody.get("id");
             adRent.setIdBike(Integer.parseInt(id));
+
+            System.out.println(adRent);
+            System.out.println(bike);
 
             rabbitMQSender.sendAddBikeAdRent(adRent);
 
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Rent successfully created");
-            return ResponseEntity.status(HttpStatus.OK).body(body);
+            return new ResponseEntity<Map>(body, HttpStatus.OK);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to post ad rent");

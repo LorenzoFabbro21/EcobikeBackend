@@ -28,7 +28,7 @@ public class AdSellController {
             return adSellService.saveAdSell(new AdSell(adSell.getPrice(), adSell.getIdBike(), adSell.getIdUser()));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to post ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -42,7 +42,7 @@ public class AdSellController {
             return adSellService.getAdSellById(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain ad rent");
+            errorBody.put("error", "Failed to obtain ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -54,7 +54,7 @@ public class AdSellController {
             return adSellService.getAllAdsSell();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all rent");
+            errorBody.put("error", "Failed to obtain all sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -66,7 +66,7 @@ public class AdSellController {
             return adSellService.getAllAdsSellNotSold();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all rent");
+            errorBody.put("error", "Failed to obtain all sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -80,7 +80,7 @@ public class AdSellController {
             return adSellService.getAllAdsSellForUser(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all adrent for user");
+            errorBody.put("error", "Failed to obtain all adsell for user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -92,7 +92,7 @@ public class AdSellController {
             return adSellService.getBikesToSell();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all adrent for user");
+            errorBody.put("error", "Failed to obtain all adsell for user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -105,7 +105,7 @@ public class AdSellController {
             return adSellService.deleteAdSell(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete ad rent");
+            errorBody.put("error", "Failed to delete ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -116,7 +116,7 @@ public class AdSellController {
             return adSellService.deleteAllAdsSell();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete all ads rent");
+            errorBody.put("error", "Failed to delete all ads sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -130,25 +130,34 @@ public class AdSellController {
             return adSellService.updateAdSell(id, adSell);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to update ad rent");
+            errorBody.put("error", "Failed to update ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<AdSell>> getAllAdsRentByUser(@PathVariable("id") long id) {
-        System.out.println("Get all Ads to rent by user...");
-        return adSellService.getAllAdSellByUser(id);
+    public ResponseEntity<List<AdSell>> getAllAdsSellByUser(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get all Ads to sell by user...");
+            return adSellService.getAllAdSellByUser(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all ads sell by user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
     @GetMapping("user/{id}/bikes")
     public ResponseEntity<List<Bike>> getAllBikeToSellByUser(@PathVariable("id") Long id) {
         if(id == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
-            System.out.println("Get all Ads to rent by user...");
+            System.out.println("Get all Ads to sell by user...");
             return adSellService.getAllBikeToSellByUser(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all ads rent by user");
+            errorBody.put("error", "Failed to obtain all ads sell by user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
