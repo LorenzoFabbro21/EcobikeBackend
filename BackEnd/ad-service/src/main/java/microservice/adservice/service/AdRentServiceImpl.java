@@ -30,6 +30,10 @@ public class AdRentServiceImpl implements AdRentService {
         if(adRent == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(adRent);
+            if (!response.equals("ok"))
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             AdRent adRentCreated = repository.save(adRent);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Rent successfully created");
@@ -41,6 +45,20 @@ public class AdRentServiceImpl implements AdRentService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
+
+    private String validateRequest(AdRent adRent) {
+        String response = validateAdSellParams(adRent);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateAdSellParams(AdRent adRent) {
+        if (adRent.getPrice() < 0)
+            return "Prezzo inserito non valido";
+        return "ok";
+    }
+
 
     @Override
     public ResponseEntity<List<AdRent>> getAllAdsRent() {
@@ -184,11 +202,15 @@ public class AdRentServiceImpl implements AdRentService {
                 for ( AdRent elem : l) {
                     Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
                     bikes.add(bike);
+                    System.out.println(bike);
                 }
+                System.out.println("get bike user almeno una bike");
                 return ResponseEntity.status(HttpStatus.OK).body(bikes);
             }
-            else
+            else {
+                System.out.println("get bike user null");
                 return ResponseEntity.status(HttpStatus.OK).body(null);
+            }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to obtain bike user");

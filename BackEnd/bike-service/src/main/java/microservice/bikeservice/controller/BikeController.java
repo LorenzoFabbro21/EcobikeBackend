@@ -129,8 +129,6 @@ public class BikeController {
     public ResponseEntity<List<Bike>> getBikesFilter(@RequestParam(name = "brand",required = false) String brand,
                                      @RequestParam(name="color",required = false) String color,
                                      @RequestParam(name="size",required = false) String size) {
-        if(brand == null && color == null && size == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             return bikeService.findFilterBike(brand, color, size);
         } catch (Exception e) {

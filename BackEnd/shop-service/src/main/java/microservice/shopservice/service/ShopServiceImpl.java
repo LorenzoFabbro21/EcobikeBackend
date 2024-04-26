@@ -27,6 +27,10 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ResponseEntity<?> saveShop(Shop shop) {
         try {
+            String response = validateRequest(shop);
+            if (!response.equals("ok"))
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             Shop reviewCreated = repository.save(shop);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Shop successfully created");
@@ -38,7 +42,34 @@ public class ShopServiceImpl implements ShopService {
             errorBody.put("error", "Failed to create a shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
+    }
 
+
+    private String validateRequest(Shop shop) {
+        String response = validateShopParams(shop);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateShopParams(Shop shop) {
+        if (shop.getName() == null || shop.getName().isEmpty()) {
+            System.out.println("Nome inserito non valido");
+            return "Nome inserito non valido";
+        }
+        if (shop.getCity() == null || shop.getCity().isEmpty()) {
+            System.out.println("Città inserita non valida");
+            return "Città inserita non valida";
+        }
+        if (shop.getAddress() == null || shop.getAddress().isEmpty()) {
+            System.out.println("Indirizzo inserito non valido");
+            return "Indirizzo inserito non valido";
+        }
+        if (shop.getPhoneNumber().length() < 9) {
+            System.out.println("Numero di telefono non valido");
+            return "Numero di telefono non valido";
+        }
+        return "ok";
     }
 
     @Override
@@ -136,7 +167,7 @@ public class ShopServiceImpl implements ShopService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete all shops");
+            errorBody.put("error", "Failed to update sho");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

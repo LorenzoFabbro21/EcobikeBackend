@@ -26,6 +26,13 @@ public class BikeServiceImpl implements BikeService{
         if(bike == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(bike);
+            if (!response.equals("ok")) {
+                Map<String, String> errorBody = new HashMap<>();
+                errorBody.put("error", response);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+            }
+
             Bike bikeCreated = repository.save(bike);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Bike has been created!");
@@ -36,6 +43,29 @@ public class BikeServiceImpl implements BikeService{
             errorBody.put("error", "Failed to create bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
+    }
+
+    private String validateRequest(Bike bike) {
+        String response = validateBikeParams(bike);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateBikeParams(Bike bike) {
+        if (bike.getBrand() == null || bike.getBrand().isEmpty())
+            return "Marca inserita non valida";
+        if (bike.getModel() == null || bike.getModel().isEmpty())
+            return "Modello inserito non valido";
+        if (bike.getColor() == null || bike.getColor().isEmpty())
+            return "Colore inserito non valido";
+        if (bike.getSize() == null || bike.getSize().isEmpty())
+            return "Taglia inserita non valida";
+        if (bike.getType() == null || bike.getType().isEmpty())
+            return "Tipo inserito non valido";
+        if (bike.getMeasure() == null || bike.getMeasure().isEmpty())
+            return "Misure inserite non valide";
+        return "ok";
     }
 
     @Override
@@ -138,8 +168,6 @@ public class BikeServiceImpl implements BikeService{
     @Override
     @Transactional
     public ResponseEntity<List<Bike>> findFilterBike(String brand, String color, String size) {
-        if(brand == null && color == null && size == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             return ResponseEntity.status(HttpStatus.OK).body(repository.findFilterBike(brand, color, size));
         } catch (Exception e) {

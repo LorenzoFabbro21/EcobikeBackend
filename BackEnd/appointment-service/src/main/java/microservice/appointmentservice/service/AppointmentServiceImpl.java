@@ -34,6 +34,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(appointment == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(appointment);
+            if (!response.equals("ok"))
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             Appointment appointmentCreated = repository.save(appointment);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Appointment successfully created");
@@ -46,6 +50,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
+    private String validateRequest(Appointment appointment) {
+        String response = validateAppointmentParams(appointment);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateAppointmentParams(Appointment appointment) {
+        if (appointment.getDate() == null)
+            return "Data inserita non valida";
+        return "ok";
+    }
+
     @Override
     @Transactional
     public ResponseEntity<List<Appointment>> getAllAppointments() {
@@ -56,6 +73,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create bike");
+            System.out.println("errore in get all appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -193,15 +211,24 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             List<BikeUser> bikeUser = new ArrayList<>();
-            List<Appointment> listBookings = repository.getPersonalBuy(id);
-            for (Appointment b : listBookings) {
-                AdSell a = restTemplate.getForObject("http://ad-service:8084/api/adsell/" + b.getIdAnnouncement(), AdSell.class);
-                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
-                User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdUser(), User.class);
-                BikeUser obj = new BikeUser(u, bike, b, a);
-                bikeUser.add(obj);
+            List<Appointment> listAppointments = repository.getPersonalBuy(id);
+            System.out.println(listAppointments);
+            if(!listAppointments.isEmpty()) {
+                for (Appointment b : listAppointments) {
+                    AdSell a = restTemplate.getForObject("http://ad-service:8084/api/adsell/" + b.getIdAnnouncement(), AdSell.class);
+                    Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + a.getIdBike(), Bike.class);
+                    User u = restTemplate.getForObject("http://user-service:8081/api/private/" + b.getIdUser(), User.class);
+                    BikeUser obj = new BikeUser(u, bike, b, a);
+                    System.out.println("obj" + obj);
+                    bikeUser.add(obj);
+                }
+                System.out.println("gisuto");
+                return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
+            else {
+                System.out.println("nulllllll");
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+            }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create bike");

@@ -33,6 +33,13 @@ public class AdSellServiceImpl implements AdSellService {
         if(adSell == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(adSell);
+            if (!response.equals("ok")) {
+                System.out.println("dati corretti");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+
+            System.out.println("dati corretti");
             AdSell adSellCreated = repository.save(adSell);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Sell successfully created");
@@ -44,6 +51,21 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
+
+
+    private String validateRequest(AdSell adSell) {
+        String response = validateAdSellParams(adSell);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateAdSellParams(AdSell adSell) {
+        if (adSell.getPrice() < 0)
+            return "Prezzo inserito non valido";
+        return "ok";
+    }
+
     @Override
     public ResponseEntity<List<AdSell>> getAllAdsSell() {
         try {

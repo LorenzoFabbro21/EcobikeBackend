@@ -35,6 +35,10 @@ public class BookingServiceImpl implements BookingService{
         if(booking == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(booking);
+            if (!response.equals("ok"))
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             Booking bookingCreated = repository.save(booking);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Rent successfully created");
@@ -42,10 +46,27 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to post booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
+
+
+    private String validateRequest(Booking booking) {
+        String response = validateBookingParams(booking);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateBookingParams(Booking booking) {
+        if (booking.getStartdate() == null)
+            return "Data di inizio inserita non valida";
+        if (booking.getEnddate() == null)
+            return "Data di fine inserita non valida";
+        return "ok";
+    }
+
 
     @Override
     @Transactional
@@ -56,7 +77,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(bookings);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -70,7 +91,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(repository.findById(id));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain booking by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -87,7 +108,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete booking by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -102,7 +123,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete all booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -126,7 +147,7 @@ public class BookingServiceImpl implements BookingService{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to update booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -141,7 +162,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(bookings);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain booking by private");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -170,7 +191,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all bikes rented");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -195,7 +216,7 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed obtain personal rent");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

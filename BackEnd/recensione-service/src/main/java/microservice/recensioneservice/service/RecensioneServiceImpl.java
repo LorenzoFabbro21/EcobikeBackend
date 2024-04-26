@@ -26,89 +26,157 @@ public class RecensioneServiceImpl implements RecensioneService {
     private RestTemplate restTemplate;
     @Override
     public ResponseEntity<?> saveReview(Recensione review) {
+        if(review == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(review);
+            if (!response.equals("ok"))
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             Recensione reviewCreated = repository.save(review);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Review successfully created");
             body.put("id", String.valueOf(reviewCreated.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
-
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to post review");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
 
-    @Override
-    public List<Recensione> getAllReview() {
-        List<Recensione> reviews = new ArrayList<>();
-        repository.findAll().forEach(reviews::add);
-        return reviews;
+
+    private String validateRequest(Recensione review) {
+        String response = validateReviewParams(review);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateReviewParams(Recensione review) {
+        if (review.getText() == null || review.getText().isEmpty())
+            return "Testo della recensione  inserito non valido";
+        if (review.getScore() < 0)
+            return "Punteggio inserito non valido";
+        return "ok";
     }
 
     @Override
-    public Optional<Recensione> getReviewById(long id) {
-        return repository.findById(id);
+    public ResponseEntity<List<Recensione>> getAllReview() {
+        try {
+            List<Recensione> reviews = new ArrayList<>();
+            repository.findAll().forEach(reviews::add);
+            return ResponseEntity.status(HttpStatus.OK).body(reviews);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all review");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
+    public ResponseEntity<Optional<Recensione>> getReviewById(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findById(id));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain review by id");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
-    public ResponseEntity<?> deleteReview(long id) {
-        repository.deleteById(id);
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "Review has been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+    @Override
+    public ResponseEntity<?> deleteReview(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            repository.deleteById(id);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Review has been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete review");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     public ResponseEntity<?> deleteAllReview() {
-        repository.deleteAll();
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "All reviews have been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
-
-    @Override
-    public ResponseEntity<Recensione> updateReview(long id, Recensione review) {
-        Optional<Recensione> ReviewData = repository.findById(id);
-
-        if (ReviewData.isPresent()) {
-            Recensione _review = ReviewData.get();
-            _review.setText(review.getText());
-            _review.setScore(review.getScore());
-            _review.setIdUser(review.getIdUser());
-            repository.save(_review);
-            return new ResponseEntity<>(repository.save(_review), HttpStatus.OK);
+        try {
+            repository.deleteAll();
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "All reviews have been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all review");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public User getUserFromReview(long id) {
-        Optional<Recensione> ReviewData = repository.findById(id);
-        if (ReviewData.isPresent()) {
-            Recensione _review = ReviewData.get();
-            User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" +_review.getIdUser(), User.class);
-            if (dealer == null) {
-                User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _review.getIdUser(), User.class);
-                if (privateUser == null) {
-                    return null;
-                } else {
-                    return privateUser;
-                }
-            } else {
+    public ResponseEntity<Recensione> updateReview(Long id, Recensione review) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Recensione> ReviewData = repository.findById(id);
 
-                return dealer;
+            if (ReviewData.isPresent()) {
+                Recensione _review = ReviewData.get();
+                _review.setText(review.getText());
+                _review.setScore(review.getScore());
+                _review.setIdUser(review.getIdUser());
+                repository.save(_review);
+                return new ResponseEntity<>(repository.save(_review), HttpStatus.OK);
             }
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to update review");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        else {
-            return null;
+    }
+
+    @Override
+    public ResponseEntity<User> getUserFromReview(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Recensione> ReviewData = repository.findById(id);
+            if (ReviewData.isPresent()) {
+                Recensione _review = ReviewData.get();
+                User dealer = restTemplate.getForObject("http://user-service:8081/api/dealer/" +_review.getIdUser(), User.class);
+                if (dealer == null) {
+                    User privateUser = restTemplate.getForObject("http://user-service:8081/api/private/" + _review.getIdUser(), User.class);
+                    if (privateUser == null)
+                        return ResponseEntity.status(HttpStatus.OK).body(null);
+                    else
+                        return ResponseEntity.status(HttpStatus.OK).body(privateUser);
+                } else
+                    return ResponseEntity.status(HttpStatus.OK).body(dealer);
+            }
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain user from review");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
     @Override
-    public List<Recensione> getAllReviewByidShop(long id) {
-        return repository.getAllReviewByidShop(id);
+    public ResponseEntity<List<Recensione>> getAllReviewByidShop(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(repository.getAllReviewByidShop(id));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all review by id shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

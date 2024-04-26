@@ -28,7 +28,7 @@ public class BookingController {
             return  bookingService.saveBooking(new Booking(booking.getId(), booking.getIdPrivate(), booking.getIdAnnouncement(),booking.getStartdate(), booking.getEnddate()));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to post booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -46,7 +46,7 @@ public class BookingController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain booking by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -58,7 +58,7 @@ public class BookingController {
             return bookingService.getAllBookings();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bookings");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -70,7 +70,7 @@ public class BookingController {
             return bookingService.getAllBookings();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bookings");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -84,7 +84,7 @@ public class BookingController {
             return bookingService.getAllBookingsByPrivate(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bookings by private");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -98,7 +98,7 @@ public class BookingController {
             return bookingService.deleteBooking(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete booking by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -109,7 +109,7 @@ public class BookingController {
             return bookingService.deleteAllBookings();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete all booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -123,7 +123,7 @@ public class BookingController {
             return bookingService.updateBooking(id,booking);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to update booking");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -137,7 +137,7 @@ public class BookingController {
             return bookingService.getAllBikesRented(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bikes rented");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -151,7 +151,7 @@ public class BookingController {
             return bookingService.getPersonalRent(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain personal rent");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
