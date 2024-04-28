@@ -38,9 +38,7 @@ public class BikeController {
         try {
             Bike bike = param.getBike();
             AdSell adSell = param.getAdSell();
-            System.out.println("PREZZO="+ adSell.getPrice());
             if (adSell.getPrice()<=0){
-                System.out.println("CIAO2");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
             }
             ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
@@ -74,9 +72,7 @@ public class BikeController {
         try {
             Bike bike = param.getBike();
             AdRent adRent = param.getAdRent();
-            System.out.println("PREZZO="+ adRent.getPrice());
             if (adRent.getPrice()<=0){
-                System.out.println("CIAO1");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
             }
             ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));

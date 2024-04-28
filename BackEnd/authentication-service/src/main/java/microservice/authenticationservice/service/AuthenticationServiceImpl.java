@@ -57,14 +57,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck())
         //rabbitMQSender.sendSignUp(u);
         try {
-            HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service:8081/api/private", userDetails,String.class).getStatusCode();
-            if (responseStatusCode != HttpStatus.OK) {
-                return ResponseEntity.status(responseStatusCode).body("Invalid request");
+            ResponseEntity<?> response = restTemplate.postForEntity("http://user-service:8081/api/private", userDetails,String.class);
+            if (response.getStatusCode() != HttpStatus.OK) {
+                return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
             }
-            Map<String, String> body = new HashMap<>();
-            body.put("messageResponse", "User add request sent successfully");
-            return ResponseEntity.status(HttpStatus.OK).body(body);
-
+            else {
+                Map<String, String> body = new HashMap<>();
+                body.put("messageResponse", "User add request sent successfully");
+                return ResponseEntity.status(HttpStatus.OK).body(body);
+            }
         } catch (HttpClientErrorException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         } catch (Exception e) {
