@@ -12,17 +12,17 @@ public interface BikeService {
 
     ResponseEntity<Map<String, String>> saveBike(Bike bike);
 
-    List<Bike> getAllBikes();
+    ResponseEntity<List<Bike>> getAllBikes();
 
-    Optional<Bike> getBikeById(long id);
+    ResponseEntity<Optional<Bike>> getBikeById(Long id);
 
-    List<Bike> getBikeByBrand(String brand);
+    ResponseEntity<List<Bike>> getBikeByBrand(String brand);
 
-    ResponseEntity<?> deleteBike(long id);
+    ResponseEntity<?> deleteBike(Long id);
 
     ResponseEntity<?> deleteAllBikes();
 
-    ResponseEntity<Bike> updateBike(long id, @RequestBody Bike bike);
+    ResponseEntity<Bike> updateBike(Long id, @RequestBody Bike bike);
 
-    List<Bike> findFilterBike ( String brand,String color, String size);
+    ResponseEntity<List<Bike>> findFilterBike (String brand, String color, String size);
 }

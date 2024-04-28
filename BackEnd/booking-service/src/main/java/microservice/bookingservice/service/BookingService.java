@@ -12,19 +12,19 @@ import java.util.Optional;
 public interface BookingService {
     ResponseEntity<?> saveBooking(Booking booking);
 
-    List<Booking> getAllBookings();
+    ResponseEntity<List<Booking>> getAllBookings();
 
-    Optional<Booking> getBookingById(long id);
+    ResponseEntity<Optional<Booking>> getBookingById(Long id);
 
-    ResponseEntity<?> deleteBooking(long id);
+    ResponseEntity<?> deleteBooking(Long id);
 
     ResponseEntity<?> deleteAllBookings();
 
-    ResponseEntity<Booking> updateBooking(long id, @RequestBody Booking booking);
+    ResponseEntity<Booking> updateBooking(Long id, @RequestBody Booking booking);
 
-    List<Booking> getAllBookingsByPrivate(long id);
+    ResponseEntity<List<Booking>> getAllBookingsByPrivate(Long id);
 
-    List<BikeUser> getAllBikesRented(long id);
+    ResponseEntity<List<BikeUser>> getAllBikesRented(Long id);
 
-    List<BikeUser> getPersonalRent(long id);
+    ResponseEntity<List<BikeUser>> getPersonalRent(Long id);
 }

@@ -7,5 +7,5 @@ public class AdRent {
 
     private float price;
     private long idBike;
-    private long idUSer;
+    private long idUser;
 }

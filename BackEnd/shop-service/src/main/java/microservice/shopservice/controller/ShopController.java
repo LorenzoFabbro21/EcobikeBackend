@@ -9,6 +9,7 @@ import microservice.shopservice.rabbitMQ.RabbitMQSender;
 import microservice.shopservice.repo.ShopRepository;
 import microservice.shopservice.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,92 +35,139 @@ public class ShopController {
     private RestTemplate restTemplate;
 
     @PostMapping(value = "")
-    public User postShop(@RequestBody ShopParam param) {
-        System.out.println("New Shop:"+ param);
-        Shop shop = param.getShop();
-        Private user = param.getUser();
-        System.out.println("111111111111111111111111111111111111");
-        rabbitMQSender.sendDeleteUser(user);
-        System.out.println("22222222222222222222222222222222222222");
-        rabbitMQSender.sendCreateDealer(user);
-        User d = restTemplate.getForObject("http://user-service/api/dealer/email/" + user.getMail(), User.class);
-        System.out.println("dealerererrere: " + d);
-
-        //Impostare idUser in shop = idDealer appena creato
-        shop.setIdUser(d.getId());
-
-
-        shopService.saveShop(shop);
-        System.out.println("444444444444444444444444444444444");
-        User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + shop.getIdUser(), User.class);
-        System.out.println("5555555555555555555555555555555");
-        return dealer;
+    public ResponseEntity<User> postShop(@RequestBody ShopParam param) {
+        if(param == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Post shop...");
+            Shop shop = param.getShop();
+            Private user = param.getUser();
+            rabbitMQSender.sendDeleteUser(user);
+            rabbitMQSender.sendCreateDealer(user);
+            User d = restTemplate.getForObject("http://user-service/api/dealer/email/" + user.getMail(), User.class);
+            shop.setIdUser(d.getId());
+            shopService.saveShop(shop);
+            User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + shop.getIdUser(), User.class);
+            ResponseEntity<User> r = ResponseEntity.status(HttpStatus.OK).body(dealer);
+            return r;
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to post shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 
     @GetMapping("/{id}")
     @Transactional
-    public Optional<Shop> getShop(@PathVariable("id") long id) {
-
-        System.out.println("Get shop...");
-        Optional<Shop> shop;
-        shop = shopService.getShopById(id);
-        return shop;
+    public ResponseEntity<Optional<Shop>> getShop(@PathVariable("id") Long id) {
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get shop...");
+            return shopService.getShopById(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("")
     @Transactional
-    public List<Shop> getAllShops() {
-
-        System.out.println("Get all shops...");
-        List<Shop> shop = new ArrayList<>();
-        shop = shopService.getAllShops();
-        return shop;
+    public ResponseEntity<List<Shop>> getAllShops() {
+        try {
+            System.out.println("Get all shops...");
+            return shopService.getAllShops();
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/all/user/{id}")
     @Transactional
-    public List<Shop> getAllShopsForUser(@PathVariable("id") long id) {
-
-        System.out.println("Get all shops for User...");
-        List<Shop> shop = new ArrayList<>();
-        shop = shopService.getAllShopsForUser(id);
-        return shop;
+    public ResponseEntity<List<Shop>> getAllShopsForUser(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get all shops for User...");
+            return shopService.getAllShopsForUser(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all shops for user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/{id}/user")
-    public User getUserFromShop(@PathVariable("id") long id) {
-        User user = new User();
-        user = shopService.getUserFromShop(id);
-        return user;
+    public ResponseEntity<User> getUserFromShop(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get User from Shop...");
+            return shopService.getUserFromShop(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain user from shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
     @GetMapping("/user/{id}")
     @Transactional
-    public Optional<Shop> getShopFromUser(@PathVariable("id") long id) {
-        return shopService.getShopFromUser(id);
+    public ResponseEntity<Optional<Shop>> getShopFromUser(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get Shop from user...");
+            return shopService.getShopFromUser(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain shop from user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteShop(@PathVariable("id") long id) {
-
-        System.out.println("Delete shop with ID = " + id + "...");
-        return shopService.deleteShop(id);
+    public ResponseEntity<?> deleteShop(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Delete shop with ID = " + id + "...");
+            return shopService.deleteShop(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete shop");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllShops() {
-
-        System.out.println("Delete All shops...");
-        return shopService.deleteAllShops();
-
+        try {
+            System.out.println("Delete All shops...");
+            return shopService.deleteAllShops();
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Shop> updateShop(@PathVariable("id") long id, @RequestBody Shop shop) {
-
-        System.out.println("Update shop with ID = " + id + "...");
-        ResponseEntity<Shop> response = shopService.updateShop(id, shop);
-        return response;
+    public ResponseEntity<Shop> updateShop(@PathVariable("id") Long id, @RequestBody Shop shop) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Update shop with ID = " + id + "...");
+            return shopService.updateShop(id, shop);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all shops");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

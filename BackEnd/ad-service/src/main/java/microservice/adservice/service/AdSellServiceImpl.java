@@ -30,158 +30,245 @@ public class AdSellServiceImpl implements AdSellService {
 
     @Override
     public ResponseEntity<?> saveAdSell(AdSell adSell) {
+        if(adSell == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(adSell);
+            if (!response.equals("ok")) {
+                System.out.println("dati corretti");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+
+            System.out.println("dati corretti");
             AdSell adSellCreated = repository.save(adSell);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Sell successfully created");
             body.put("id", String.valueOf(adSellCreated.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
-
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
-    @Override
-    public List<AdSell> getAllAdsSell() {
-        List<AdSell> adsSell = new ArrayList<>();
-        repository.findAll().forEach(adsSell::add);
-        return adsSell;
+
+
+    private String validateRequest(AdSell adSell) {
+        String response = validateAdSellParams(adSell);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
     }
-    @Override
-    public List<AdSell> getAllAdsSellNotSold() {
 
-        //Get di tutti gli appointment
-        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
-                "http://appointment-service:8086/api/appointment",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Appointment>>() {}
-        );
-        List<Appointment> appointments = response.getBody();
-        //Get degli annunci di vendita
-        List<AdSell> adsSell = new ArrayList<>();
-        repository.findAll().forEach(adsSell::add);
-
-        //Crea lista con gli idAnnouncement di tutti gli appointment
-        List<Long> appointmentAdSellIds = appointments.stream()
-                .map(Appointment::getIdAnnouncement)
-                .collect(Collectors.toList());
-
-        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
-        List<AdSell> filteredAdSell = adsSell.stream()
-                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
-                .collect(Collectors.toList());
-
-        return filteredAdSell;
+    private String validateAdSellParams(AdSell adSell) {
+        if (adSell.getPrice() < 0)
+            return "Prezzo inserito non valido";
+        return "ok";
     }
 
     @Override
-    public List<AdSell> getAllAdsSellForUser(long id) {
+    public ResponseEntity<List<AdSell>> getAllAdsSell() {
+        try {
+            List<AdSell> adsSell = new ArrayList<>();
+            repository.findAll().forEach(adsSell::add);
+            return ResponseEntity.status(HttpStatus.OK).body(adsSell);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @Override
+    public ResponseEntity<List<AdSell>> getAllAdsSellNotSold() {
+        try {
+            //Get di tutti gli appointment
+            ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                    "http://appointment-service:8086/api/appointment",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Appointment>>() {}
+            );
+            List<Appointment> appointments = response.getBody();
+            //Get degli annunci di vendita
+            List<AdSell> adsSell = new ArrayList<>();
+            repository.findAll().forEach(adsSell::add);
 
-        ResponseEntity<List<Appointment>> response = restTemplate.exchange(
-                "http://appointment-service/api/appointment",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Appointment>>() {}
-        );
-        List<Appointment> appointments = response.getBody();
-        //Get degli annunci di vendita
-        List<AdSell> adsSell = new ArrayList<>();
-        repository.getAllAdSellForUser(id).forEach(adsSell::add);
+            //Crea lista con gli idAnnouncement di tutti gli appointment
+            List<Long> appointmentAdSellIds = appointments.stream()
+                    .map(Appointment::getIdAnnouncement)
+                    .collect(Collectors.toList());
 
-        //Crea lista con gli idAnnouncement di tutti gli appointment
-        List<Long> appointmentAdSellIds = appointments.stream()
-                .map(Appointment::getIdAnnouncement)
-                .collect(Collectors.toList());
+            //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+            List<AdSell> filteredAdSell = adsSell.stream()
+                    .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                    .collect(Collectors.toList());
 
-        //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
-        List<AdSell> filteredAdSell = adsSell.stream()
-                .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
-                .collect(Collectors.toList());
-
-        return filteredAdSell;
-
-
-
-        //List<AdSell> adsSell = new ArrayList<>();
-        //repository.getAllAdSellForUser(id).forEach(adsSell::add);
-        //return adsSell;
+            return ResponseEntity.status(HttpStatus.OK).body(filteredAdSell);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public Optional<AdSell> getAdSellById(long id) {
-        return repository.findById(id);
+    public ResponseEntity<List<AdSell>> getAllAdsSellForUser(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            ResponseEntity<List<Appointment>> response = restTemplate.exchange(
+                    "http://appointment-service/api/appointment",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Appointment>>() {}
+            );
+            List<Appointment> appointments = response.getBody();
+            //Get degli annunci di vendita
+            List<AdSell> adsSell = new ArrayList<>();
+            repository.getAllAdSellForUser(id).forEach(adsSell::add);
+
+            //Crea lista con gli idAnnouncement di tutti gli appointment
+            List<Long> appointmentAdSellIds = appointments.stream()
+                    .map(Appointment::getIdAnnouncement)
+                    .collect(Collectors.toList());
+
+            //Filtra gli AdSell che hanno ID diversi da quelli presenti negli appuntamenti
+            List<AdSell> filteredAdSell = adsSell.stream()
+                    .filter(adSell -> !appointmentAdSellIds.contains(adSell.getId()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.status(HttpStatus.OK).body(filteredAdSell);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public ResponseEntity<?> deleteAdSell(long id) {
-        repository.deleteById(id);
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "AdSell has been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+    public ResponseEntity<Optional<AdSell>> getAdSellById(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<AdSell> ad = repository.findById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(ad);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> deleteAdSell(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            repository.deleteById(id);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "AdSell has been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete ad rent");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
     public ResponseEntity<?> deleteAllAdsSell() {
-        repository.deleteAll();
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "All adsSell have been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        try {
+            repository.deleteAll();
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "All adsSell have been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all ads rent");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+        }
     }
 
     @Override
-    public ResponseEntity<AdSell> updateAdSell(long id, AdSell adSell) {
-        Optional<AdSell> adSellData = repository.findById(id);
-
-        if (adSellData.isPresent()) {
-            AdSell AdSell = adSellData.get();
-            AdSell.setPrice(adSell.getPrice());
-            AdSell.setIdBike(adSell.getIdBike());
-            repository.save(AdSell);
-            return new ResponseEntity<>(repository.save(AdSell), HttpStatus.OK);
-        } else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<AdSell> updateAdSell(Long id, AdSell adSell) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<AdSell> adSellData = repository.findById(id);
+            if (adSellData.isPresent()) {
+                AdSell AdSell = adSellData.get();
+                AdSell.setPrice(adSell.getPrice());
+                AdSell.setIdBike(adSell.getIdBike());
+                repository.save(AdSell);
+                return new ResponseEntity<>(repository.save(AdSell), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to update rent");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 
     @Override
-    public List<Bike> getBikesToSell() {
-        List<AdSell> adsSell = new ArrayList<>();
-        adsSell = this.getAllAdsSell();
-        if (!adsSell.isEmpty()) {
-            List<Bike> bikes = new ArrayList<>();
-            for (AdSell elem : adsSell) {
-                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
-                bikes.add(bike);
+    public ResponseEntity<List<Bike>> getBikesToSell() {
+        try {
+            ResponseEntity<List<AdSell>> adsSell = this.getAllAdsSell();
+            List<AdSell> l = adsSell.getBody();
+            if (!l.isEmpty()) {
+                List<Bike> bikes = new ArrayList<>();
+                for (AdSell elem : l) {
+                    Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
+                    bikes.add(bike);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(bikes);
+            } else
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain bike to rent");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+
+
+    }
+
+    public ResponseEntity<List<AdSell>> getAllAdSellByUser(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            List<AdSell> adsSell = new ArrayList<>();
+            repository.getAllAdSellByUser(id).forEach(adsSell::add);
+            return ResponseEntity.status(HttpStatus.OK).body(adsSell);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain rent by user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @Override
+    public ResponseEntity<List<Bike>> getAllBikeToSellByUser(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            ResponseEntity<List<AdSell>> adsSell = this.getAllAdSellByUser(id);
+            List<AdSell> l = adsSell.getBody();
+            if ( !l.isEmpty()) {
+                List<Bike> bikes = new ArrayList<>();
+                for ( AdSell elem : l) {
+                    Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
+                    bikes.add(bike);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(bikes);
             }
-            return bikes;
-        } else {
-            return null;
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain rent by user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    public List<AdSell> getAllAdSellByUser(long id){
-        return repository.getAllAdSellByUser(id);
-    }
-    @Override
-    public List<Bike> getAllBikeToSellByUser(long id) {
-        List<AdSell> adSells = new ArrayList<>();
-        adSells= this.getAllAdSellByUser(id);
-
-        if ( !adSells.isEmpty())
-        {
-            List<Bike> bikes = new ArrayList<>();
-            for ( AdSell elem : adSells) {
-                Bike bike = restTemplate.getForObject("http://bike-service:8087/api/bike/" + elem.getIdBike(), Bike.class);
-                bikes.add(bike);
-            }
-            return bikes;
-        }
-        else {
-            return null;
-        }
-    }
-
 }

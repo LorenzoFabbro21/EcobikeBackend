@@ -13,19 +13,19 @@ public interface PrivateService {
 
         ResponseEntity<?> savePrivate(Private user);
 
-        List<Private> getAllPrivates();
+        ResponseEntity<List<Private>> getAllPrivates();
 
-        Optional<Private> getPrivateById(long id);
+        ResponseEntity<Optional<Private>> getPrivateById(Long id);
 
-        ResponseEntity<?> deletePrivate(long id);
+        ResponseEntity<?> deletePrivate(Long id);
 
         ResponseEntity<String> deleteAllPrivates();
 
-        ResponseEntity<Private> updatePrivate(long id, @RequestBody Private userprivate);
+        ResponseEntity<Private> updatePrivate(Long id, @RequestBody Private userprivate);
 
-        Optional<Private> getPrivateByMail(String mail);
+        ResponseEntity<Optional<Private>> getPrivateByMail(String mail);
 
-        List<Booking> getAllBookings(long id);
-        List<Appointment> getAllAppointments(long id);
+        ResponseEntity<List<Booking>> getAllBookings(Long id);
+        ResponseEntity<List<Appointment>> getAllAppointments(Long id);
         ResponseEntity<String> verifyParams(String email, String password);
 }

@@ -11,10 +11,8 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.nio.charset.*;
-import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -27,77 +25,131 @@ public class PrivateController {
 
     @PostMapping(value = "")
     public ResponseEntity<?> postPrivate(@RequestBody Private user) {
-        System.out.println("ARRIVO CHIAMATA");
-        ResponseEntity<?> resp = privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
-
-        return resp;
-
+        if(user == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return privateService.savePrivate(new Private(user.getName(), user.getLastName(), user.getMail(), user.getPassword(), user.getPhoneNumber(),user.getGoogleCheck()));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/{id}")
-    public Optional<Private> getPrivate(@PathVariable("id") long id) {
-        System.out.println("Get Private...");
-        Optional<Private> userprivate;
-        userprivate = privateService.getPrivateById(id);
-        return userprivate;
+    public ResponseEntity<Optional<Private>> getPrivate(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get Private...");
+            return privateService.getPrivateById(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("")
-    public List<Private> getAllPrivate() {
-        System.out.println("Get all Privates...");
-        List<Private> userprivate;
-        userprivate= privateService.getAllPrivates();
-        return userprivate;
+    public ResponseEntity<List<Private>> getAllPrivate() {
+        try {
+            System.out.println("Get all Privates...");
+            return privateService.getAllPrivates();
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/email/{mail}")
-    public Optional<Private> getPrivateByMail(@PathVariable String mail) {
-        System.out.println("Get private by mail...");
-        Optional<Private> private_user;
-        private_user = privateService.getPrivateByMail(mail);
-        return private_user;
+    public ResponseEntity<Optional<Private>> getPrivateByMail(@PathVariable String mail) {
+        if(mail == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get private by mail...");
+            return privateService.getPrivateByMail(mail);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain private by mail");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePrivate(@PathVariable("id") long id) {
-        System.out.println("Delete Private with ID = " + id + "...");
-        return privateService.deletePrivate(id);
+    public ResponseEntity<?> deletePrivate(@PathVariable("id") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Delete Private with ID = " + id + "...");
+            return privateService.deletePrivate(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete private by id");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllPrivates() {
-        System.out.println("Delete All Privates...");
-        return privateService.deleteAllPrivates();
-
+        try {
+            System.out.println("Delete All Privates...");
+            return privateService.deleteAllPrivates();
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to delete all privates");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
-        System.out.println("Update Private with ID = " + id + "...");
-        return privateService.updatePrivate(id, userprivate);
-
+        try {
+            System.out.println("Update Private with ID = " + id + "...");
+            return privateService.updatePrivate(id, userprivate);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to update private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/verify")
     public ResponseEntity<String> verifyUser(@RequestParam String email, @RequestParam String password) {
-
-        return privateService.verifyParams(email, password);
+        try {
+            return privateService.verifyParams(email, password);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to verify user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
    
     @GetMapping("/{idPrivate}/booking")
-    public List<Booking> getAllBookingByPrivate(@PathVariable("idPrivate") long id) {
-        System.out.println("Get all Bookings by idPrivate...");
-        List<Booking> bookings = new ArrayList<>();
-        bookings= privateService.getAllBookings(id);
-        return bookings;
-        
+    public ResponseEntity<List<Booking>> getAllBookingByPrivate(@PathVariable("idPrivate") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get all Bookings by idPrivate...");
+            return privateService.getAllBookings(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all booking by private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     
 
     @GetMapping("/{idPrivate}/appointments")
-    public List<Appointment> getAllAppointmentsByPrivate(@PathVariable("idPrivate") long id) {
-        System.out.println("Get all Appointements by idPrivate...");
-        List<Appointment> appointments = new ArrayList<>();
-        appointments = privateService.getAllAppointments(id);
-        return appointments;
+    public ResponseEntity<List<Appointment>> getAllAppointmentsByPrivate(@PathVariable("idPrivate") Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            System.out.println("Get all Appointements by idPrivate...");
+            return privateService.getAllAppointments(id);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all appointment by private");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

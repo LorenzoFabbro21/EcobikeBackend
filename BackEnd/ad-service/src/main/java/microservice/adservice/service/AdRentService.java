@@ -15,21 +15,21 @@ public interface AdRentService {
 
     ResponseEntity<?> saveAdRent(AdRent adRent);
 
-    List<AdRent> getAllAdsRent();
+    ResponseEntity<List<AdRent>> getAllAdsRent();
 
-    List<AdRent> getAllAdsRentForUser(long id);
+    ResponseEntity<List<AdRent>> getAllAdsRentForUser(Long id);
 
-    Optional<AdRent> getAdRentById(long id);
+    ResponseEntity<Optional<AdRent>> getAdRentById(Long id);
 
-    ResponseEntity<?> deleteAdRent(long id);
+    ResponseEntity<?> deleteAdRent(Long id);
 
     ResponseEntity<?> deleteAllAdsRent();
 
-    ResponseEntity<AdRent> updateAdRent(long id, @RequestBody AdRent adRent);
+    ResponseEntity<AdRent> updateAdRent(Long id, @RequestBody AdRent adRent);
 
-    List<Bike> getBikesToRent();
+    ResponseEntity<List<Bike>> getBikesToRent();
 
-    List<Bike> getBikesUser(long id);
+    ResponseEntity<List<Bike>> getBikesUser(Long id);
 
-    List<AdRent> getAllAdRentsByUser(long id);
+    ResponseEntity<List<AdRent>> getAllAdRentsByUser(Long id);
 }

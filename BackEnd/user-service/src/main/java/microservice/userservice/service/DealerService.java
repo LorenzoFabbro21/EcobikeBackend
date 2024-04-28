@@ -11,21 +11,21 @@ import java.util.Optional;
 
 public interface DealerService {
 
-        Dealer saveDealer(Dealer dealer);
+        ResponseEntity<Dealer> saveDealer(Dealer dealer);
 
-        List<Dealer> getAllDealers();
+        ResponseEntity<List<Dealer>> getAllDealers();
 
-        Optional<Dealer> getDealerById(long id);
+        ResponseEntity<Optional<Dealer>> getDealerById(Long id);
 
-        ResponseEntity<String> deleteDealer(long id);
+        ResponseEntity<String> deleteDealer(Long id);
 
         ResponseEntity<String> deleteAllDealers();
 
-        ResponseEntity<Dealer> updateDealer( long id, @RequestBody Dealer dealer);
+        ResponseEntity<Dealer> updateDealer(Long id, @RequestBody Dealer dealer);
 
-        Optional<Dealer> getDealerByMail(String mail);
+        ResponseEntity<Optional<Dealer>> getDealerByMail(String mail);
 
-        List<Appointment> getAllAppointments(long id);
+        ResponseEntity<List<Appointment>> getAllAppointments(Long id);
 
         ResponseEntity<String> verifyParams(String email, String password);
 }

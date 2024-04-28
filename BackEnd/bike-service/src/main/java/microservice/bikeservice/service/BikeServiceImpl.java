@@ -23,80 +23,157 @@ public class BikeServiceImpl implements BikeService{
 
     @Override
     public ResponseEntity<Map<String, String>> saveBike(Bike bike) {
+        if(bike == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
+            String response = validateRequest(bike);
+            if (!response.equals("ok")) {
+                Map<String, String> errorBody = new HashMap<>();
+                errorBody.put("error", response);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+            }
+
             Bike bikeCreated = repository.save(bike);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Bike has been created!");
             body.put("id", String.valueOf(bikeCreated.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
-
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
 
-    @Override
-    public List<Bike> getAllBikes() {
-        List<Bike> bikes = new ArrayList<>();
-        repository.findAll().forEach(bikes::add);
-        return bikes;
+    private String validateRequest(Bike bike) {
+        String response = validateBikeParams(bike);
+        if (!response.equals("ok"))
+            return response;
+        return "ok";
+    }
+
+    private String validateBikeParams(Bike bike) {
+        if (bike.getBrand() == null || bike.getBrand().isEmpty())
+            return "Marca inserita non valida";
+        if (bike.getModel() == null || bike.getModel().isEmpty())
+            return "Modello inserito non valido";
+        if (bike.getColor() == null || bike.getColor().isEmpty())
+            return "Colore inserito non valido";
+        if (bike.getSize() == null || bike.getSize().isEmpty())
+            return "Taglia inserita non valida";
+        if (bike.getType() == null || bike.getType().isEmpty())
+            return "Tipo inserito non valido";
+        if (bike.getMeasure() == null || bike.getMeasure().isEmpty())
+            return "Misure inserite non valide";
+        return "ok";
     }
 
     @Override
-    public Optional<Bike> getBikeById(long id) {
-        return repository.findById(id);
+    public ResponseEntity<List<Bike>> getAllBikes() {
+        try {
+            List<Bike> bikes = new ArrayList<>();
+            repository.findAll().forEach(bikes::add);
+            return ResponseEntity.status(HttpStatus.OK).body(bikes);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to obtain all rent");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Optional<Bike>> getBikeById(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findById(id));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     @Transactional
-    public List<Bike> getBikeByBrand(String brand) {
-        List<Bike> bike = repository.findBikeByBrand(brand);
-        return  bike;
+    public ResponseEntity<List<Bike>> getBikeByBrand(String brand) {
+        if(brand == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findBikeByBrand(brand));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public ResponseEntity<?> deleteBike(long id) {
-        repository.deleteById(id);
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "Bike has been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-
+    public ResponseEntity<?> deleteBike(Long id) {
+        if(id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            repository.deleteById(id);
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "Bike has been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
     public ResponseEntity<?> deleteAllBikes() {
-        repository.deleteAll();
-        Map<String, String> body = new HashMap<>();
-        body.put("messageResponse", "All bikes have been deleted!");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        try {
+            repository.deleteAll();
+            Map<String, String> body = new HashMap<>();
+            body.put("messageResponse", "All bikes have been deleted!");
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override
-    public ResponseEntity<Bike> updateBike(long id, Bike bike) {
-        Optional<Bike> bikeData = repository.findById(id);
-
-        if(bikeData.isPresent()) {
-            Bike Bike = bikeData.get();
-            Bike.setBrand(bike.getBrand());
-            Bike.setModel(bike.getModel());
-            Bike.setSize(bike.getSize());
-            Bike.setType(bike.getType());
-            Bike.setColor(bike.getColor());
-            Bike.setMeasure(bike.getMeasure());
-            Bike.setImg(bike.getImg());
-            repository.save(Bike);
-            return new ResponseEntity<>(repository.save(Bike), HttpStatus.OK);
+    public ResponseEntity<Bike> updateBike(Long id, Bike bike) {
+        if(id == null || bike == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            Optional<Bike> bikeData = repository.findById(id);
+            if(bikeData.isPresent()) {
+                Bike Bike = bikeData.get();
+                Bike.setBrand(bike.getBrand());
+                Bike.setModel(bike.getModel());
+                Bike.setSize(bike.getSize());
+                Bike.setType(bike.getType());
+                Bike.setColor(bike.getColor());
+                Bike.setMeasure(bike.getMeasure());
+                Bike.setImg(bike.getImg());
+                repository.save(Bike);
+                return new ResponseEntity<>(repository.save(Bike), HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     @Transactional
-    public List<Bike> findFilterBike(String brand, String color, String size) {
-        List<Bike> obj = repository.findFilterBike(brand,color,size);
-        return obj;
+    public ResponseEntity<List<Bike>> findFilterBike(String brand, String color, String size) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findFilterBike(brand, color, size));
+        } catch (Exception e) {
+            Map<String, String> errorBody = new HashMap<>();
+            errorBody.put("error", "Failed to create bike");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

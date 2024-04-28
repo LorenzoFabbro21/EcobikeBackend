@@ -13,15 +13,15 @@ public interface RecensioneService {
 
     ResponseEntity<?> saveReview(Recensione review);
 
-    List<Recensione> getAllReview();
+    ResponseEntity<List<Recensione>> getAllReview();
 
-    Optional<Recensione> getReviewById(long id);
+    ResponseEntity<Optional<Recensione>> getReviewById(Long id);
 
-    ResponseEntity<?> deleteReview(long id);
+    ResponseEntity<?> deleteReview(Long id);
 
     ResponseEntity<?> deleteAllReview();
 
-    ResponseEntity<Recensione> updateReview(long id, @RequestBody Recensione review);
-    User getUserFromReview(long id);
-    List<Recensione> getAllReviewByidShop(long id);
+    ResponseEntity<Recensione> updateReview(Long id, @RequestBody Recensione review);
+    ResponseEntity<User> getUserFromReview(Long id);
+    ResponseEntity<List<Recensione>> getAllReviewByidShop(Long id);
 }
