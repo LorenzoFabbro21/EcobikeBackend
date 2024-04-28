@@ -31,9 +31,9 @@ public class AdRentServiceImpl implements AdRentService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             String response = validateRequest(adRent);
-            if (!response.equals("ok"))
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-
+            if (!response.equals("ok")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
             AdRent adRentCreated = repository.save(adRent);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Rent successfully created");
@@ -54,7 +54,7 @@ public class AdRentServiceImpl implements AdRentService {
     }
 
     private String validateAdSellParams(AdRent adRent) {
-        if (adRent.getPrice() < 0)
+        if (adRent.getPrice() <= 0)
             return "Prezzo inserito non valido";
         return "ok";
     }

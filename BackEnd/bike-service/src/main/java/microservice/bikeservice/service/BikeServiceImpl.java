@@ -22,15 +22,13 @@ public class BikeServiceImpl implements BikeService{
 
 
     @Override
-    public ResponseEntity<Map<String, String>> saveBike(Bike bike) {
+    public ResponseEntity<?> saveBike(Bike bike) {
         if(bike == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             String response = validateRequest(bike);
             if (!response.equals("ok")) {
-                Map<String, String> errorBody = new HashMap<>();
-                errorBody.put("error", response);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
             Bike bikeCreated = repository.save(bike);

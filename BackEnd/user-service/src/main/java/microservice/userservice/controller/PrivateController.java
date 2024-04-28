@@ -32,7 +32,7 @@ public class PrivateController {
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create private");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
 

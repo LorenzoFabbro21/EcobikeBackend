@@ -51,18 +51,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void signup(UserDetails userDetails) {
+    public ResponseEntity<?> signup(UserDetails userDetails) {
         userDetails.setGoogleCheck(false);
 
-        User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck());
-
-        rabbitMQSender.sendSignUp(u);
-
-
-        /*
+        //User u = new User(userDetails.getName(), userDetails.getLastName(), userDetails.getMail(), userDetails.getPassword(), userDetails.getPhoneNumber(), userDetails.getGoogleCheck())
+        //rabbitMQSender.sendSignUp(u);
         try {
             HttpStatusCode responseStatusCode = restTemplate.postForEntity("http://user-service:8081/api/private", userDetails,String.class).getStatusCode();
-
             if (responseStatusCode != HttpStatus.OK) {
                 return ResponseEntity.status(responseStatusCode).body("Invalid request");
             }
@@ -74,8 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error occurred");
-        }        */
-
+        }
     }
 
     @Override

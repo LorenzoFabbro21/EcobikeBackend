@@ -38,18 +38,28 @@ public class BikeController {
         try {
             Bike bike = param.getBike();
             AdSell adSell = param.getAdSell();
-            ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
-            Map<String, String> responseBody = response.getBody();
-            System.out.println("idididididididid " + responseBody.get("id"));
+            System.out.println("PREZZO="+ adSell.getPrice());
+            if (adSell.getPrice()<=0){
+                System.out.println("CIAO2");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
+            }
+            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
 
-            String id = responseBody.get("id");
-            adSell.setIdBike(Integer.parseInt(id));
+            if (response.getStatusCode() == HttpStatus.OK) {
+                Map<String, String> responseBody = (Map<String, String>) response.getBody();
+                String id = responseBody.get("id");
+                adSell.setIdBike(Integer.parseInt(id));
 
-            rabbitMQSender.sendAddBikeAdSell(adSell);
+                // Invia l'annuncio di vendita alla coda RabbitMQ
+                rabbitMQSender.sendAddBikeAdSell(adSell);
 
-            Map<String, String> body = new HashMap<>();
-            body.put("messageResponse", "Sell successfully created");
-            return new ResponseEntity<Map>(body, HttpStatus.OK);
+                // Prepara la risposta da inviare al client
+                Map<String, String> body = new HashMap<>();
+                body.put("messageResponse", "Sell successfully created");
+                return ResponseEntity.ok(body);
+            } else {
+                return response;
+            }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to post ad rent");
@@ -64,21 +74,28 @@ public class BikeController {
         try {
             Bike bike = param.getBike();
             AdRent adRent = param.getAdRent();
-            ResponseEntity<Map<String, String>> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
-            Map<String, String> responseBody = response.getBody();
+            System.out.println("PREZZO="+ adRent.getPrice());
+            if (adRent.getPrice()<=0){
+                System.out.println("CIAO1");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
+            }
+            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
 
-            System.out.println("idididididididid " + responseBody.get("id"));
-            String id = responseBody.get("id");
-            adRent.setIdBike(Integer.parseInt(id));
+            if (response.getStatusCode() == HttpStatus.OK) {
+                Map<String, String> responseBody = (Map<String, String>) response.getBody();
+                String id = responseBody.get("id");
+                adRent.setIdBike(Integer.parseInt(id));
 
-            System.out.println(adRent);
-            System.out.println(bike);
+                // Invia l'annuncio di vendita alla coda RabbitMQ
+                rabbitMQSender.sendAddBikeAdRent(adRent);
 
-            rabbitMQSender.sendAddBikeAdRent(adRent);
-
-            Map<String, String> body = new HashMap<>();
-            body.put("messageResponse", "Rent successfully created");
-            return new ResponseEntity<Map>(body, HttpStatus.OK);
+                // Prepara la risposta da inviare al client
+                Map<String, String> body = new HashMap<>();
+                body.put("messageResponse", "Rent successfully created");
+                return ResponseEntity.ok(body);
+            } else {
+                return response;
+            }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to post ad rent");

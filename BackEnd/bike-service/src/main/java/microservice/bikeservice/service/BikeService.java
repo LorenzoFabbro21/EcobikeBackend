@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface BikeService {
 
-    ResponseEntity<Map<String, String>> saveBike(Bike bike);
+    ResponseEntity<?> saveBike(Bike bike);
 
     ResponseEntity<List<Bike>> getAllBikes();
 
