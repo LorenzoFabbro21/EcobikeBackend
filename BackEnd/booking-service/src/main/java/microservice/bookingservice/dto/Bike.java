@@ -24,7 +24,7 @@ public class Bike {
 
     private String color;
 
-    private String measure;
+    private String info;
 
     private String img;
 }

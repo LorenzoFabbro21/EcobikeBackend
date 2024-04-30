@@ -26,18 +26,15 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public ResponseEntity<?> saveShop(Shop shop) {
+        if(shop == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
-            String response = validateRequest(shop);
-            if (!response.equals("ok"))
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-
-            Shop reviewCreated = repository.save(shop);
+            Shop s = repository.save(shop);
             Map<String, String> body = new HashMap<>();
             body.put("messageResponse", "Shop successfully created");
-            body.put("id", String.valueOf(reviewCreated.getId()));
+            body.put("id", String.valueOf(s.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
-
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to create a shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
@@ -45,12 +42,13 @@ public class ShopServiceImpl implements ShopService {
     }
 
 
-    private String validateRequest(Shop shop) {
+    public String validateRequest(Shop shop) {
         String response = validateShopParams(shop);
         if (!response.equals("ok"))
             return response;
         return "ok";
     }
+
 
     private String validateShopParams(Shop shop) {
         if (shop.getName() == null || shop.getName().isEmpty()) {

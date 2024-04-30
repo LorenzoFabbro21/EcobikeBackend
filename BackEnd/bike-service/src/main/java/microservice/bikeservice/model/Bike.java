@@ -37,20 +37,20 @@ public class Bike {
     @Column(name = "color")
     private String color;
 
-    @Column(name = "measure")
-    private String measure;
+    @Column(name = "info")
+    private String info;
 
     @Column(name = "img")
     @Lob
     private String img;
 
-    public Bike(String brand, String model, String size, String type, String color, String measure, String img) {
+    public Bike(String brand, String model, String size, String type, String color, String info, String img) {
         this.brand = brand;
         this.model = model;
         this.size = size;
         this.type = type;
         this.color = color;
-        this.measure = measure;
+        this.info = info;
         this.img = img;
     }
 }

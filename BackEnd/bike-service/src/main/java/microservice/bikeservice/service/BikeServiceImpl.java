@@ -61,7 +61,7 @@ public class BikeServiceImpl implements BikeService{
             return "Taglia inserita non valida";
         if (bike.getType() == null || bike.getType().isEmpty())
             return "Tipo inserito non valido";
-        if (bike.getMeasure() == null || bike.getMeasure().isEmpty())
+        if (bike.getInfo() == null || bike.getInfo().isEmpty())
             return "Misure inserite non valide";
         return "ok";
     }
@@ -149,7 +149,7 @@ public class BikeServiceImpl implements BikeService{
                 Bike.setSize(bike.getSize());
                 Bike.setType(bike.getType());
                 Bike.setColor(bike.getColor());
-                Bike.setMeasure(bike.getMeasure());
+                Bike.setInfo(bike.getInfo());
                 Bike.setImg(bike.getImg());
                 repository.save(Bike);
                 return new ResponseEntity<>(repository.save(Bike), HttpStatus.OK);

@@ -7,7 +7,7 @@ export interface Bicicletta {
   color?: string,
   size?: Taglia,
   type?: string,
-  measure?: string,
+  info?: string,
   img?: string
 
 }

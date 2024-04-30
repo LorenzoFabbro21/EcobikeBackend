@@ -41,7 +41,7 @@ public class BikeController {
             if (adSell.getPrice()<=0){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
             }
-            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getInfo(), bike.getImg()));
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 Map<String, String> responseBody = (Map<String, String>) response.getBody();
@@ -75,7 +75,7 @@ public class BikeController {
             if (adRent.getPrice()<=0){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prezzo non valido");
             }
-            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getMeasure(), bike.getImg()));
+            ResponseEntity<?> response = bikeService.saveBike(new Bike(bike.getBrand(), bike.getModel(), bike.getSize(), bike.getType(), bike.getColor(), bike.getInfo(), bike.getImg()));
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 Map<String, String> responseBody = (Map<String, String>) response.getBody();

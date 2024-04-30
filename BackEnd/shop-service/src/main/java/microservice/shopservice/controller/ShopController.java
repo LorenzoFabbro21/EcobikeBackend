@@ -35,21 +35,29 @@ public class ShopController {
     private RestTemplate restTemplate;
 
     @PostMapping(value = "")
-    public ResponseEntity<User> postShop(@RequestBody ShopParam param) {
+    public ResponseEntity<?> postShop(@RequestBody ShopParam param) {
         if(param == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
             System.out.println("Post shop...");
             Shop shop = param.getShop();
             Private user = param.getUser();
-            rabbitMQSender.sendDeleteUser(user);
-            rabbitMQSender.sendCreateDealer(user);
-            User d = restTemplate.getForObject("http://user-service/api/dealer/email/" + user.getMail(), User.class);
-            shop.setIdUser(d.getId());
-            shopService.saveShop(shop);
-            User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + shop.getIdUser(), User.class);
-            ResponseEntity<User> r = ResponseEntity.status(HttpStatus.OK).body(dealer);
-            return r;
+            String res = shopService.validateRequest(shop);
+            if (!res.equals("ok"))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+            else {
+                rabbitMQSender.sendDeleteUser(user);
+                rabbitMQSender.sendCreateDealer(user);
+                User d = restTemplate.getForObject("http://user-service/api/dealer/email/" + user.getMail(), User.class);
+                shop.setIdUser(d.getId());
+                ResponseEntity<?> response = shopService.saveShop(shop);
+                if(response.getStatusCode() == HttpStatus.OK) {
+                    User dealer = restTemplate.getForObject("http://user-service/api/dealer/" + shop.getIdUser(), User.class);
+                    ResponseEntity<User> r = ResponseEntity.status(HttpStatus.OK).body(dealer);
+                    return r;
+                } else
+                    return response;
+            }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
             errorBody.put("error", "Failed to post shop");

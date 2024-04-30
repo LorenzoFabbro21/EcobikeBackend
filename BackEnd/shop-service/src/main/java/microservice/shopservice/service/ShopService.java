@@ -27,4 +27,6 @@ public interface ShopService {
     ResponseEntity<User> getUserFromShop(Long id);
 
     ResponseEntity<Optional<Shop>> getShopFromUser(Long id);
+
+    String validateRequest(Shop shop);
 }

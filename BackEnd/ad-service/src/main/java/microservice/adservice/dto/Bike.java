@@ -14,7 +14,7 @@ public class Bike {
     private String size;
     private String type;
     private String color;
-    private String measure;
+    private String info;
     private String img;
 
 }
