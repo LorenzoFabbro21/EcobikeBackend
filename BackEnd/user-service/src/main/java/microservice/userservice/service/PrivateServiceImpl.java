@@ -75,7 +75,7 @@ public class PrivateServiceImpl implements PrivateService {
             return ResponseEntity.status(HttpStatus.OK).body(privates);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain al privates");
+            errorBody.put("error", "Failed to obtain all privates");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

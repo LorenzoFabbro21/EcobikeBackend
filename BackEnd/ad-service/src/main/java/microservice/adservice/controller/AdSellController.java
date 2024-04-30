@@ -66,7 +66,7 @@ public class AdSellController {
             return adSellService.getAllAdsSellNotSold();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all sell");
+            errorBody.put("error", "Failed to obtain all sell not sold");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -92,7 +92,7 @@ public class AdSellController {
             return adSellService.getBikesToSell();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all adsell for user");
+            errorBody.put("error", "Failed to obtain bikes to sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

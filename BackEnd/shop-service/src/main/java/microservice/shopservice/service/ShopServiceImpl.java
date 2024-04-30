@@ -165,7 +165,7 @@ public class ShopServiceImpl implements ShopService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to update sho");
+            errorBody.put("error", "Failed to update shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

@@ -174,7 +174,7 @@ public class ShopController {
             return shopService.updateShop(id, shop);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete all shops");
+            errorBody.put("error", "Failed to update shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

@@ -74,7 +74,7 @@ public class BikeServiceImpl implements BikeService{
             return ResponseEntity.status(HttpStatus.OK).body(bikes);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all rent");
+            errorBody.put("error", "Failed to obtain all bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -87,21 +87,21 @@ public class BikeServiceImpl implements BikeService{
             return ResponseEntity.status(HttpStatus.OK).body(repository.findById(id));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain bike by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @Override
     @Transactional
-    public ResponseEntity<List<Bike>> getBikeByBrand(String brand) {
-        if(brand == null)
+    public ResponseEntity<List<Bike>> getBikeByType(String type) {
+        if(type == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(repository.findBikeByBrand(brand));
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findBikeByType(type));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain bike by type");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -117,7 +117,7 @@ public class BikeServiceImpl implements BikeService{
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -131,7 +131,7 @@ public class BikeServiceImpl implements BikeService{
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete all bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -158,7 +158,7 @@ public class BikeServiceImpl implements BikeService{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to update bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -170,7 +170,7 @@ public class BikeServiceImpl implements BikeService{
             return ResponseEntity.status(HttpStatus.OK).body(repository.findFilterBike(brand, color, size));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain filtered bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

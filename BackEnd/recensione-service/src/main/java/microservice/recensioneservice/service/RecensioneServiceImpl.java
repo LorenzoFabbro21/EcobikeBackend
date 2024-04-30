@@ -112,7 +112,7 @@ public class RecensioneServiceImpl implements RecensioneService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete all review");
+            errorBody.put("error", "Failed to delete all reviews");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

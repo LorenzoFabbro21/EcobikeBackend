@@ -12,6 +12,6 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
     @Query("SELECT b FROM Bike b WHERE " + "(?1 IS NULL OR b.brand = ?1) " + "AND (?2 IS NULL OR b.color = ?2) " + "AND (?3 IS NULL OR b.size = ?3)")
     public List<Bike> findFilterBike (String brand, String color, String size);
 
-    @Query("SELECT b from Bike b WHERE b.brand = ?1")
-    public List<Bike> findBikeByBrand (String brand);
+    @Query("SELECT b from Bike b WHERE b.type = ?1")
+    public List<Bike> findBikeByType (String type);
 }

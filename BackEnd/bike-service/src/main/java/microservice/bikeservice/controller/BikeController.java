@@ -60,7 +60,7 @@ public class BikeController {
             }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to post bike to sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -94,7 +94,7 @@ public class BikeController {
             }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to post bike to rent");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -110,22 +110,22 @@ public class BikeController {
             return bikeService.getBikeById(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
 
-    @GetMapping("/brand/{brand}")
-    public ResponseEntity<List<Bike>> getSimilarBike(@PathVariable String brand) {
-        if(brand == null)
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<Bike>> getSimilarBike(@PathVariable String type) {
+        if(type == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
-            System.out.println("Get similar bike to " + brand + "...");
-            return bikeService.getBikeByBrand(brand);
+            System.out.println("Get similar bike to " + type + "...");
+            return bikeService.getBikeByType(type);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain similar bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -138,7 +138,7 @@ public class BikeController {
             return bikeService.getAllBikes();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -151,7 +151,7 @@ public class BikeController {
             return bikeService.findFilterBike(brand, color, size);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain bikes filtered");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -165,7 +165,7 @@ public class BikeController {
             return bikeService.deleteBike(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -177,7 +177,7 @@ public class BikeController {
             return  bikeService.deleteAllBikes();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete all bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -191,7 +191,7 @@ public class BikeController {
             return bikeService.updateBike(id, bike);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to update bike");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

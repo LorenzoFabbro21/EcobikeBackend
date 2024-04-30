@@ -44,7 +44,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to create ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
@@ -71,7 +71,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(adsSell);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all ads sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -103,7 +103,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(filteredAdSell);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all ads sell notsold");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -137,7 +137,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(filteredAdSell);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all ads sell for user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -151,7 +151,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(ad);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain ad sell by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -167,7 +167,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete ad rent");
+            errorBody.put("error", "Failed to delete ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
@@ -181,7 +181,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to delete all ads rent");
+            errorBody.put("error", "Failed to delete all ads sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
@@ -202,7 +202,7 @@ public class AdSellServiceImpl implements AdSellService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to update rent");
+            errorBody.put("error", "Failed to update ad sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -224,7 +224,7 @@ public class AdSellServiceImpl implements AdSellService {
                 return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain bike to rent");
+            errorBody.put("error", "Failed to obtain bike to sell");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 
@@ -241,7 +241,7 @@ public class AdSellServiceImpl implements AdSellService {
             return ResponseEntity.status(HttpStatus.OK).body(adsSell);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain rent by user");
+            errorBody.put("error", "Failed to obtain sell by user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -264,7 +264,7 @@ public class AdSellServiceImpl implements AdSellService {
                 return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain rent by user");
+            errorBody.put("error", "Failed to obtain bike to sell by user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

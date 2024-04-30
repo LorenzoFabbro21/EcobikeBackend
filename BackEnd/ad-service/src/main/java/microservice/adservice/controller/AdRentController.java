@@ -53,7 +53,7 @@ public class AdRentController {
             return adRentService.getAllAdsRent();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all rent");
+            errorBody.put("error", "Failed to obtain all rents");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

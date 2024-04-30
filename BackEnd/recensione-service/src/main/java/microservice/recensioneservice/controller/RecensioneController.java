@@ -56,7 +56,7 @@ public class RecensioneController  {
             return reviewService.getAllReview();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all review by id shop");
+            errorBody.put("error", "Failed to obtain all review");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -70,7 +70,7 @@ public class RecensioneController  {
             return reviewService.getUserFromReview(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all review by id shop");
+            errorBody.put("error", "Failed to obtain user from shop id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -85,7 +85,7 @@ public class RecensioneController  {
             return reviewService.deleteReview(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all review by id shop");
+            errorBody.put("error", "Failed to delete review by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -96,7 +96,7 @@ public class RecensioneController  {
             return reviewService.deleteAllReview();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all review by id shop");
+            errorBody.put("error", "Failed to delete all review");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -110,7 +110,7 @@ public class RecensioneController  {
             return reviewService.updateReview(id,review);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to obtain all review by id shop");
+            errorBody.put("error", "Failed to update shop");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

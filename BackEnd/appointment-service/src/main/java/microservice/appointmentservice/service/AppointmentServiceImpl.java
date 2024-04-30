@@ -45,7 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to create appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
         }
     }
@@ -72,7 +72,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(appointments);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all appointments");
             System.out.println("errore in get all appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -88,7 +88,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(a);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain appointment by id");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -105,7 +105,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -120,7 +120,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(body);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to delete all appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -142,7 +142,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to update appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -156,7 +156,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(appointments);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all appointment by user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -198,7 +198,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(bikeUser);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain all bikes sold");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -231,7 +231,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to create bike");
+            errorBody.put("error", "Failed to obtain personal buy");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

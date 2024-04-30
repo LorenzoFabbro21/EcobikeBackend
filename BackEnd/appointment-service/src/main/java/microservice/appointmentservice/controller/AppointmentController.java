@@ -27,7 +27,7 @@ public class AppointmentController {
             return  appointmentService.saveAppointment(new Appointment(appointment.getId(), appointment.getIdUser(), appointment.getIdAnnouncement(), appointment.getDate()));
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to post appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -41,7 +41,7 @@ public class AppointmentController {
             return appointmentService.getAppointmentById(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -53,7 +53,7 @@ public class AppointmentController {
             return appointmentService.getAllAppointments();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -67,7 +67,7 @@ public class AppointmentController {
             return appointmentService.deleteAppointment(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -78,7 +78,7 @@ public class AppointmentController {
             return appointmentService.deleteAllAppointments();
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to delete all appointments");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -92,7 +92,7 @@ public class AppointmentController {
             return appointmentService.updateAppointment(id,appointment);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to update appointment");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -106,7 +106,7 @@ public class AppointmentController {
             return appointmentService.getAllAppointmentsByUser(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all appointment by user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -118,7 +118,7 @@ public class AppointmentController {
             return appointmentService.getAllBikesSold(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain all bikes sold");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -130,7 +130,7 @@ public class AppointmentController {
             return appointmentService.getPersonalBuy(id);
         } catch (Exception e) {
             Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Failed to post ad rent");
+            errorBody.put("error", "Failed to obtain personal buy");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
