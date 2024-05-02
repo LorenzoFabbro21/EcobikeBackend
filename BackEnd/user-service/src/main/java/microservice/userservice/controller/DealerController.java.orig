@@ -25,9 +25,7 @@ public class DealerController {
     @Operation(summary = "Create a new dealer", description = "Create a new dealer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+            @ApiResponse(responseCode = "400", description = "Invalid request")})
     @PostMapping(value = "")
     public ResponseEntity<Dealer> postDealer(@RequestBody Dealer dealer) {
         if(dealer == null)
@@ -44,8 +42,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer found"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealer not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Dealer>> getDealer(@PathVariable Long id) {
@@ -66,8 +63,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer found"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealer not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
     })
     @GetMapping("/email/{mail}")
     public ResponseEntity<Optional<Dealer>> getDealerByMail(@PathVariable String mail) {
@@ -87,8 +83,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the dealers"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealers not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealers not found")
     })
     @GetMapping("")
     public ResponseEntity<List<Dealer>> getAllDealer() {
@@ -106,8 +101,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer deleted"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealer not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDealer(@PathVariable("id") Long id) {
@@ -122,12 +116,19 @@ public class DealerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+<<<<<<< HEAD
+=======
     @Operation(summary = "Delete all dealers", description = "Delete all dealers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealers deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid request")
     })
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllDealers() {
+        System.out.println("Delete All Dealers...");
+>>>>>>> origin/api
+
+
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllDealers() {
         try {
@@ -144,8 +145,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dealer updated"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealer not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Dealer> updateDealer(@PathVariable("id") Long id, @RequestBody Dealer dealer) {
@@ -178,8 +178,7 @@ public class DealerController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Appointments found"),
             @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Dealer not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Dealer not found")
     })
     @GetMapping("/{idDealer}/appointments")
     public ResponseEntity<List<Appointment>> getAllAppointmentsByDealer(@PathVariable("idDealer") Long id) {

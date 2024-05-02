@@ -8,6 +8,10 @@ import microservice.appointmentservice.service.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 
 import java.util.*;
 
@@ -19,6 +23,12 @@ import java.util.*;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
+    @Operation(summary = "Create a new appointment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointment created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping(value = "")
     public ResponseEntity<?> postAppointment(@RequestBody Appointment appointment) {
         if(appointment == null)
@@ -32,6 +42,13 @@ public class AppointmentController {
         }
     }
 
+    @Operation(summary = "Get an appointment by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointment found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Appointment>> getAppointment(@PathVariable("id") Long id) {
         if(id == null)
@@ -45,7 +62,13 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
+    @Operation(summary = "Get all appointments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointments not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("")
     public ResponseEntity<List<Appointment>> getAllAppointment() {
         try {
@@ -58,6 +81,13 @@ public class AppointmentController {
         }
     }
 
+    @Operation(summary = "Delete an appointment by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointment deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAppointment(@PathVariable("id") Long id) {
         if(id == null)
@@ -71,6 +101,13 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @Operation(summary = "Delete all appointments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointments not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllAppointments() {
         try {
@@ -83,6 +120,13 @@ public class AppointmentController {
         }
     }
 
+    @Operation(summary = "Update an appointment by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointment updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Appointment> updateAppointment(@PathVariable("id") Long id, @RequestBody Appointment appointment) {
         if(id == null || appointment == null)
@@ -97,6 +141,13 @@ public class AppointmentController {
         }
     }
 
+    @Operation(summary = "Get all appointments by idUser")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Appointments not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/user/{idUser}")
     public ResponseEntity<List<Appointment>> getAllAppointmentByUser(@PathVariable("idUser") Long id) {
         if(id == null)
@@ -111,6 +162,13 @@ public class AppointmentController {
         }
     }
 
+    @Operation(summary = "Get all bikes sold by idUser")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bikes sold found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Bikes sold not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/user/{idUser}/bikes")
     public ResponseEntity<List<BikeUser>> getAllBikesSold(@PathVariable("idUser") Long id) {
         try {
@@ -123,6 +181,14 @@ public class AppointmentController {
         }
     }
 
+
+    @Operation(summary = "Get all personal buy")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bikes sold found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Personal buy not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/personal/user/{idPrivate}/bikes")
     public ResponseEntity<List<BikeUser>> getPersonalBuy(@PathVariable("idPrivate") Long id) {
         try {

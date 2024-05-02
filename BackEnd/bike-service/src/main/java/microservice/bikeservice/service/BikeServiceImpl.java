@@ -61,8 +61,6 @@ public class BikeServiceImpl implements BikeService{
             return "Taglia inserita non valida";
         if (bike.getType() == null || bike.getType().isEmpty())
             return "Tipo inserito non valido";
-        if (bike.getInfo() == null || bike.getInfo().isEmpty())
-            return "Misure inserite non valide";
         return "ok";
     }
 

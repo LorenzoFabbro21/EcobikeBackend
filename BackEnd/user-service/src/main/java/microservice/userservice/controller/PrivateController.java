@@ -1,5 +1,8 @@
 package microservice.userservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import microservice.userservice.model.*;
@@ -23,6 +26,12 @@ public class PrivateController {
 
     private final PrivateService privateService;
 
+    @Operation(summary = "Create a new private", description = "Create a new private")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping(value = "")
     public ResponseEntity<?> postPrivate(@RequestBody Private user) {
         if(user == null)
@@ -36,6 +45,13 @@ public class PrivateController {
         }
     }
 
+    @Operation(summary = "Get a private", description = "Create a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Private>> getPrivate(@PathVariable("id") Long id) {
         if(id == null)
@@ -50,6 +66,12 @@ public class PrivateController {
         }
     }
 
+    @Operation(summary = "Get all privates", description = "Get all privates")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Privates found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("")
     public ResponseEntity<List<Private>> getAllPrivate() {
         try {
@@ -62,6 +84,13 @@ public class PrivateController {
         }
     }
 
+    @Operation(summary = "Get a private", description = "Get a private by email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/email/{mail}")
     public ResponseEntity<Optional<Private>> getPrivateByMail(@PathVariable String mail) {
         if(mail == null)
@@ -76,6 +105,13 @@ public class PrivateController {
         }
     }
 
+    @Operation(summary = "Delete a private", description = "Delete a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrivate(@PathVariable("id") Long id) {
         if(id == null)
@@ -89,6 +125,12 @@ public class PrivateController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @Operation(summary = "Delete all privates", description = "Delete all privates")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Privates deleted"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("")
     public ResponseEntity<String> deleteAllPrivates() {
         try {
@@ -101,6 +143,13 @@ public class PrivateController {
         }
     }
 
+    @Operation(summary = "Update a private", description = "Update a private by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Private updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Private> updatePrivates(@PathVariable("id") long id, @RequestBody Private userprivate) {
         try {
@@ -123,7 +172,14 @@ public class PrivateController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-   
+
+    @Operation(summary = "Get all bookings", description = "Get all bookings by a idDealer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bookings found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{idPrivate}/booking")
     public ResponseEntity<List<Booking>> getAllBookingByPrivate(@PathVariable("idPrivate") Long id) {
         if(id == null)
@@ -137,8 +193,15 @@ public class PrivateController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
 
+
+    @Operation(summary = "Get all appointments", description = "Get all appointments by a idPrivate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointments found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "404", description = "Private not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{idPrivate}/appointments")
     public ResponseEntity<List<Appointment>> getAllAppointmentsByPrivate(@PathVariable("idPrivate") Long id) {
         if(id == null)

@@ -27,7 +27,11 @@ public interface AdSellService {
         ResponseEntity<List<Bike>> getBikesToSell();
         ResponseEntity<List<Bike>> getAllBikeToSellByUser(Long id);
 
+<<<<<<< HEAD
         ResponseEntity<List<AdSell>> getAllAdSellByUser(Long id);
+=======
+        List<AdSell> getAllAdSellByUser(long id);
 
 
+>>>>>>> origin/api
 }

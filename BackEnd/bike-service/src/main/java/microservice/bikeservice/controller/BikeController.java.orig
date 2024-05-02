@@ -32,12 +32,10 @@ public class BikeController {
 
     private final BikeService bikeService;
     private final RabbitMQSender rabbitMQSender;
-    
-    @Operation(summary = "Create a bike and adsell")
+    @Operation(summary = "Create a bike")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Bike and adsell created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "200", description = "Bike created"),
+            @ApiResponse(responseCode = "400", description = "Invalid order request")
     })
     @PostMapping(value = "/sell")
     public ResponseEntity<?> postBikeSell(@RequestBody BikeAdSellParam param) {
@@ -73,13 +71,6 @@ public class BikeController {
         }
     }
 
-
-    @Operation(summary = "Create a bike and adrent")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Bike and adrent created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     @PostMapping(value = "/rent")
     public ResponseEntity<?> postBikeRent(@RequestBody BikeAdRentParam param) {
         if(param == null)
@@ -115,12 +106,7 @@ public class BikeController {
     }
 
 
-    @Operation(summary = "Get bike")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Bike found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Bike>> getBike(@PathVariable("id") Long id) {
         if(id == null)
@@ -135,13 +121,7 @@ public class BikeController {
         }
     }
 
-    @Operation(summary = "Get similar bikes")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Bikes found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Bikes not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Bike>> getSimilarBike(@PathVariable String type) {
         if(type == null)
@@ -160,9 +140,8 @@ public class BikeController {
     @Operation(summary = "Get all bikes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bikes found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Bikes not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes not found")
     })
     @GetMapping("")
     public ResponseEntity<List<Bike>> getAllBikes() {
@@ -179,8 +158,7 @@ public class BikeController {
     @Operation(summary = "Get all bikes by filter")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bikes filtered found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
     })
     @GetMapping("/filter")
     public ResponseEntity<List<Bike>> getBikesFilter(@RequestParam(name = "brand",required = false) String brand,
@@ -198,9 +176,8 @@ public class BikeController {
     @Operation(summary = "Delete a bike by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bike deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Bike not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bike not found")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBike(@PathVariable("id") Long id) {
@@ -219,12 +196,12 @@ public class BikeController {
     @Operation(summary = "Delete all bikes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bikes deleted"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Bikes not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bikes not found")
     })
     @DeleteMapping("")
-    public ResponseEntity<?> deleteAllBikes() {
+<<<<<<< HEAD
+    public ResponseEntity<?> deleteAllSBikes() {
         try {
             System.out.println("Delete All bikes...");
             return  bikeService.deleteAllBikes();
@@ -233,14 +210,20 @@ public class BikeController {
             errorBody.put("error", "Failed to delete all bikes");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+=======
+    public ResponseEntity<?> deleteAllBikes() {
+
+        System.out.println("Delete All bikes...");
+        return  bikeService.deleteAllBikes();
+
+>>>>>>> origin/api
     }
 
     @Operation(summary = "Update a bike by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bike updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request"),
-            @ApiResponse(responseCode = "404", description = "Bike not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid order request"),
+            @ApiResponse(responseCode = "404", description = "Bike not found")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Bike> updateBike(@PathVariable("id") Long id, @RequestBody Bike bike) {
