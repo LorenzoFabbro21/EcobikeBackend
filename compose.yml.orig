@@ -131,10 +131,10 @@ services:
     networks:
       - opnet
   ## Product-Service Docker Compose Config
-  recensione-service:
-    container_name: recensione-service
-    build: BackEnd/recensione-service
-    image: lorenzofabbro/recensione-service:latest
+  review-service:
+    container_name: review-service
+    build: BackEnd/review-service
+    image: lorenzofabbro/review-service:latest
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-review:5432/review_db
       - SPRING_DATASOURCE_USERNAME=postgres

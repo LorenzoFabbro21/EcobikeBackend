@@ -17,7 +17,7 @@ import java.util.*;
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 	private final String SECRET_KEY = "secret";
 	private final Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-	private List<String> UriNotProtected = Arrays.asList("/api/adrent", "/api/adrent/bikes", "/api/adsell", "/api/adsell/bikes", "/api/bike/**", "/api/bike", "/api/private/email/", "/api/dealer/email/", "/auth/**", "/api/shop", "/api/shop/", "/api/adrent/user/{id}/bikes", "/api/adsell/user/{id}/bikes", "/api/review/idShop/", "/api/private/{id}", "/api/appointment", "api/private/");
+	private List<String> UriNotProtected = Arrays.asList("/api/adrent", "/api/adrent/bikes", "/api/adsell", "/api/adsell/bikes", "/api/bike/**", "/api/bike", "/api/private/email/", "/api/dealer/email/", "/auth/**", "/api/shop", "/api/shop/", "/api/adrent/user/{id}/bikes", "/api/adsell/user/{id}/bikes", "/api/review/idShop/", "/api/appointment", "/api/private/");
 	
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

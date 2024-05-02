@@ -28,8 +28,8 @@ spring:
           uri: http://user-service:8081
           predicates:
             - Path=/api/private/**
-        - id: recensione-service
-          uri: http://recensione-service:8082
+        - id: review-service
+          uri: http://review-service:8082
           predicates:
             - Path=/api/review/**
         - id: shop-service

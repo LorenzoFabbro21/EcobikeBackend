@@ -329,15 +329,15 @@ metadata:
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
-    io.kompose.service: recensione-service
-  name: recensione-service
+    io.kompose.service: review-service
+  name: review-service
 spec:
   ports:
     - name: "8082"
       port: 8082
       targetPort: 8082
   selector:
-    io.kompose.service: recensione-service
+    io.kompose.service: review-service
 status:
   loadBalancer: {}
 
@@ -1297,13 +1297,13 @@ metadata:
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
-    io.kompose.service: recensione-service
-  name: recensione-service
+    io.kompose.service: review-service
+  name: review-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: recensione-service
+      io.kompose.service: review-service
   strategy: {}
   template:
     metadata:
@@ -1313,7 +1313,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.network/ecobike-opnet: "true"
-        io.kompose.service: recensione-service
+        io.kompose.service: review-service
     spec:
       containers:
         - env:
@@ -1329,8 +1329,8 @@ spec:
               value: http://service-discovery-server:8761/eureka/
             - name: spring.profiles.active
               value: docker
-          image: lorenzofabbro/recensione-service:latest
-          name: recensione-service
+          image: lorenzofabbro/review-service:latest
+          name: reivew-service
           ports:
             - containerPort: 8082
               hostPort: 8082
