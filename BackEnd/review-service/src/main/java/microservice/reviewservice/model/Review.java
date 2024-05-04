@@ -24,11 +24,11 @@ public class Review {
     @Column(name = "score")
     private int score;
     @Column(name = "idUser")
-    private int idUser; //Utente
+    private long idUser; //Utente
     @Column(name = "idShop")
-    private int idShop;
+    private long idShop;
 
-    public Review(String text, int score, int idUser, int idShop) {
+    public Review(String text, int score, long idUser, long idShop) {
         this.text = text;
         this.score = score;
         this.idUser = idUser;

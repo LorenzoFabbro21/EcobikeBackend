@@ -20,15 +20,15 @@ public class Appointment {
     private long id;
 
     @Column(name = "idUser")
-    private int idUser;
+    private long idUser;
 
     @Column(name = "idAnnouncement")
-    private int idAnnouncement;
+    private long idAnnouncement;
 
     @Column(name = "date")
     private Date date;
 
-    public Appointment(long id, int idUser, int idAnnouncement, Date date) {
+    public Appointment(long id, long idUser, long idAnnouncement, Date date) {
         this.id = id;
         this.idUser = idUser;
         this.idAnnouncement = idAnnouncement;

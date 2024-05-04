@@ -20,10 +20,10 @@ public class Booking {
     private long id;
 
     @Column(name = "idPrivate")
-    private int idPrivate;
+    private long idPrivate;
 
     @Column(name = "idAnnouncement")
-    private int idAnnouncement;
+    private long idAnnouncement;
 
     @Column(name = "startdate")
     private Date startdate;
@@ -31,7 +31,7 @@ public class Booking {
     @Column(name = "enddate")
     private Date enddate;
 
-    public Booking(long id, int idPrivate, int idAnnouncement, Date startdate, Date enddate) {
+    public Booking(long id, long idPrivate, long idAnnouncement, Date startdate, Date enddate) {
         this.id = id;
         this.idPrivate = idPrivate;
         this.idAnnouncement = idAnnouncement;
