@@ -85,8 +85,7 @@ export class LoginFormComponent implements OnInit {
               this.router.navigate(['/']);
             }
             
-          },
-          error: (error: HttpErrorResponse) => {
+          },error: (error: HttpErrorResponse) => {
             if (error.status === 404) {
               this.errorStatus = "Error:" + error.status.toString();
               const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
@@ -97,17 +96,30 @@ export class LoginFormComponent implements OnInit {
                 const errorMessage = errorMessageParts.slice(1).join(':').trim();
                 this.errorMessage = errorMessage;
               }
-              
+
               this.showError = true;
             } else if (error.status === 400) {
-              this.errorStatus = error.status.toString();
-              this.errorMessage = error.message;
+              this.errorStatus = "Error:" + error.status.toString();
+              const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+              if( errorMessageParts.length == 1) {
+                this.errorMessage = errorMessageParts[0];
+              }
+              else {
+                const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                this.errorMessage = errorMessage;
+              }
               this.showError = true;
             } else {
-              this.errorStatus = error.status.toString();
-              this.errorMessage = error.message;
+              this.errorStatus = "Error:" + error.status.toString();
+              const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+              if( errorMessageParts.length == 1) {
+                this.errorMessage = errorMessageParts[0];
+              }
+              else {
+                const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                this.errorMessage = errorMessage;
+              }
               this.showError = true;
-              // Gestire altri tipi di errori qui
             }
           }
         });
