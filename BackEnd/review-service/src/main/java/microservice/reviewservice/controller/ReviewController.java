@@ -152,7 +152,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Review> updateNegozio(@PathVariable("id") Long id, @RequestBody Review review) {
+    public ResponseEntity<Review> updateShop(@PathVariable("id") Long id, @RequestBody Review review) {
         if(id == null || review == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         try {
