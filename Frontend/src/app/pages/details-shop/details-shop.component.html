@@ -23,26 +23,27 @@
             </div>
         </div>
           <div *ngIf="mostraSpinner==false && !torentNull">
-            <div class = "name">
 
-                Bikes to rent
+                <div class = "name">
+                    Bikes to rent
+                </div>
                 <div class="view">
-                    <div *ngFor="let bike of bikestorent" >
-                        <app-ebike [bicicletta]="bike" ></app-ebike>
+                    <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
+                        <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+                    </div>
+                </div>
+
+          </div>
+            <div *ngIf="mostraSpinner==false && !tosellNull">
+                <div class = "name">
+                     Bikes to sell
+                </div>
+                <div class="view">
+                    <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
+                        <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
                     </div>
                 </div>
             </div>
-          </div>
-          <div *ngIf="mostraSpinner==false && !tosellNull">
-              <div class = "name">
-                  Bikes to sell
-                  <div class="view">
-                      <div *ngFor="let bike of bikestosell" >
-                          <app-ebike [bicicletta]="bike" ></app-ebike>
-                      </div>
-                  </div>
-              </div>
-          </div>
 
         <div *ngIf="reviewUser !== null && reviewUser.length != 0">
             <div class="paginator">
@@ -75,3 +76,11 @@
         </div>
     </div>
   </div>
+
+  <app-error-dialog
+      [showModal]="showError"
+      [headerText]="errorStatus"
+      [label]="errorMessage"
+      (showModalChange)="changeValue($event)"
+
+    />

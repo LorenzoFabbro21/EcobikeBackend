@@ -28,9 +28,14 @@ export class BiciclettaNoleggioComponent {
   mostraSpinner= false;
   bikesSimili: bikeRentSell[] = [];
   bikesList: Bicicletta[] = [];
-  sellList: adRent[] = [];
+  rentList: adRent[] = [];
+
+  showError : boolean = false;
+  errorStatus: string = "";
+  errorMessage: string = "";
 
   constructor ( private router: Router, private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService) {
+
     this.userLogged = this.userService.userLogged;
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
@@ -43,11 +48,23 @@ export class BiciclettaNoleggioComponent {
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
   }
   ngOnInit() {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    
     this.route.queryParams.subscribe(params => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       this.id = JSON.parse(params['idBike']);
+      this.dataPage();
     });
+  }
 
+  dataPage() {
+    this.bicicletta = undefined;
+    this.prezzo = 0;
+    this.prezzo_noTax= 0;
+    this.bikesSimili = [];
+    this.bikesList = [];
+    this.rentList = [];
+    this.images= [];
+    this.imagePrincipal= "";
     this.ebService.get_bicicletta(this.id).subscribe({
       next: (response:Bicicletta) => {
 
@@ -74,6 +91,10 @@ export class BiciclettaNoleggioComponent {
             if( rent.idBike == this.id) {
               this.idAnnuncio= rent.id;
               this.prezzo = rent.price;
+              if ( this.prezzo) {
+                const tax = (this.prezzo / 100) * 22;
+                this.prezzo_noTax = this.prezzo - tax;
+              }
             }
           });
         }
@@ -96,14 +117,11 @@ export class BiciclettaNoleggioComponent {
 
 
 
-    if ( this.prezzo) {
-      const tax = (this.prezzo / 100) * 22;
-      this.prezzo_noTax = this.prezzo - tax;
-    }
+    
 
     this.ebService.get_bicicletta(this.id).subscribe({
       next: (response: Bicicletta) => {
-        this.ebService.get_similar_bike(response.brand).subscribe({
+        this.ebService.get_similar_bike(response.type).subscribe({
           next: (response: Bicicletta[]) => {
             if(response) {
               this.bikesList = response;
@@ -111,10 +129,10 @@ export class BiciclettaNoleggioComponent {
                 next: (response:adRent[]) => {
         
                   if (response) {
-                    this.sellList = response;
+                    this.rentList = response;
                     
                     this.bikesList.forEach(bike => {
-                      this.sellList.forEach(sell => {
+                      this.rentList.forEach(sell => {
                         if(sell.idBike == bike.id && sell.idUser != this.userLogged?.id) {
                           const obj: bikeRentSell= {
                             bike: bike,
@@ -160,9 +178,13 @@ export class BiciclettaNoleggioComponent {
   }
 
   prenota() {
-    console.log(this.date);
 
-    
+    if ( this.date == undefined) {
+      this.errorStatus= "400";
+      this.errorMessage = "Inserire la data del noleggio";
+      this.showError = true;
+      return; 
+    }
     const booking: Booking = {
       idPrivate : this.userService.userLogged?.id,
       idAnnouncement: this.idAnnuncio,
@@ -186,19 +208,14 @@ export class BiciclettaNoleggioComponent {
     }
     
 
-    //const giorno = this.date?.toDateString();
-  
-
-    /* console.log(giorno);
-    if( giorno!== undefined) {
-      const dataDaStringa = new Date(giorno);
-      console.log(dataDaStringa)
-    } */
-    
     return;
   }
 
   imageActualChange(image: string) {
     this.imagePrincipal = image;
+  }
+
+  changeValue (event : boolean | any) :void {
+    this.showError = event;
   }
 }

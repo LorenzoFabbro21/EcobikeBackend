@@ -4,8 +4,8 @@
             <img *ngIf="shop && shop.img !== undefined" alt="Card" [src]="shop!.img" class="image"/>
         </ng-template>
         <ng-template pTemplate="footer" class="footerStyle">
-            <div ><br>Shop {{shop?.id}}</div>
-            <span class="details">{{shop?.name}} , {{shop?.city}} </span>
+            <div ><br>{{shop?.name}}</div>
+            <span class="details">{{shop?.city}} </span>
         </ng-template>
     </p-card>
 </div>

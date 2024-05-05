@@ -18,8 +18,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 1vh 20vw 1vh;
-    width: 100vw;
+    padding: 0vh 20vw 1vh;
 }
 
 .button{
@@ -59,3 +58,18 @@
       margin-right: 10px; // Spazio tra l'icona e il testo
     }
   }
+  @media (max-width: 623px){
+    .container{
+      display: flex;
+      flex-direction: column;
+      padding: 1vh 10vw 1vh;
+      width: 100vw;
+    }
+  } 
+  
+
+  @media (min-height: 800px){
+    .container {
+      height: 58vh;
+    }
+}

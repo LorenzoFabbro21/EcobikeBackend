@@ -150,3 +150,19 @@
     margin-top: 5vh;
     height: 37vh;
   }
+  @media (max-width: 623px){
+    .view {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .noBikes{
+        font-size: smaller;
+    }
+
+    :host ::ng-deep {
+        .p-button{
+            width: auto;
+        }
+    }
+}

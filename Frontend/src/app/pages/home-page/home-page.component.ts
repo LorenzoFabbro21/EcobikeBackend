@@ -23,8 +23,21 @@ export class HomePageComponent {
 
   constructor (private ebService: EcobikeApiService, private userService: UserLoggedService ) {
     
-    this.user = this.userService.userLogged;
+    this.userService.bindUpdateUser((updatedUser) => {
+      if ( updatedUser == null) {
+        this.getValuesHome();
+      }
+      
+    });
 
+    this.getValuesHome();
+    
+  }
+
+  getValuesHome() {
+    this.bikeRentPrice= [];
+    this.bikeSellPrice= []
+    this.user = this.userService.userLogged;
     if(this.user == null) {
       this.ebService.elenco_noleggi().subscribe({
         next: (response:adRent[]) => {
@@ -176,6 +189,5 @@ export class HomePageComponent {
           }
         });
       }
-    
   }
   }

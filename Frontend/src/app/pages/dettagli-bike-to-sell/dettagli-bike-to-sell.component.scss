@@ -148,3 +148,13 @@
     display: flex;
     flex-direction: column;
   }
+@media (max-width: 623px){
+  .view {
+    display: grid;
+    grid-template-columns: auto;
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+}

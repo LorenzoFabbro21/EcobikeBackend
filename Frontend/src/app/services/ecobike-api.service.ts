@@ -509,8 +509,8 @@ public new_review(review: Review | any, token: string){
    *
    * Endpoint Rest: bike/brand/{brand}
    */
-  public get_similar_bike(brand: string | undefined): Observable<Bicicletta[]> {
-    return this.httpClient.get<Bicicletta[]>(`${this.url}/bike/brand/` + brand);
+  public get_similar_bike(type: string | undefined): Observable<Bicicletta[]> {
+    return this.httpClient.get<Bicicletta[]>(`${this.url}/bike/type/` + type);
   }
 
 

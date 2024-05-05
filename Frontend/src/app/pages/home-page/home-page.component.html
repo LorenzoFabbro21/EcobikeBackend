@@ -1,7 +1,7 @@
 <div #body >
     <div class="sectionGenerale">
       <div class="textSection">
-        <h3 *ngIf="user == null || user !== null && user.type =='p'">Noleggio e acquisto di E-Bike</h3>
+        <h3 *ngIf="user == null || user !== null && user.type =='p'" class="size-phone">Noleggio e acquisto di E-Bike</h3>
         <h3 *ngIf=" user !== null && user.type =='d'">Acquisto di E-Bike</h3>
         <div class="buttons">
             <button *ngIf="user == null || user !== null && user.type =='p'" pButton  label="Noleggia" class="noleggia"  [routerLink]="['noleggio']"></button>

@@ -1,4 +1,5 @@
 import { formatCurrency } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { withNoDomReuse } from '@angular/platform-browser';
 import { PRIMARY_OUTLET, Router } from '@angular/router';
@@ -25,6 +26,12 @@ export class ShopFormComponent {
   address?: string;
   phone_number?: string;
   img?:string= "";
+  mostraSpinner: boolean= false;
+
+  
+  showError : boolean = false;
+  errorStatus: string = "";
+  errorMessage: string = "";
 
   constructor(private userService: UserLoggedService, private ebService: EcobikeApiService, private router: Router) {
 
@@ -53,23 +60,7 @@ export class ShopFormComponent {
 
 
   createShop() {
-    /*
-    1> get utente
-    2> cancella utente
-    3> crea un dealer con le informazioni prese al punto 1
-    4> crea un negozio con le informazioni del form
-    5> get informazioni dealer
-    6> login
-    */
-
-    /*
-    rabbitMQ
-    1> get utente
-    2> chiamata shop con parametri (utente, token?, shop) che ritorna id dealer
-    3> chiamata get dealer by id
-
-    */
-
+  this.mostraSpinner = true;
     if (this.userService.userLogged !== null && this.userService.userLogged?.token !== undefined && this.userService.userLogged.mail !== undefined) {  
       let token : string = this.userService.userLogged?.token;
       const user_private = this.userService.userLogged;
@@ -85,6 +76,8 @@ export class ShopFormComponent {
               img: this.img,
               idUser: 0 //da modificare nel backend
             }
+
+            setTimeout(() => {}, 2000);
 
             console.log(user);
             console.log(shop);
@@ -107,7 +100,47 @@ export class ShopFormComponent {
                 console.log(userLogged);
                 this.userService.logout();
                 this.userService.login(userLogged);
+                this.mostraSpinner = false;
                 this.router.navigate(['/personal_area']);
+              },error: (error: HttpErrorResponse) => {
+                if (error.status === 404) {
+                  this.errorStatus = "Error:" + error.status.toString();
+                  const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+                  if( errorMessageParts.length == 1) {
+                    this.errorMessage = errorMessageParts[0];
+                  }
+                  else {
+                    const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                    this.errorMessage = errorMessage;
+                  }
+                  
+                  this.showError = true;
+                  this.mostraSpinner = false;
+                } else if (error.status === 400) {
+                  this.errorStatus = "Error:" + error.status.toString();
+                  const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+                  if( errorMessageParts.length == 1) {
+                    this.errorMessage = errorMessageParts[0];
+                  }
+                  else {
+                    const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                    this.errorMessage = errorMessage;
+                  }
+                  this.mostraSpinner = false;
+                  this.showError = true;
+                } else {
+                  this.errorStatus = "Error:" + error.status.toString();
+                  const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+                  if( errorMessageParts.length == 1) {
+                    this.errorMessage = errorMessageParts[0];
+                  }
+                  else {
+                    const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                    this.errorMessage = errorMessage;
+                  }
+                  this.mostraSpinner = false;
+                  this.showError = true;
+                }
               }
             });
           }
@@ -115,62 +148,8 @@ export class ShopFormComponent {
       });
     }
   }
-
-
-/*
-    if (this.userService.userLogged !== null && this.userService.userLogged?.token !== undefined && this.userService.userLogged.mail !== undefined) {  
-      let token : string = this.userService.userLogged?.token;
-      const user_private = this.userService.userLogged;
-      this.ebService.getPrivateUser(this.userService.userLogged.mail).subscribe({
-        next: (user:User) => {
-          if ( this.userService.userLogged?.id !== undefined) {
-            this.ebService.delete_private(this.userService.userLogged.id!, token).subscribe({
-              next: (response: any) => {
-                this.ebService.new_dealer(user, token).subscribe({
-                  next: (response) => {
-                    const idDealer = response.id;
-                    const shop: Shop = {
-                      name: this.shop_name,
-                      address: this.address,
-                      city: this.city,
-                      phoneNumber: this.phone_number,
-                      img: this.img,
-                      idUser: response.id
-                    };
-                    this.ebService.new_shop(shop, token).subscribe({
-                      next: (response) => {
-                        console.log(response)
-                        this.ebService.getDealerById(idDealer,token).subscribe({
-                          next: (dealer: User) => {
-
-                            const userLogged: LoggedUser = {
-                              id: dealer.id,
-                              name: dealer.name,
-                              lastName: dealer.lastName,
-                              token: token,
-                              mail : dealer.mail,
-                              exp: user_private.exp,
-                              phoneNumber: dealer.phoneNumber,
-                              type:"d"
-                            }
-                            this.userService.logout();
-                            this.userService.login(userLogged);
-                            this.router.navigate(['/personal_area']);
-                          }
-                        });
-
-                      }
-                    });
-                  }
-                });
-              }
-            });
-          }
-          
-        } 
-      });
-    }
+  changeValue (event : boolean | any) :void {
+    this.showError = event;
   }
-  */
 }
 

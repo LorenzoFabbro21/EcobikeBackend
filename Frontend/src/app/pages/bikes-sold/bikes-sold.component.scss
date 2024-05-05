@@ -78,4 +78,19 @@
         color: #ffffff;
         border-color: #01aaa9;
     }
+    
+    .spinner {
+      position: relative;
+      height: 46vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .noBikes{
+      display: flex;
+      justify-content: center;
+      margin-top: 5vh;
+      height: 37vh;
+  }
   

@@ -78,4 +78,16 @@
         color: #ffffff;
         border-color: #01aaa9;
     }
-  
+@media (max-width: 623px){
+  .view {
+    display: grid;
+    grid-template-columns: auto;
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+  .size-phone{
+    font-size: x-large;
+  }
+}

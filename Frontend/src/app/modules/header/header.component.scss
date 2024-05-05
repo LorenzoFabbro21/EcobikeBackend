@@ -145,7 +145,6 @@
         flex-direction: row;
         align-items: center;
         column-gap: 2vw;
-        margin-top: 2vh;
         margin-right: 15px;
       }
   }
@@ -175,6 +174,47 @@
 }
 
 
-@media(max-width: 600px) {
+@media (max-width: 623px) {
+  .logo{
+    width: 45vw;
+    height: auto;
+  }
+  .header{
+    column-gap: 5vw;
+    .user-info-login {
+      margin-top: 0vh;
+    }
+  }
+
+  .signup {
+    font-size: smaller;
+  }
+  .linkUser {
+    display: flex;
+    column-gap: 2vw;
+  }
   
+  :host ::ng-deep {
+
+    .custom-menubar{
+
+        .p-button {
+          background-color: white;
+          border-color: white;
+        }
+        .p-button:enabled:hover {
+          background-color: white;
+          border-color: white;
+        }
+    }
+    .p-menubar .p-submenu-list {
+      padding: 0.25rem 0;
+      width: 12.5 rem;
+
+      
+    }
+    .p-menubar-root-list {
+      width: 35vw;
+    }
+  }
 }

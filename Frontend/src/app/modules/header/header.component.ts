@@ -11,7 +11,9 @@ import { MenuItem  } from 'primeng/api';
 })
 export class HeaderComponent implements OnInit{
   items: MenuItem[] | undefined;
+  menuItems: MenuItem[] | undefined;
   filteredItems: MenuItem[]| undefined = undefined;
+  filteredMenuItems: MenuItem[] | undefined = undefined;
   userName?: string;
 
 
@@ -44,17 +46,25 @@ export class HeaderComponent implements OnInit{
         this.items[0].label = this.userLogged?.name;
         this.filteredItems = this.filterMenuItems(this.items);
       }
-      
+      if(this.menuItems){
+        this.filteredMenuItems = this.finalMenuItems(this.menuItems);
+      }
     });
   }
 
 
   ngOnInit() {
+    this.menuItems = [
+      { label: 'Negozi', routerLink: '/shops' },
+      { label: 'Visualizza Noleggi', routerLink: '/noleggio'},
+      { label: 'Visualizza Vendite', routerLink: '/vendita' },
+      { label: 'Inserisci Noleggio', routerLink: '/form_noleggio'},
+      { label: 'Inserisci Vendita', routerLink: '/form_vendita'}
+  ];
     this.items = [
       {
         label: this.userLogged?.name,
         icon: 'pi pi-fw pi-user',
-        class: 'menubar',
         items: [
           {
             label: 'E-bike in vendita',
@@ -77,38 +87,96 @@ export class HeaderComponent implements OnInit{
             routerLink: 'bikes_rented'
           },
           {
+            label: 'E-bike che hai noleggiato',
+            icon: 'pi pi-fw pi-users',
+            routerLink: 'personal-rent'
+          },
+          {
+            label: 'E-bike che hai acquistato',
+            icon: 'pi pi-fw pi-users',
+            routerLink: 'personal-buy'
+          },
+          {
             separator: true
           },
           {
             label: 'Informazioni personali',
             icon: 'pi pi-fw pi-users',
             routerLink: 'personal_area'
-          },
-          {
-            label: 'personal rent',
-            icon: 'pi pi-fw pi-users',
-            routerLink: 'personal-rent'
-          },
-          {
-            label: 'personal buy',
-            icon: 'pi pi-fw pi-users',
-            routerLink: 'personal-buy'
           }
         ]
       }
     ];
+    if (this.menuItems) {
+      this.filteredMenuItems = {...this.menuItems};
+      this.filteredMenuItems = this.finalMenuItems(this.menuItems);
+    }
     if ( this.items[0].items) {
-      this.filteredItems = this.items;
+      this.filteredItems = {...this.items};
       this.filteredItems = this.filterMenuItems(this.items);
       // Assegna le voci del menu filtrate al modello del menu
     }
+    
 }
+
+finalMenuItems(menuItems: MenuItem[]): any[] {
+  const itemsArrayCopy = menuItems;
+  const itemsArray = menuItems;
+  let array = menuItems.map(item => ({ ...item }));
+  if (this.userLogged?.type == undefined && itemsArray !== undefined) {
+    const obj = [...itemsArray];
+    let obj2 = obj?.map(item => {
+      if (item.label !== 'Inserisci Noleggio' && item.label !== 'Inserisci Vendita') {
+        return item;
+      }
+      return null
+    }).filter(item => item != null) as MenuItem[];
+    array = [...obj2];
+    if (itemsArrayCopy!= undefined ) {
+      menuItems = itemsArrayCopy.map(item => ({ ...item }));
+    }
+    return array;
+  }
+  else if(this.userLogged?.type == 'p' && itemsArray !== undefined) {
+    const obj = [...itemsArray];
+    let obj2 = obj?.map(item => {
+      if (item.label !== 'Inserisci Noleggio') {
+        return item;
+      }
+      return null
+    }).filter(item => item != null) as MenuItem[];
+    array = [...obj2];
+    if (itemsArrayCopy!= undefined ) {
+      menuItems = itemsArrayCopy.map(item => ({ ...item }));
+    }
+    return array;
+  }
+  else if(this.userLogged?.type == 'd' && itemsArray !== undefined) {
+    const obj = [...itemsArray];
+    let obj2 = obj?.map(item => {
+      if (item.label !== 'Visualizza Noleggi') {
+        return item;
+      }
+      return null
+    }).filter(item => item != null) as MenuItem[];
+    array = [...obj2];
+    if (itemsArrayCopy!= undefined ) {
+      menuItems = itemsArrayCopy.map(item => ({ ...item }));
+    }
+    return array;
+  }
+  return [];
+}
+
+
 
 filterMenuItems(items: MenuItem[]): any[] {
   // Se this.userLogged è di tipo 'p', rimuovi la voce 'E-bike in noleggio'
-  const obj = items[0].items;
-  let array = items;
-  if ( obj !== undefined && this.userLogged?.type == 'p') {
+  const itemsArrayCopy = items[0].items;
+  const itemsArray = items[0].items;
+  let array = items.map(item => ({ ...item }));
+  if ( itemsArray !== undefined && this.userLogged?.type == 'p') {
+    const obj = [...itemsArray];
     let obj2 = obj.map(item => {
       if (item.separator) {
         return item;
@@ -118,11 +186,31 @@ filterMenuItems(items: MenuItem[]): any[] {
       }
       return null; // Aggiungi il caso in cui l'elemento potrebbe essere null
     }).filter(item => item !== null) as MenuItem[];
-    array[0].items = obj2;
+    array[0].items = [...obj2];
+    if (itemsArrayCopy!= undefined ) {
+      items[0].items = itemsArrayCopy.map(item => ({ ...item }));
+    }
     return array;
   }
-  else if (this.userLogged?.type == 'd') {
-    return items;
+  else if ( itemsArray !== undefined && this.userLogged?.type == 'd') {
+    const obj = [...itemsArray];
+    let obj2 = obj.map(item => {
+      if (item.separator) {
+        return item;
+      }
+      if (item.label !== 'E-bike che hai noleggiato') {
+        return item;
+      }
+      return null; // Aggiungi il caso in cui l'elemento potrebbe essere null
+    }).filter(item => item !== null) as MenuItem[];
+    array[0].items = [...obj2];
+    if (itemsArrayCopy!= undefined ) {
+      items[0].items = itemsArrayCopy.map(item => ({ ...item }));
+    }
+    return array;
+  }
+  if (itemsArrayCopy!= undefined ) {
+    items[0].items = itemsArrayCopy.map(item => ({ ...item }));
   }
   return [];
 

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
+import { UserLoggedService } from 'src/app/services/user-logged.service';
 
 @Component({
   selector: 'app-dettagli-bike-to-sell',
@@ -18,8 +19,10 @@ export class DettagliBikeToSellComponent implements OnInit{
   images: string[]= [];
   imagePrincipal: string= "";
   idAnnuncio?: number
-  constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService) {
-    
+  constructor (private router: Router, private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService) {
+    if ( this.userService.userLogged?.id == undefined && this.userService.userLogged?.token == undefined) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit(): void {
