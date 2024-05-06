@@ -43,6 +43,11 @@
     margin-bottom: 0px;
   }
 
+  h3 {
+    display: flex;
+    justify-content: center;
+  }
+
   .view {
     display: grid;
     grid-template-columns: repeat(4 , minmax(200px,1fr));

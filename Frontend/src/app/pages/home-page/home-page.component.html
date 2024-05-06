@@ -1,39 +1,44 @@
 <div #body >
     <div class="sectionGenerale">
-      <div class="textSection">
-        <h3 *ngIf="user == null || user !== null && user.type =='p'" class="size-phone">Noleggio e acquisto di E-Bike</h3>
-        <h3 *ngIf=" user !== null && user.type =='d'">Acquisto di E-Bike</h3>
-        <div class="buttons">
-            <button *ngIf="user == null || user !== null && user.type =='p'" pButton  label="Noleggia" class="noleggia"  [routerLink]="['noleggio']"></button>
-            <button pButton  label="Acquista" class="acquista"  [routerLink]="['vendita']"></button>
+        <div class="textSection">
+            <h3 *ngIf="user == null || user !== null && user.type =='p'" class="size-phone">Noleggio e acquisto di E-Bike</h3>
+            <h3 *ngIf=" user !== null && user.type =='d'">Acquisto di E-Bike</h3>
+            <div class="buttons">
+                <button *ngIf="user == null || user !== null && user.type =='p'" pButton  label="Noleggia" class="noleggia"  [routerLink]="['noleggio']"></button>
+                <button pButton  label="Acquista" class="acquista"  [routerLink]="['vendita']"></button>
+            </div>
         </div>
-      </div>
     </div>
-    
     <div *ngIf="user == null || user !== null && user.type =='p'">
-      <div class="titleMenu">
-        <h2>E-Bike in noleggio</h2>
-        <a routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
-      </div>
-      <div class="view">
-        <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
-          <div *ngIf="i<4">
-            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
-          </div>
+        <div class="titleMenu">
+            <h2>E-Bike in noleggio</h2>
+            <a *ngIf="bikeRentPrice.length > 0" routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
         </div>
-      </div>
+        <div class="view">
+            <div *ngFor=" let bikePrice of bikeRentPrice;  let i=index" >
+                <div *ngIf="i<4">
+                    <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price"></app-ebike>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="bikeRentPrice.length <= 0">
+            <h3>Non ci sono biciclette in noleggio</h3>
+        </div>
     </div>
     <div style="margin-top: 5vh;">
-      <div class="titleMenu">
-        <h2>E-Bike in Vendita</h2>
-        <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
-      </div>
-      <div class="view">
-        <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
-          <div *ngIf="i<4">
-            <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price" ></app-ebike>
-          </div>
+        <div class="titleMenu">
+            <h2>E-Bike in Vendita</h2>
+            <a *ngIf="bikeSellPrice.length > 0" routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' ><span>Vedi tutti</span></a>
         </div>
-      </div>
+        <div class="view">
+            <div *ngFor=" let bikePrice of bikeSellPrice;  let i=index" >
+                <div *ngIf="i<4">
+                    <app-ebike [bicicletta]="bikePrice.bike" [prezzo]="bikePrice.price" ></app-ebike>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="bikeSellPrice.length <= 0">
+            <h3>Non ci sono biciclette in vendita</h3>
+        </div>
     </div>
-  </div>
+</div>
