@@ -8,7 +8,7 @@ import { Appointment } from 'src/app/interfaces/appointment';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { Booking } from 'src/app/interfaces/booking';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
-import { Location } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ebike-ad',
@@ -37,7 +37,7 @@ export class EbikeAdComponent implements OnInit{
 
   typeAd: string = "";
   firstImage:string = "";
-  constructor ( private router: Router, private ebService: EcobikeApiService, private location: Location) {
+  constructor ( private router: Router, private ebService: EcobikeApiService, private datePipe: DatePipe) {
 
   }
 
@@ -103,5 +103,17 @@ export class EbikeAdComponent implements OnInit{
         }
       }
      
+    }
+
+    formatDateAppointment(): string {
+      let date: any;
+      date = this.datePipe.transform(this.appointment?.date, 'dd/MM/yyyy');
+      return date;
+    }
+
+    formatDateBooking(): string {
+      let date: any;
+      date = this.datePipe.transform(this.booking?.startdate, 'dd/MM/yyyy');
+      return date;
     }
 }

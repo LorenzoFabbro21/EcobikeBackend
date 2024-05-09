@@ -47,13 +47,13 @@ export class VenditaComponent {
       this.ebService.elenco_vendite_not_sold().subscribe({
         next: (response:adSell[]) => {
   
-          if (response.length != 0) {
+          if (response.length !=0 && response != null) {
             this.sells = response
             
             this.ebService.elenco_bici_vendita().subscribe({
               next: (response:Bicicletta[]) => {
         
-                if (response != null) {
+                if (response.length !=0) {
                   this.bikesVendita= response;
                   this.sells.forEach(sell => {
                     this.bikesVendita.forEach(bike => {

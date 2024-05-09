@@ -42,7 +42,7 @@ export class NoleggioComponent {
     this.ebService.elenco_noleggi().subscribe({
       next: (response:adRent[]) => {
 
-        if (response.length != 0) {
+        if (response.length != 0 ) {
           this.rents = response;
           this.ebService.elenco_bici_noleggio().subscribe({
             next: (response:Bicicletta[]) => {

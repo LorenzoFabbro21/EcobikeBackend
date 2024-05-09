@@ -1,6 +1,9 @@
 <div class="container">
       
-      <div class="view" >
+      <div class="view" [ngClass]="{'spinner-active': mostraSpinner}">
+        <div class="spinner" *ngIf="mostraSpinner">
+          <p-progressSpinner ></p-progressSpinner>
+        </div>
         <div class="titleMenu">
           <h2>Inserisci le informazioni del negozio</h2>
         </div>
@@ -27,11 +30,18 @@
           </div>
           
       </div>
-      <div class="submit">
+      <div class="submit content-below-spinner" >
         <button pButton  label="Invia" class="button" (click)="send()"></button>
       </div>
     </div>
 </div>
 
 
+<app-error-dialog
+      [showModal]="showError"
+      [headerText]="errorStatus"
+      [label]="errorMessage"
+      (showModalChange)="changeValue($event)"
+
+    />
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Scroll, } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router, Scroll, } from '@angular/router';
 import { LoggedUser } from 'src/app/classes/user';
 import { Taglia } from 'src/app/enum/tagliaEnum';
 import { adSell } from 'src/app/interfaces/adSell';
@@ -31,8 +31,10 @@ export class BiciclettaVenditaComponent implements OnInit{
   disabledDates: Date[] = [];
   date: Date | undefined;
   brand: string | undefined;
+  idBike: number = 0;
 
   constructor ( private route: ActivatedRoute, private ebService: EcobikeApiService, private userService: UserLoggedService, private router: Router) {
+    
     this.userLogged = this.userService.userLogged;
 
     const oggi = new Date();
@@ -43,12 +45,28 @@ export class BiciclettaVenditaComponent implements OnInit{
     this.disabledDates = this.disabledDates.concat(datePrecedenti);
     
   }
+
   ngOnInit() {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
+    
     this.route.queryParams.subscribe(params => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       this.id = JSON.parse(params['idBike']);
+      this.dataPage();
     });
 
+   
+  }
+  dataPage() {
+
+    this.bicicletta = undefined;
+    this.prezzo = 0;
+    this.prezzo_noTax= 0;
+    this.bikesSimili = [];
+    this.bikesList = [];
+    this.sellList = [];
+    this.images= [];
+    this.imagePrincipal= "";
     this.ebService.get_bicicletta(this.id).subscribe({
       next: (response:Bicicletta) => {
 
@@ -76,6 +94,10 @@ export class BiciclettaVenditaComponent implements OnInit{
             if( rent.idBike == this.bicicletta?.id) {
               this.idAnnuncio= rent.id;
               this.prezzo = rent.price;
+              if ( this.prezzo) {
+                const tax = (this.prezzo / 100) * 22;
+                this.prezzo_noTax = this.prezzo - tax;
+              }
             }
           });
         }
@@ -95,50 +117,9 @@ export class BiciclettaVenditaComponent implements OnInit{
       }
     });
 
-    if ( this.prezzo) {
-      const tax = (this.prezzo / 100) * 22;
-      this.prezzo_noTax = this.prezzo - tax;
-    }
-
-
-   /* this.ebService.get_bicicletta(this.id).subscribe({
-      next: (bike: Bicicletta) => {
-        this.ebService.get_similar_bike(bike.brand).subscribe({
-          next: (response: Bicicletta[]) => {
-            if(response) {
-              this.bikesList = response;
-    
-              this.ebService.elenco_vendite_not_sold().subscribe({
-                next: (response:adSell[]) => {
-        
-                  if (response) {
-                    this.sellList = response;
-                    
-                    this.bikesList.forEach(bike => {
-                      this.sellList.forEach(sell => {
-                        if(sell.idBike == bike.id) {
-                          const obj: bikeRentSell= {
-                            bike: bike,
-                            price: sell.price ? sell.price : 0
-                          };
-                          this.bikesSimili.push(obj);
-                        }
-                      });
-                    });
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
-    });*/
-    
-  
-
     this.ebService.get_bicicletta(this.id).subscribe({
       next: (response: Bicicletta) => {
-        this.ebService.get_similar_bike(response.brand).subscribe({
+        this.ebService.get_similar_bike(response.type).subscribe({
           next: (response: Bicicletta[]) => {
             if(response) {
               this.bikesList = response;

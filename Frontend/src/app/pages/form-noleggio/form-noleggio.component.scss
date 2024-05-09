@@ -50,7 +50,13 @@ label {
   width: 40vw;
   height: 6vh;
   border-color: #01aaa9;
-} 
+}
+
+.area {
+  width: 40vw;
+  height: 20vh;
+  border-color: #01aaa9;
+}
 
 :host ::ng-deep {
   .p-autocomplete-dd .p-autocomplete-input {
@@ -139,5 +145,107 @@ label {
 .view.spinner-active .content-below-spinner{
   opacity: 0.5;
 }
+
+
+
+@media (max-width: 623px){
+  .view {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline; /* Centra nella pagina */
+    max-width: 800px; /* Limite massimo di larghezza per una migliore leggibilità */
+  }
+
+  .input {
+    width: 70vw;
+  } 
+
+  .area {
+    width: 70vw;
+  } 
+
+  :host ::ng-deep {
+
+    .p-autocomplete .p-button {
+      color: #fff;
+      border-radius: 10px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      font-size: larger;
+      width: 5vw;
+      height: 6vh;
+  }
+
+    .p-autocomplete-dd .p-autocomplete-input {
+      width:66vw;
+      height: 6vh;
+      border-color: #01aaa9;
+    }
+
+    .p-button.p-fileupload-choose {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 5vh;
+      width: 28vw;
+      padding: 1px 19px;
+      border-color: #01aaa9;
+      font-size: small;
+  }
+  
+   .p-button {
+      display: flex;
+      background-color: #01aaa9;
+      color: #fff;
+      height: 5vh;
+      width: 28vw;
+      border-color: #01aaa9;
+      font-size: small;
+      justify-content: center;
+  }
+  
+  .p-fileupload-buttonbar {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 10px;
+          width: 70vw;
+          align-items: center;
+      }
+      .p-fileupload-content {
+
+        width: 70vw;
+
+        .p-button {
+          display: flex;
+          background-color: #01aaa9;
+          color: #fff;
+          height: 5vh;
+          width: 9vw;
+          border-color: #01aaa9;
+          font-size: small;
+          justify-content: center;
+        }
+      }
+
+      p-fileUpload div:last-child:contains('KB') {
+        display: none;
+      }
+      
+      .p-fileupload-filename {
+
+        visibility: hidden;
+            height: 0vh;
+            width: 0vw
+      }
+      
+  }
+
+  .submit {
+    margin-top: 5vh;
+  }
+}
+
 
 

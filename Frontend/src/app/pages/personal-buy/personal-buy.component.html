@@ -1,8 +1,23 @@
-<div class="titleMenu">
-    <h2>E-bike acquistate da te</h2>
+
+
+
+<div class="spinner" *ngIf="mostraSpinner">
+    <p-progressSpinner ></p-progressSpinner>
 </div>
-<div class="view">
-    <div *ngFor=" let x of bikesBought;  let i=index" >
-        <app-ebike-ad [bike]="x.bike" [user]="x.user" [booking]="x.booking" [ad]="x.adrent"></app-ebike-ad>
-    </div>
-</div>
+<div *ngIf="bikesNull == true" class="noBikes">
+  <h2>Non hai ancora acquistato biciclette</h2>
+  </div>
+  <div *ngIf="mostraSpinner==false && !bikesNull">
+      <div #body >
+        <div>
+          <div class="titleMenu">
+              <h2>E-bike acquistate da te</h2>
+          </div>
+          <div class="view">
+              <div *ngFor=" let x of bikesBought;  let i=index" >
+                  <app-ebike-ad [bike]="x.bike" [user]="x.user" [booking]="x.booking" [ad]="x.adrent"></app-ebike-ad>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>

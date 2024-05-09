@@ -7,7 +7,15 @@
             <div class="idBike">{{bike?.brand}} - {{bike?.model}}</div>
             
             <div class="dettagliPrezzo">
-                <span class="details" *ngIf="user && user.name !== undefined"><br>Acquistata da: {{user.name}} {{user.lastName}} <br> <span *ngIf="appointment && appointment.date !== undefined">Data di acquisto: {{appointment.date}}</span><span *ngIf="booking && booking.startdate !== undefined">Data: {{booking.startdate}}</span></span>  
+                <div *ngIf="appointment">
+                    <span class="details" *ngIf="user && user.name !== undefined"><br>Acquistata da: {{user.name}} {{user.lastName}} <br> 
+                        <span>Data di acquisto: {{formatDateAppointment()}}</span>
+                    </span>
+                </div>
+                <div *ngIf="booking">
+                    <span>Data del noleggio: {{formatDateBooking()}}</span>
+                </div>
+                
                 <div class="prezzoBox" *ngIf="ad && ad.price !== undefined">
                     <div class="prezzo">{{ad.price}} €</div>    
                 </div>

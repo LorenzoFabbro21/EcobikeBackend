@@ -9,29 +9,46 @@
           <a routerLink="/"  routerLinkActive="active-link" class='linkRow' >
             <img class= "logo" src="..\..\..\assets\images\logo.png"/>
          </a>
+         
       </div>
     </div>
+
+        
     <div class="linkUser">
-        <div class="link">
+       <!--  <div class="link">
             <a routerLink="/shops"  label="Negozi" routerLinkActive="active-link" class='linkRow' >Visualizza Negozi</a>
             <a *ngIf="userLogged == null || userLogged !== null && userLogged.type=='p'" routerLink="/noleggio"  label="Noleggio" routerLinkActive="active-link" class='linkRow' >Visualizza Noleggi</a>
             <a routerLink="/vendita"  label="Acquisto" routerLinkActive="active-link" class='linkRow' >Visualizza Vendite</a>
             <a *ngIf="userLogged !== null && userLogged.type=='d'" routerLink="/form_noleggio"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Inserisci Noleggio</a>
             <a *ngIf="userLogged !== null" routerLink="/form_vendita"  label="form_inserimento" routerLinkActive="active-link" class='linkRow' >Inserisci Vendita</a>
-        </div>
+        </div> -->
+
+        <p-menubar [model]="filteredMenuItems"  class="card" >
+
+        </p-menubar>
+
         
+
         <div *ngIf="userLogged !== null" class = "user-info-login"> 
             
             <span class="card">
-                <p-menubar [model]="filteredItems" styleClass="custom-menubar"></p-menubar>
+                <p-menubar [model]="filteredItems"  styleClass="custom-menubar" class="user">
+                    <ng-template pTemplate="menuicon">
+                        <!-- Personalizza l'icona dell'hamburger qui -->
+                        <p-button type="button" class="buttonArea">
+                            <i class="pi pi-user" style="color: #1f595c;"></i>
+                        </p-button>
+                    </ng-template>
+                </p-menubar>
             </span>
             
             <button pButton  label="Logout" class="signup" (click)="logout()"></button>
         </div>
         <div class="user-info-login" *ngIf="userLogged == null">
-            <div class="loginLogo">
+            <div>
                 <i class="pi pi-user mr-2" [routerLink]="'/login-form'" routerLinkActive="active-link" style="font-size: larger;"></i>
                 
+             </div>
         </div>
     </div>
 </div>

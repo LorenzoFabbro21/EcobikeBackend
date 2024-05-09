@@ -14,11 +14,12 @@ import { AccordionModule } from 'primeng/accordion';
 import { ShopModule } from 'src/app/modules/shop/shop.module';
 import { FooterModule } from 'src/app/modules/footer/footer.module';
 import { HeaderModule } from 'src/app/modules/header/header.module';
+import { ErrorDialogModule } from 'src/app/modules/error-dialog/error-dialog.module';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ShopsComponent],
-  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule,ProgressSpinnerModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule, CardModule, AccordionModule, ShopModule, FooterModule, HeaderModule],
+  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule,ProgressSpinnerModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule, CardModule, AccordionModule, ShopModule, FooterModule, HeaderModule, ErrorDialogModule],
   exports: [ShopsComponent]
 })
 export class ShopsModule{

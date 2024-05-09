@@ -15,12 +15,12 @@ import { EbikeModule } from 'src/app/modules/ebike/ebike.module';
 import { RatingModule } from 'primeng/rating';
 import { PaginatorModule } from 'primeng/paginator';
 import { ReviewModule } from 'src/app/modules/review/review.module';
-
+import { ErrorDialogModule } from 'src/app/modules/error-dialog/error-dialog.module';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [DetailsShopComponent],
-  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule,ProgressSpinnerModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule, CardModule, AccordionModule, EbikeModule, RatingModule, PaginatorModule, ReviewModule],
+  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule,ProgressSpinnerModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule, CardModule, AccordionModule, EbikeModule, RatingModule, PaginatorModule, ReviewModule, ErrorDialogModule],
   exports: [DetailsShopComponent]
 })
 export class DetailsShopModule{

@@ -50,11 +50,7 @@ export class SignupComponent {
 
         
 
-      }
-      
-      
-      
-      /*,
+      },
       error: (error: HttpErrorResponse) => {
         if (error.status === 404) {
           this.errorStatus = "Error:" + error.status.toString();
@@ -93,7 +89,8 @@ export class SignupComponent {
           
           this.showError = true;
         }
-      }*/
+      }
+
     })
     
   }

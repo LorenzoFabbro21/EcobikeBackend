@@ -11,7 +11,8 @@
   }
 .name{
     
-    font-size: xx-large;
+  font-size: xx-large;
+  margin: 0px 4vh 3vh;
 }
 .otherDetails{
     
@@ -104,7 +105,7 @@
 }
 
 .imagePrincipale {
-  width: 25vw;
+  width: 18vw;
   object-fit: cover;
 }
 
@@ -180,4 +181,31 @@
   flex-direction: row;
   column-gap: 3vw;
   justify-content: center;
+}
+@media (max-width: 623px){
+  .view {
+    display: grid;
+    grid-template-columns: auto;
+    column-gap: 2vw;
+    align-items: center;
+    margin: 0px 40px;
+    row-gap: 4vh;
+  }
+  .info {
+    display: block;
+    height: fit-content;
+    margin: 0 80px;
+  }
+.imagePrincipale {
+  width: -webkit-fill-available;
+  object-fit: cover;
+  }
+  .name{
+    
+    font-size: x-large;
+    margin: 4vh 4vh 3vh;
+  }
+  .textArea {
+    width: 40vw;
+  }
 }

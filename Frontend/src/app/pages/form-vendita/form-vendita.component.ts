@@ -7,6 +7,7 @@ import { adSell } from 'src/app/interfaces/adSell';
 import { Bicicletta } from 'src/app/interfaces/bicicletta';
 import { EcobikeApiService } from 'src/app/services/ecobike-api.service';
 import { UserLoggedService } from 'src/app/services/user-logged.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event| any;
@@ -36,11 +37,18 @@ export class FormVenditaComponent {
   tipologiaFiltered: any[] = [];
   tipologiaList: any[]= [];
   prezzo!:number;
-  misure!:string;
+  info!:string;
   img?:string= "";
   mostraSpinner: boolean= false;
 
+  showError : boolean = false;
+  errorStatus: string = "";
+  errorMessage: string = "";
+
   constructor ( private router: Router, private ebService: EcobikeApiService, private userService : UserLoggedService) {
+    if ( this.userService.userLogged?.id == undefined && this.userService.userLogged?.token == undefined) {
+      this.router.navigate(['/']);
+    }
     
     this.tagliaList = [
       { name: 'S', code: Taglia.TagliaS },
@@ -89,7 +97,7 @@ export class FormVenditaComponent {
   }
 
   send () {
-    
+    this.img = "";
     const reader = new FileReader();
     let count = 0;
     const readNextFile = () => {
@@ -115,19 +123,31 @@ export class FormVenditaComponent {
     this.mostraSpinner = true;
     let idBike: number;
     let bike: Bicicletta;
+    let size;
+    if (this.tagliaValue !== undefined && this.tagliaValue.code !== undefined) {
+      size=  this.tagliaValue.code;
+    } else {
+      size = null;
+    }
+    let type;
+    if (this.tipologiaValue !== undefined && this.tipologiaValue.code !== undefined) {
+      type= this.tipologiaValue.code;
+    } else {
+      type= null;
+    }
     bike = {
       model: this.model,
       brand: this.marca,
       color: this.colore,
-      size: this.tagliaValue.code,
-      type: this.tipologiaValue.code,
-      measure: this.misure,
+      size: size,
+      type: type,
+      info: this.info,
       img: this.img
     }
 
     let adSell: adSell;
       adSell = {
-        price:this.prezzo,
+        price:this.prezzo ?? 0,
         idBike:0,
         idUser: this.userService.userLogged?.id
       }
@@ -136,19 +156,59 @@ export class FormVenditaComponent {
       let token : string = this.userService.userLogged?.token;
       this.ebService.new_bike_sell(bike, adSell, token).subscribe({
         next: (response) => {
-          console.log(response)
           if(response) {
                 setTimeout(() => {
                   this.mostraSpinner = false;
                   this.router.navigate(['/']);
                 }, 3500);
             }
-          }, error: (err) => {
-              console.error(err);
-              // <insert code for what to do on failure>
+          },error: (error: HttpErrorResponse) => {
+            if (error.status === 404) {
+              this.errorStatus = "Error:" + error.status.toString();
+              const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+              if( errorMessageParts.length == 1) {
+                this.errorMessage = errorMessageParts[0];
+              }
+              else {
+                const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                this.errorMessage = errorMessage;
+              }
+              
+              this.showError = true;
+              this.mostraSpinner = false;
+            } else if (error.status === 400) {
+              this.errorStatus = "Error:" + error.status.toString();
+              const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+              if( errorMessageParts.length == 1) {
+                this.errorMessage = errorMessageParts[0];
+              }
+              else {
+                const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                this.errorMessage = errorMessage;
+              }
+              this.mostraSpinner = false;
+              this.showError = true;
+            } else {
+              this.errorStatus = "Error:" + error.status.toString();
+              const errorMessageParts = error.error.split(':'); // Dividi la stringa utilizzando i due punti
+              if( errorMessageParts.length == 1) {
+                this.errorMessage = errorMessageParts[0];
+              }
+              else {
+                const errorMessage = errorMessageParts.slice(1).join(':').trim();
+                this.errorMessage = errorMessage;
+              }
+              this.mostraSpinner = false;
+              this.showError = true;
+            }
           }
+    
  
         });
       }
+    }
+
+    changeValue (event : boolean | any) :void {
+      this.showError = event;
     }
 }

@@ -128,12 +128,6 @@
 
 }
 
-.showMore {
-    display: flex;
-    justify-content: center;
-    margin-top: 3vh;
-
-}
 
 .spinner {
     position: relative;
@@ -142,3 +136,10 @@
     align-items: center;
     justify-content: center;
   }
+
+  .noBikes{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    height: 37vh;
+}

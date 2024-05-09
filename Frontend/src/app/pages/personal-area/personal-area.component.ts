@@ -16,7 +16,10 @@ export class PersonalAreaComponent {
   user: LoggedUser | null = null;
   shop: Shop| any;
   constructor(private userService: UserLoggedService, private ebService: EcobikeApiService,private router: Router) {
-
+    if ( this.userService.userLogged?.id == undefined && this.userService.userLogged?.token == undefined) {
+      this.router.navigate(['/']);
+    }
+    
     if (this.userService.userLogged?.image != null) {
       this.image =this.userService.userLogged.image;
     }

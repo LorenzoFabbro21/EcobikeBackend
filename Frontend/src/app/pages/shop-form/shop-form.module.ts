@@ -10,10 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ErrorDialogModule } from 'src/app/modules/error-dialog/error-dialog.module';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ShopFormComponent],
-  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,ErrorDialogModule,FileUploadModule ],
+  imports: [CommonModule, ButtonModule, AppRoutingModule, AutoCompleteModule, BrowserAnimationsModule,HttpClientModule,InputTextModule,FormsModule,ErrorDialogModule,FileUploadModule,ProgressSpinnerModule ],
   exports: [ShopFormComponent]
 })
 export class ShopFormModule {
