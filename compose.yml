@@ -7,10 +7,12 @@ services:
       - "15672:15672" # Porta per accedere alla console di management
       - "5672:5672"   # Porta per connessioni client e comunicazione tra servizi
     networks:
-      - opnet
+      - apigateway-net
     restart: unless-stopped
     volumes:
       - data-rabbitmq:/var/lib/rabbitmq
+
+
   postgres-user:
     container_name: postgres-user
     image: 'postgres:latest'
@@ -24,7 +26,9 @@ services:
     ports:
       - '5432:5432'
     networks:
-      - opnet
+      - user-net
+
+
   postgres-review:
     container_name: postgres-review
     image: 'postgres:latest'
@@ -38,7 +42,9 @@ services:
     ports:
       - '5433:5432'
     networks:
-      - opnet
+      - review-net
+
+
   postgres-shop:
     container_name: postgres-shop
     image: 'postgres:latest'
@@ -52,7 +58,9 @@ services:
     ports:
       - '5434:5432'
     networks:
-      - opnet
+      - shop-net
+
+
   postgres-bike:
     container_name: postgres-bike
     image: 'postgres:latest'
@@ -66,7 +74,9 @@ services:
     ports:
       - '5435:5432'
     networks:
-      - opnet
+      - bike-net
+
+
   postgres-ad:
     container_name: postgres-ad
     image: 'postgres:latest'
@@ -80,7 +90,9 @@ services:
     ports:
       - '5436:5432'
     networks:
-      - opnet
+      - ad-net
+
+
   postgres-booking:
     container_name: postgres-booking
     image: 'postgres:latest'
@@ -94,7 +106,9 @@ services:
     ports:
       - '5437:5432'
     networks:
-      - opnet
+      - booking-net
+
+
   postgres-appointment:
     container_name: postgres-appointment
     image: 'postgres:latest'
@@ -108,7 +122,9 @@ services:
     ports:
       - '5438:5432'
     networks:
-      - opnet
+      - appointment-net
+
+
   ## Eureka Server
   service-discovery-server:
     image: lorenzofabbro/service-discovery-server
@@ -117,7 +133,9 @@ services:
     ports:
       - "8761:8761"
     networks:
-      - opnet
+      - apigateway-net
+
+
   api-gateway:
     image: lorenzofabbro/api-gateway
     build: BackEnd/api-gateway
@@ -129,8 +147,9 @@ services:
     depends_on:
       - service-discovery-server
     networks:
-      - opnet
-  ## Product-Service Docker Compose Config
+      - apigateway-net
+
+
   review-service:
     container_name: review-service
     build: BackEnd/review-service
@@ -148,8 +167,9 @@ services:
       - postgres-review
       - service-discovery-server
     networks:
-      - opnet
-  ## Order-Service Docker Compose Config
+      - review-net
+      - apigateway-net
+
 
   authentication-service:
     container_name: authentication-service
@@ -166,7 +186,9 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - opnet
+      - authentication-net
+      - apigateway-net
+
 
   user-service:
     container_name: user-service
@@ -188,7 +210,9 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - opnet
+      - user-net
+      - apigateway-net
+
 
   shop-service:
     container_name: shop-service
@@ -210,7 +234,9 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - opnet
+      - shop-net
+      - apigateway-net
+
 
   bike-service:
     container_name: bike-service
@@ -232,7 +258,9 @@ services:
       - rabbitmq
       - service-discovery-server
     networks:
-      - opnet
+      - bike-net
+      - apigateway-net
+
 
   ad-service:
     container_name: ad-service
@@ -254,7 +282,10 @@ services:
       - postgres-ad
       - service-discovery-server
     networks:
-      - opnet
+      - ad-net
+      - apigateway-net
+
+
   booking-service:
     container_name: booking-service
     build: BackEnd/booking-service
@@ -272,7 +303,10 @@ services:
       - postgres-booking
       - service-discovery-server
     networks:
-      - opnet
+      - booking-net
+      - apigateway-net
+
+
   appointment-service:
     container_name: appointment-service
     build: BackEnd/appointment-service
@@ -290,15 +324,17 @@ services:
       - postgres-appointment
       - service-discovery-server
     networks:
-      - opnet
-  frontend:
-      build: ./Frontend
-      image: lorenzofabbro/frontend
-      container_name: frontend
-      ports:
-        - "32000:5000"
-      networks:
-        - opnet
+      - appointment-net
+      - apigateway-net
+
+
+#  frontend:
+#      build: ./Frontend
+#      image: lorenzofabbro/frontend
+#      container_name: frontend
+#      ports:
+#        - "32000:5000"
+
 
 volumes:
   shop-postgres-data:
@@ -312,5 +348,24 @@ volumes:
 
 
 networks:
-  opnet:
+  #opnet:
+    #driver: bridge
+  ad-net:
     driver: bridge
+  apigateway-net:
+    driver: bridge
+  appointment-net:
+    driver: bridge
+  authentication-net:
+    driver: bridge
+  bike-net:
+    driver: bridge
+  booking-net:
+    driver: bridge
+  review-net:
+    driver: bridge
+  shop-net:
+    driver: bridge
+  user-net:
+    driver: bridge
+

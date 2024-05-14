@@ -428,7 +428,8 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-ad-net: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: ad-service
     spec:
       containers:
@@ -483,7 +484,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: api-gateway
     spec:
       containers:
@@ -524,7 +525,8 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-appointment-net: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: appointment-service
     spec:
       containers:
@@ -575,7 +577,8 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-authentication-net: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: authentication-service
     spec:
       containers:
@@ -622,7 +625,8 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-bike-net: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: bike-service
     spec:
       containers:
@@ -677,7 +681,8 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-booking-net: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: booking-service
     spec:
       containers:
@@ -728,7 +733,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: frontend
     spec:
       containers:
@@ -767,7 +772,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-ad-net: "true"
         io.kompose.service: postgres-ad
     spec:
       containers:
@@ -836,7 +841,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-appointment-net: "true"
         io.kompose.service: postgres-appointment
     spec:
       containers:
@@ -905,7 +910,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-bike-net: "true"
         io.kompose.service: postgres-bike
     spec:
       containers:
@@ -974,7 +979,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-booking-net: "true"
         io.kompose.service: postgres-booking
     spec:
       containers:
@@ -1043,7 +1048,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-review-net: "true"
         io.kompose.service: postgres-review
     spec:
       containers:
@@ -1112,7 +1117,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-shop-net: "true"
         io.kompose.service: postgres-shop
     spec:
       containers:
@@ -1181,7 +1186,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-user-net: "true"
         io.kompose.service: postgres-user
     spec:
       containers:
@@ -1233,7 +1238,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: rabbitmq
     spec:
       containers:
@@ -1312,7 +1317,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-review-net: "true"
         io.kompose.service: review-service
     spec:
       containers:
@@ -1363,7 +1368,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-apigateway-net: "true"
         io.kompose.service: service-discovery-server
     spec:
       containers:
@@ -1401,7 +1406,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-shop-net: "true"
         io.kompose.service: shop-service
     spec:
       containers:
@@ -1457,7 +1462,7 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/ecobike-opnet: "true"
+        io.kompose.network/ecobike-user-net: "true"
         io.kompose.service: user-service
     spec:
       containers:
