@@ -7,7 +7,7 @@ services:
       - "15672:15672" # Porta per accedere alla console di management
       - "5672:5672"   # Porta per connessioni client e comunicazione tra servizi
     networks:
-      - apigateway-net
+      - apigatewaynet
     restart: unless-stopped
     volumes:
       - data-rabbitmq:/var/lib/rabbitmq
@@ -15,7 +15,7 @@ services:
 
   postgres-user:
     container_name: postgres-user
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=user_db
       - POSTGRES_USER=postgres
@@ -26,12 +26,12 @@ services:
     ports:
       - '5432:5432'
     networks:
-      - user-net
+      - usernet
 
 
   postgres-review:
     container_name: postgres-review
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=review_db
       - POSTGRES_USER=postgres
@@ -42,12 +42,12 @@ services:
     ports:
       - '5433:5432'
     networks:
-      - review-net
+      - reviewnet
 
 
   postgres-shop:
     container_name: postgres-shop
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=shop_db
       - POSTGRES_USER=postgres
@@ -58,12 +58,12 @@ services:
     ports:
       - '5434:5432'
     networks:
-      - shop-net
+      - shopnet
 
 
   postgres-bike:
     container_name: postgres-bike
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=bike_db
       - POSTGRES_USER=postgres
@@ -74,12 +74,12 @@ services:
     ports:
       - '5435:5432'
     networks:
-      - bike-net
+      - bikenet
 
 
   postgres-ad:
     container_name: postgres-ad
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=ad_db
       - POSTGRES_USER=postgres
@@ -90,12 +90,12 @@ services:
     ports:
       - '5436:5432'
     networks:
-      - ad-net
+      - adnet
 
 
   postgres-booking:
     container_name: postgres-booking
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=booking_db
       - POSTGRES_USER=postgres
@@ -106,12 +106,12 @@ services:
     ports:
       - '5437:5432'
     networks:
-      - booking-net
+      - bookingnet
 
 
   postgres-appointment:
     container_name: postgres-appointment
-    image: 'postgres:latest'
+    image: 'postgres:16.2'
     environment:
       - POSTGRES_DB=appointment_db
       - POSTGRES_USER=postgres
@@ -122,7 +122,7 @@ services:
     ports:
       - '5438:5432'
     networks:
-      - appointment-net
+      - appointmentnet
 
 
   ## Eureka Server
@@ -133,7 +133,7 @@ services:
     ports:
       - "8761:8761"
     networks:
-      - apigateway-net
+      - apigatewaynet
 
 
   api-gateway:
@@ -147,13 +147,13 @@ services:
     depends_on:
       - service-discovery-server
     networks:
-      - apigateway-net
+      - apigatewaynet
 
 
   review-service:
     container_name: review-service
     build: BackEnd/review-service
-    image: lorenzofabbro/review-service:latest
+    image: lorenzofabbro/review-service
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-review:5432/review_db
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -167,8 +167,8 @@ services:
       - postgres-review
       - service-discovery-server
     networks:
-      - review-net
-      - apigateway-net
+      - reviewnet
+      - apigatewaynet
 
 
   authentication-service:
@@ -186,8 +186,7 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - authentication-net
-      - apigateway-net
+      - apigatewaynet
 
 
   user-service:
@@ -210,8 +209,8 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - user-net
-      - apigateway-net
+      - usernet
+      - apigatewaynet
 
 
   shop-service:
@@ -234,8 +233,8 @@ services:
       - service-discovery-server
       - rabbitmq
     networks:
-      - shop-net
-      - apigateway-net
+      - shopnet
+      - apigatewaynet
 
 
   bike-service:
@@ -258,8 +257,8 @@ services:
       - rabbitmq
       - service-discovery-server
     networks:
-      - bike-net
-      - apigateway-net
+      - bikenet
+      - apigatewaynet
 
 
   ad-service:
@@ -282,8 +281,8 @@ services:
       - postgres-ad
       - service-discovery-server
     networks:
-      - ad-net
-      - apigateway-net
+      - adnet
+      - apigatewaynet
 
 
   booking-service:
@@ -303,8 +302,8 @@ services:
       - postgres-booking
       - service-discovery-server
     networks:
-      - booking-net
-      - apigateway-net
+      - bookingnet
+      - apigatewaynet
 
 
   appointment-service:
@@ -324,8 +323,8 @@ services:
       - postgres-appointment
       - service-discovery-server
     networks:
-      - appointment-net
-      - apigateway-net
+      - appointmentnet
+      - apigatewaynet
 
 
 #  frontend:
@@ -348,24 +347,20 @@ volumes:
 
 
 networks:
-  #opnet:
-    #driver: bridge
-  ad-net:
+  adnet:
     driver: bridge
-  apigateway-net:
+  apigatewaynet:
     driver: bridge
-  appointment-net:
+  appointmentnet:
     driver: bridge
-  authentication-net:
+  bikenet:
     driver: bridge
-  bike-net:
+  bookingnet:
     driver: bridge
-  booking-net:
+  reviewnet:
     driver: bridge
-  review-net:
+  shopnet:
     driver: bridge
-  shop-net:
-    driver: bridge
-  user-net:
+  usernet:
     driver: bridge
 
